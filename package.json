@@ -1,0 +1,97 @@
+{
+  "name": "heap-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/heap-js.umd.js",
+  "module": "dist/heap-js.es5.js",
+  "types": "dist/types/heap-js.d.ts",
+  "author": "Ignacio Lago @ignlg <ignacio@ignaciolago.com>",
+  "license": "BSD",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ignlg/heap-js.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json && rollup -c && rimraf compiled && typedoc --out dist/docs --target es6 --theme minimal src",
+    "commit": "git-cz",
+    "lint": "tslint --type-check --fix --project tsconfig.json -t codeFrame 'src/**/*.ts'",
+    "prebuild": "rimraf dist",
+    "precommit": "lint-staged",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "start": "tsc-watch --onSuccess \"rollup -c\"",
+    "test": "jest",
+    "test:prod": "yarn lint && yarn test -- --coverage --no-cache",
+    "test:watch": "jest --watch"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "prettier --write --no-semi",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    },
+    "validate-commit-msg": {
+      "types": "conventional-commit-types",
+      "helpMessage": "Use \"yarn commit\" instead, we use conventional-changelog format :) (https://github.com/commitizen/cz-cli)"
+    }
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "mapCoverage": true
+  },
+  "devDependencies": {
+    "@types/jest": "^20.0.0",
+    "@types/node": "^8.0.0",
+    "commitizen": "^2.9.6",
+    "coveralls": "^2.13.1",
+    "cross-env": "^5.0.1",
+    "cz-conventional-changelog": "^2.0.0",
+    "husky": "^0.14.3",
+    "jest": "^20.0.4",
+    "lint-staged": "^4.0.0",
+    "lodash.camelcase": "^4.3.0",
+    "prettier": "^1.4.4",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.43.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "ts-jest": "^20.0.6",
+    "ts-node": "^3.0.6",
+    "tsc-watch": "^1.0.5",
+    "tslint": "^5.4.3",
+    "tslint-config-prettier": "^1.1.0",
+    "tslint-config-standard": "^6.0.0",
+    "typedoc": "^0.7.1",
+    "typescript": "^2.3.4",
+    "validate-commit-msg": "^2.12.2"
+  }
+}

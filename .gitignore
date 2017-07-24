@@ -1,0 +1,25 @@
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
+#/dist
+/compiled
+
+#private
+/art
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.nyc_output
+.DS_Store
+*.log
+.vscode
+.idea
+.awcache
