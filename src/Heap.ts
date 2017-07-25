@@ -177,7 +177,7 @@ export class Heap<T> {
     return heap.pop()
   }
   /**
-   * Pushes a value into an array-heap
+   * Pushes a item into an array-heap
    * @param  {Array} heapArr     Array to be modified, should be a heap
    * @param  {any}   item        Item to push
    * @param  {Function} compare  Optional compare function
@@ -198,6 +198,18 @@ export class Heap<T> {
     const heap = new Heap(compare)
     heap.heapArray = heapArr
     return heap.pushpop(item)
+  }
+  /**
+   * Replace peek with item
+   * @param  {Array} heapArr     Array to be modified, should be a heap
+   * @param  {any}   item        Item as replacement
+   * @param  {Function} compare  Optional compare function
+   * @return {any}   Returns the extracted peek
+   */
+  static heapreplace<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>) {
+    const heap = new Heap(compare)
+    heap.heapArray = heapArr
+    return heap.replace(item)
   }
 
   /*

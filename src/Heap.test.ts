@@ -74,12 +74,47 @@ describe("Heap class", function() {
       let peek = Heap.heappushpop(heapArr, -1)
       expect(Array.isArray(heapArr)).toBe(true)
       expect(heapArr.length).toEqual(someValues.length)
-      expect(-1).toEqual(peek)
+      expect(peek).toEqual(-1)
+
+      peek = Heap.heappushpop(heapArr, 1)
+      expect(heapArr.length).toEqual(someValues.length)
       expect(peek).toBeLessThanOrEqual(Math.min(...heapArr))
 
       peek = Heap.heappushpop(heapArr, 500)
       expect(heapArr.length).toEqual(someValues.length)
       expect(peek).toBeLessThan(500)
+
+      const checkHeap = new Heap<number>()
+      checkHeap.heapArray = heapArr.slice(0)
+      expect(checkHeap.check()).not.toBeDefined()
+    })
+  })
+  describe("#heapreplace", function() {
+    it("should pop and push as a heap", function() {
+      const heapArr = someValues.slice(0)
+      Heap.heapify(heapArr)
+
+      let _in = -1
+      let peek = Heap.heapreplace(heapArr, _in)
+      expect(Array.isArray(heapArr)).toBe(true)
+      expect(heapArr.length).toBe(someValues.length)
+      expect(peek).toBe(Math.min(...someValues))
+      expect(heapArr[0]).toBe(_in)
+      expect(heapArr[0]).toBeLessThanOrEqual(Math.min(...heapArr))
+
+      _in = 1
+      peek = Heap.heapreplace(heapArr, _in)
+      expect(heapArr.length).toEqual(someValues.length)
+      expect(peek).toBe(-1)
+      expect(heapArr[0]).toBe(_in)
+      expect(heapArr[0]).toBeLessThanOrEqual(Math.min(...heapArr))
+
+      _in = 500
+      peek = Heap.heapreplace(heapArr, _in)
+      expect(heapArr.length).toEqual(someValues.length)
+      expect(peek).toBeLessThan(_in)
+      expect(heapArr[0]).not.toBe(_in)
+      expect(heapArr[0]).toBeLessThanOrEqual(Math.min(...heapArr))
 
       const checkHeap = new Heap<number>()
       checkHeap.heapArray = heapArr.slice(0)
