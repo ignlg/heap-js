@@ -7,18 +7,45 @@
 [![Coverage Status](https://img.shields.io/coveralls/ignlg/heap-js/master.svg?style=flat)](https://coveralls.io/github/ignlg/heap-js?branch=master)
 [![npm version](https://img.shields.io/npm/v/heap-js.svg?style=flat)](https://www.npmjs.com/package/heap-js)
 
-`min heap` by default.
+Heap data structure for JavaScript. Instances are `min heap` by default.
 
-Usage:
+Usage
+-----
 ```js
-var minHeap = new Heap();
-var maxHeap = new Heap(Heap.maxComparator);
+// Basic usage example
+const minHeap = new Heap();
+const maxHeap = new Heap(Heap.maxComparator);
 
-minHeap.addAll([5, 18, 2, 1]);
+minHeap.init([5, 18, 1]);
+minHeap.push(2);
 console.log(minHeap.peek()); //> 1
+console.log(minHeap.pop()); //> 1
+console.log(minHeap.peek()); //> 2
 ```
 
-Compatible with AMD and CommonJS.
+```js
+// Priority Queue usage example
+const tasks = db.collection.find().toArray();
+const customPriorityComparator = (a, b) => a.priority - b.priority;
+
+const priorityQueue = new Heap(customPriorityComparator);
+priorityQueue.init(tasks);
+
+while (let task = priorityQueue.pop()) {
+  // Do something
+}
+```
+
+```js
+// Python-like static methods example
+const numbers = [ 2, 3, 7, 5 ];
+
+Heap.heapify(numbers);
+console.log(numbers); //> [ 2, 3, 5, 7 ]
+
+Heap.heappush(numbers, 1);
+console.log(numbers); //> [ 1, 2, 5, 7, 3 ]
+```
 
 Constructor
 -----------
@@ -35,6 +62,7 @@ Implements JavaScript style methods
 * `pop()` top element
 * `push(...elements)` to the heap
 * `pushpop(element)` faster than `push` & `pop`
+* `replace(element)` faster than `pop` & `push`
 * `top(number?)` elements from the heap
 
 Implements Java's `PriorityQueue` interface:
@@ -68,7 +96,7 @@ Implements static Python's `heaqp` interface:
 * `Heap.heappop(heapArray)` that takes the peek of the array-heap
 * `Heap.heappush(heapArray, item)` that appends elements to the array-heap
 * `Heap.heappushpop(heapArray, item)` faster than `heappush` & `heappop`
-* `Heap.heapreplace(heapArray, item)` that replaces the peek
+* `Heap.heapreplace(heapArray, item)` faster than `heappop` & `heappush`
 
 To do:
 * merge(*iterables, key=None, reverse=False)
