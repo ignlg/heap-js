@@ -1,6 +1,6 @@
 {
   "name": "heap-js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/heap-js.umd.js",
   "module": "dist/heap-js.es5.js",

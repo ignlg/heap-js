@@ -6,8 +6,9 @@ export type IsEqual<T> = (a: T, b: T) => boolean
  * @type {Class}
  */
 export class Heap<T> {
-  heapArray: Array<T>
+  heapArray: Array<T> = []
   compare: Comparator<T>
+  _limit: number | null = null
 
   /**
    * Alias of add
@@ -30,7 +31,6 @@ export class Heap<T> {
    */
   constructor(compare: Comparator<T | number> = Heap.minComparator) {
     this.compare = compare
-    this.heapArray = []
   }
 
   /*
@@ -212,6 +212,7 @@ export class Heap<T> {
    */
   add(element: T): boolean {
     this._sortNodeUp(this.heapArray.push(element) - 1)
+    this._applyLimit()
     return true
   }
 
@@ -227,6 +228,7 @@ export class Heap<T> {
     for (const l = this.length; i < l; ++i) {
       this._sortNodeUp(i)
     }
+    this._applyLimit()
     return true
   }
 
@@ -255,6 +257,7 @@ export class Heap<T> {
   clone(): Heap<T> {
     const cloned = new Heap<T>(this.comparator())
     cloned.heapArray = this.toArray()
+    cloned._limit = this._limit
     return cloned
   }
 
@@ -287,6 +290,7 @@ export class Heap<T> {
     for (let i = Math.floor(this.heapArray.length); i >= 0; --i) {
       this._sortNodeDown(i)
     }
+    this._applyLimit()
   }
 
   /**
@@ -303,6 +307,23 @@ export class Heap<T> {
    */
   get length(): number {
     return this.heapArray.length
+  }
+
+  /**
+   * Get length limit of the heap.
+   * @return {Number}
+   */
+  get limit(): number | null {
+    return this._limit
+  }
+
+  /**
+   * Set length limit of the heap.
+   * @return {Number}
+   */
+  set limit(_l: number | null) {
+    this._limit = _l
+    this._applyLimit()
   }
 
   /**
@@ -484,6 +505,20 @@ export class Heap<T> {
   }
 
   /**
+   * Limit heap size if needed
+   */
+  _applyLimit() {
+    if (this._limit && this._limit < this.heapArray.length) {
+      let rm = this.heapArray.length - this._limit
+      // It's much faster than splice
+      while (rm) {
+        this.heapArray.pop()
+        --rm
+      }
+    }
+  }
+
+  /**
    * Move a node to a new index, switching places
    * @param  {Number} j First node index
    * @param  {Number} k Another node index
@@ -493,26 +528,6 @@ export class Heap<T> {
       this.heapArray[k],
       this.heapArray[j]
     ]
-  }
-
-  /**
-   * Move a node up the tree (to the root) to find a place where the heap is sorted.
-   * @param  {Number} i Index of the node
-   */
-  _sortNodeUp(i: number): boolean {
-    let moveIt = i > 0
-    let moved = false
-    while (moveIt) {
-      const pi = Heap.getParentIndexOf(i)
-      if (pi >= 0 && this.compare(this.heapArray[pi], this.heapArray[i]) > 0) {
-        this._moveNode(i, pi)
-        i = pi
-        moved = true
-      } else {
-        moveIt = false
-      }
-    }
-    return moved
   }
 
   /**
@@ -544,6 +559,26 @@ export class Heap<T> {
       ) {
         this._moveNode(i, bestChildIndex)
         i = bestChildIndex
+        moved = true
+      } else {
+        moveIt = false
+      }
+    }
+    return moved
+  }
+
+  /**
+   * Move a node up the tree (to the root) to find a place where the heap is sorted.
+   * @param  {Number} i Index of the node
+   */
+  _sortNodeUp(i: number): boolean {
+    let moveIt = i > 0
+    let moved = false
+    while (moveIt) {
+      const pi = Heap.getParentIndexOf(i)
+      if (pi >= 0 && this.compare(this.heapArray[pi], this.heapArray[i]) > 0) {
+        this._moveNode(i, pi)
+        i = pi
         moved = true
       } else {
         moveIt = false

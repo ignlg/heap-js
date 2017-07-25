@@ -179,6 +179,8 @@ describe("Heap instances", function() {
           expect(heap.length).toEqual(cloned.length)
           expect(heap.heapArray).not.toBe(cloned.heapArray)
           expect(heap.heapArray).toEqual(cloned.heapArray)
+          expect(heap.compare(2, 5)).toEqual(cloned.compare(2, 5))
+          expect(heap.limit).toEqual(cloned.limit)
         })
       })
 
@@ -250,6 +252,19 @@ describe("Heap instances", function() {
           heap.init(someValues)
           expect(someValues.length).toBe(heap.length)
           expect(someValues.length).toBe(heap.size())
+        })
+      })
+
+      describe("#limit", function() {
+        it("should limit the heap length", function() {
+          heap.init(someValues)
+          expect(someValues.length).toBe(heap.length)
+          heap.limit = 5
+          expect(5).toBe(heap.limit)
+          expect(5).toBe(heap.length)
+          heap.push(...otherValues)
+          expect(5).toBe(heap.length)
+          expect(heap.check()).not.toBeDefined()
         })
       })
 
