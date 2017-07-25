@@ -31,6 +31,7 @@ Comparator for _min heap_ by default: `Heap.minComparator` = `(a, b) => a - b`
 Implements JavaScript style methods
 -----------------------------------
 * `length` of the heap
+* `limit` number of elements in the heap
 * `pop()` top element
 * `push(...elements)` to the heap
 * `pushpop(element)` faster than `push` & `pop`
@@ -67,9 +68,9 @@ Implements static Python's `heaqp` interface:
 * `Heap.heappop(heapArray)` that takes the peek of the array-heap
 * `Heap.heappush(heapArray, item)` that appends elements to the array-heap
 * `Heap.heappushpop(heapArray, item)` faster than `heappush` & `heappop`
+* `Heap.heapreplace(heapArray, item)` that replaces the peek
 
 To do:
-* heapreplace(heap, item)
 * merge(*iterables, key=None, reverse=False)
 * nlargest(n, iterable, key=None)
 * nsmallest(n, iterable, key=None)

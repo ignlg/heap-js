@@ -936,6 +936,7 @@ minHeap.addAll([<span class="hljs-number">5</span>, <span class="hljs-number">18
 			<h2 id="implements-javascript-style-methods">Implements JavaScript style methods</h2>
 			<ul>
 				<li><code>length</code> of the heap</li>
+				<li><code>limit</code> number of elements in the heap</li>
 				<li><code>pop()</code> top element</li>
 				<li><code>push(...elements)</code> to the heap</li>
 				<li><code>pushpop(element)</code> faster than <code>push</code> &amp; <code>pop</code></li>
@@ -973,10 +974,10 @@ minHeap.addAll([<span class="hljs-number">5</span>, <span class="hljs-number">18
 				<li><code>Heap.heappop(heapArray)</code> that takes the peek of the array-heap</li>
 				<li><code>Heap.heappush(heapArray, item)</code> that appends elements to the array-heap</li>
 				<li><code>Heap.heappushpop(heapArray, item)</code> faster than <code>heappush</code> &amp; <code>heappop</code></li>
+				<li><code>Heap.heapreplace(heapArray, item)</code> that replaces the peek</li>
 			</ul>
 			<p>To do:</p>
 			<ul>
-				<li>heapreplace(heap, item)</li>
 				<li>merge(*iterables, key=None, reverse=False)</li>
 				<li>nlargest(n, iterable, key=None)</li>
 				<li>nsmallest(n, iterable, key=None)</li>

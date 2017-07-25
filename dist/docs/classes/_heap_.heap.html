@@ -916,6 +916,9 @@ img { max-width: 100%; }
 					<a href="_heap_.heap.html#constructor" class="tsd-kind-icon">constructor</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="_heap_.heap.html#_limit" class="tsd-kind-icon">_limit</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="_heap_.heap.html#compare" class="tsd-kind-icon">compare</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -933,6 +936,15 @@ img { max-width: 100%; }
 				<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 					<a href="_heap_.heap.html#length" class="tsd-kind-icon">length</a>
 				</li>
+				<li class=" tsd-kind-accessor tsd-parent-kind-class">
+					<a href="_heap_.heap.html#limit" class="tsd-kind-icon">limit</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="_heap_.heap.html#_applylimit" class="tsd-kind-icon">_apply<wbr>Limit</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="_heap_.heap.html#_invertedcompare" class="tsd-kind-icon">_inverted<wbr>Compare</a>
+				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="_heap_.heap.html#_movenode" class="tsd-kind-icon">_move<wbr>Node</a>
 				</li>
@@ -941,6 +953,9 @@ img { max-width: 100%; }
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="_heap_.heap.html#_sortnodeup" class="tsd-kind-icon">_sort<wbr>Node<wbr>Up</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="_heap_.heap.html#_topn" class="tsd-kind-icon">_topN</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="_heap_.heap.html#add" class="tsd-kind-icon">add</a>
@@ -1029,6 +1044,9 @@ img { max-width: 100%; }
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
 					<a href="_heap_.heap.html#heappushpop" class="tsd-kind-icon">heappushpop</a>
 				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
+					<a href="_heap_.heap.html#heapreplace" class="tsd-kind-icon">heapreplace</a>
+				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 					<a href="_heap_.heap.html#maxcomparator" class="tsd-kind-icon">max<wbr>Comparator</a>
 				</li>
@@ -1091,6 +1109,7 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="_heap_.heap.html#_limit" class="tsd-kind-icon">_limit</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="_heap_.heap.html#compare" class="tsd-kind-icon">compare</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="_heap_.heap.html#element" class="tsd-kind-icon">element</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="_heap_.heap.html#heaparray" class="tsd-kind-icon">heap<wbr>Array</a></li>
@@ -1102,14 +1121,18 @@ img { max-width: 100%; }
 						<h3>Accessors</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_heap_.heap.html#length" class="tsd-kind-icon">length</a></li>
+							<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="_heap_.heap.html#limit" class="tsd-kind-icon">limit</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_heap_.heap.html#_applylimit" class="tsd-kind-icon">_apply<wbr>Limit</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_heap_.heap.html#_invertedcompare" class="tsd-kind-icon">_inverted<wbr>Compare</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_heap_.heap.html#_movenode" class="tsd-kind-icon">_move<wbr>Node</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_heap_.heap.html#_sortnodedown" class="tsd-kind-icon">_sort<wbr>Node<wbr>Down</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_heap_.heap.html#_sortnodeup" class="tsd-kind-icon">_sort<wbr>Node<wbr>Up</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_heap_.heap.html#_topn" class="tsd-kind-icon">_topN</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_heap_.heap.html#add" class="tsd-kind-icon">add</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_heap_.heap.html#addall" class="tsd-kind-icon">add<wbr>All</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_heap_.heap.html#check" class="tsd-kind-icon">check</a></li>
@@ -1139,6 +1162,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="_heap_.heap.html#heappop" class="tsd-kind-icon">heappop</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="_heap_.heap.html#heappush" class="tsd-kind-icon">heappush</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="_heap_.heap.html#heappushpop" class="tsd-kind-icon">heappushpop</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="_heap_.heap.html#heapreplace" class="tsd-kind-icon">heapreplace</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_heap_.heap.html#maxcomparator" class="tsd-kind-icon">max<wbr>Comparator</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_heap_.heap.html#mincomparator" class="tsd-kind-icon">min<wbr>Comparator</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="_heap_.heap.html#print" class="tsd-kind-icon">print</a></li>
@@ -1159,7 +1183,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L25">Heap.ts:25</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L26">Heap.ts:26</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1186,12 +1210,22 @@ img { max-width: 100%; }
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="_limit" class="tsd-anchor"></a>
+				<h3>_limit</h3>
+				<div class="tsd-signature tsd-kind-icon">_limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L11">Heap.ts:11</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="compare" class="tsd-anchor"></a>
 				<h3>compare</h3>
 				<div class="tsd-signature tsd-kind-icon">compare<span class="tsd-signature-symbol">:</span> <a href="../modules/_heap_.html#comparator" class="tsd-signature-type">Comparator</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L10">Heap.ts:10</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L10">Heap.ts:10</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1201,7 +1235,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">element<span class="tsd-signature-symbol">:</span> <a href="_heap_.heap.html#peek" class="tsd-signature-type">peek</a><span class="tsd-signature-symbol"> =&nbsp;this.peek</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L20">Heap.ts:20</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L21">Heap.ts:21</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1213,10 +1247,10 @@ img { max-width: 100%; }
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="heaparray" class="tsd-anchor"></a>
 				<h3>heap<wbr>Array</h3>
-				<div class="tsd-signature tsd-kind-icon">heap<wbr>Array<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<div class="tsd-signature tsd-kind-icon">heap<wbr>Array<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L9">Heap.ts:9</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L9">Heap.ts:9</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1226,7 +1260,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">offer<span class="tsd-signature-symbol">:</span> <a href="_heap_.heap.html#add" class="tsd-signature-type">add</a><span class="tsd-signature-symbol"> =&nbsp;this.add</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L15">Heap.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L16">Heap.ts:16</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1241,7 +1275,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">poll<span class="tsd-signature-symbol">:</span> <a href="_heap_.heap.html#pop" class="tsd-signature-type">pop</a><span class="tsd-signature-symbol"> =&nbsp;this.pop</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L25">Heap.ts:25</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L26">Heap.ts:26</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1259,7 +1293,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">length<span class="tsd-signature-symbol">:</span> </div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L304">Heap.ts:304</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L320">Heap.ts:320</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1268,9 +1302,79 @@ img { max-width: 100%; }
 					</div>
 				</div>
 			</section>
+			<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class">
+				<a name="limit" class="tsd-anchor"></a>
+				<h3>limit</h3>
+				<div class="tsd-signature tsd-kind-icon">limit<span class="tsd-signature-symbol">:</span> </div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L328">Heap.ts:328</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L336">Heap.ts:336</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Get length limit of the heap.
+						Set length limit of the heap.</p>
+					</div>
+				</div>
+			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="_applylimit" class="tsd-anchor"></a>
+				<h3>_apply<wbr>Limit</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">_apply<wbr>Limit<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L514">Heap.ts:514</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Limit heap size if needed</p>
+							</div>
+						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="_invertedcompare" class="tsd-anchor"></a>
+				<h3>_inverted<wbr>Compare</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">_inverted<wbr>Compare<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L529">Heap.ts:529</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Returns the inverse to the comparison function.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>a: <span class="tsd-signature-type">T</span></h5>
+							</li>
+							<li>
+								<h5>b: <span class="tsd-signature-type">T</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 				<a name="_movenode" class="tsd-anchor"></a>
 				<h3>_move<wbr>Node</h3>
@@ -1281,7 +1385,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L491">Heap.ts:491</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L538">Heap.ts:538</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1318,7 +1422,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L522">Heap.ts:522</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L549">Heap.ts:549</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1349,7 +1453,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L502">Heap.ts:502</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L586">Heap.ts:586</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1371,6 +1475,38 @@ img { max-width: 100%; }
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="_topn" class="tsd-anchor"></a>
+				<h3>_topN</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">_topN<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L608">Heap.ts:608</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Return the top N elements of the heap, without corner cases, unsorted</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>n: <span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Number of elements.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<p>Array of length &lt;= N.</p>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 				<a name="add" class="tsd-anchor"></a>
 				<h3>add</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1380,7 +1516,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L213">Heap.ts:213</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L225">Heap.ts:225</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1413,7 +1549,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L224">Heap.ts:224</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L237">Heap.ts:237</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1446,7 +1582,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L237">Heap.ts:237</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L251">Heap.ts:251</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1472,7 +1608,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L247">Heap.ts:247</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L261">Heap.ts:261</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1494,7 +1630,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L255">Heap.ts:255</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L269">Heap.ts:269</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1516,7 +1652,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L265">Heap.ts:265</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L280">Heap.ts:280</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1538,7 +1674,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L275">Heap.ts:275</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L290">Heap.ts:290</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1575,7 +1711,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L463">Heap.ts:463</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L488">Heap.ts:488</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1607,7 +1743,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L472">Heap.ts:472</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L497">Heap.ts:497</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1639,7 +1775,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L481">Heap.ts:481</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L506">Heap.ts:506</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1674,7 +1810,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L283">Heap.ts:283</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L298">Heap.ts:298</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1705,7 +1841,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L296">Heap.ts:296</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L312">Heap.ts:312</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1728,7 +1864,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L313">Heap.ts:313</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L346">Heap.ts:346</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1755,7 +1891,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L321">Heap.ts:321</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L354">Heap.ts:354</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1781,7 +1917,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L334">Heap.ts:334</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L367">Heap.ts:367</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1813,7 +1949,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L349">Heap.ts:349</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L382">Heap.ts:382</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1845,7 +1981,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L363">Heap.ts:363</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L396">Heap.ts:396</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1883,7 +2019,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L392">Heap.ts:392</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L425">Heap.ts:425</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1915,7 +2051,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L403">Heap.ts:403</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L436">Heap.ts:436</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1937,7 +2073,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L446">Heap.ts:446</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L471">Heap.ts:471</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1959,7 +2095,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L454">Heap.ts:454</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L479">Heap.ts:479</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1981,15 +2117,13 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L416">Heap.ts:416</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L446">Heap.ts:446</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Return the top N elements of the heap.</p>
 							</div>
-							<p>This algorithm is not memory efficient, as it takes double of heap size,
-							but it uses the heap properties.</p>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
@@ -2015,7 +2149,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L88">Heap.ts:88</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L88">Heap.ts:88</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2059,7 +2193,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L45">Heap.ts:45</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L45">Heap.ts:45</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2091,7 +2225,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L54">Heap.ts:54</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L54">Heap.ts:54</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2123,7 +2257,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L162">Heap.ts:162</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L162">Heap.ts:162</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2167,7 +2301,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L174">Heap.ts:174</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L174">Heap.ts:174</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2214,12 +2348,12 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L185">Heap.ts:185</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L185">Heap.ts:185</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Pushes a value into an array-heap</p>
+								<p>Pushes a item into an array-heap</p>
 							</div>
 						</div>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2263,7 +2397,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L197">Heap.ts:197</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L197">Heap.ts:197</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2303,6 +2437,56 @@ img { max-width: 100%; }
 					</li>
 				</ul>
 			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
+				<a name="heapreplace" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> heapreplace</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">heapreplace&lt;N&gt;<span class="tsd-signature-symbol">(</span>heapArr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">N</span><span class="tsd-signature-symbol">&gt;</span>, item<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">N</span>, compare<span class="tsd-signature-symbol">?: </span><a href="../modules/_heap_.html#comparator" class="tsd-signature-type">Comparator</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">N</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">N</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L209">Heap.ts:209</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Replace peek with item</p>
+							</div>
+						</div>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>N</h4>
+							</li>
+						</ul>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>heapArr: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">N</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Array to be modified, should be a heap</p>
+								</div>
+							</li>
+							<li>
+								<h5>item: <span class="tsd-signature-type">N</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Item as replacement</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> compare: <a href="../modules/_heap_.html#comparator" class="tsd-signature-type">Comparator</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">N</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Optional compare function</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">N</span></h4>
+						<p>Returns the extracted peek</p>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
 				<a name="maxcomparator" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagStatic">Static</span> max<wbr>Comparator</h3>
@@ -2313,7 +2497,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L78">Heap.ts:78</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L78">Heap.ts:78</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2351,7 +2535,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L68">Heap.ts:68</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L68">Heap.ts:68</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2389,7 +2573,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/413375c/src/Heap.ts#L97">Heap.ts:97</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/d67402b/src/Heap.ts#L97">Heap.ts:97</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">

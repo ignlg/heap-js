@@ -9,6 +9,9 @@ var Heap = (function () {
      */
     function Heap(compare) {
         if (compare === void 0) { compare = Heap.minComparator; }
+        var _this = this;
+        this.heapArray = [];
+        this._limit = null;
         /**
          * Alias of add
          */
@@ -21,8 +24,14 @@ var Heap = (function () {
          * Alias of pop
          */
         this.poll = this.pop;
+        /**
+         * Returns the inverse to the comparison function.
+         * @return {Function}
+         */
+        this._invertedCompare = function (a, b) {
+            return -1 * _this.compare(a, b);
+        };
         this.compare = compare;
-        this.heapArray = [];
     }
     /*
               Static methods
@@ -153,7 +162,7 @@ var Heap = (function () {
         return heap.pop();
     };
     /**
-     * Pushes a value into an array-heap
+     * Pushes a item into an array-heap
      * @param  {Array} heapArr     Array to be modified, should be a heap
      * @param  {any}   item        Item to push
      * @param  {Function} compare  Optional compare function
@@ -175,6 +184,18 @@ var Heap = (function () {
         heap.heapArray = heapArr;
         return heap.pushpop(item);
     };
+    /**
+     * Replace peek with item
+     * @param  {Array} heapArr     Array to be modified, should be a heap
+     * @param  {any}   item        Item as replacement
+     * @param  {Function} compare  Optional compare function
+     * @return {any}   Returns the extracted peek
+     */
+    Heap.heapreplace = function (heapArr, item, compare) {
+        var heap = new Heap(compare);
+        heap.heapArray = heapArr;
+        return heap.replace(item);
+    };
     /*
               Instance methods
      */
@@ -186,6 +207,7 @@ var Heap = (function () {
      */
     Heap.prototype.add = function (element) {
         this._sortNodeUp(this.heapArray.push(element) - 1);
+        this._applyLimit();
         return true;
     };
     /**
@@ -200,6 +222,7 @@ var Heap = (function () {
         for (var l = this.length; i < l; ++i) {
             this._sortNodeUp(i);
         }
+        this._applyLimit();
         return true;
         var _a;
     };
@@ -226,6 +249,7 @@ var Heap = (function () {
     Heap.prototype.clone = function () {
         var cloned = new Heap(this.comparator());
         cloned.heapArray = this.toArray();
+        cloned._limit = this._limit;
         return cloned;
     };
     /**
@@ -256,6 +280,7 @@ var Heap = (function () {
         for (var i = Math.floor(this.heapArray.length); i >= 0; --i) {
             this._sortNodeDown(i);
         }
+        this._applyLimit();
     };
     /**
      * Test if the heap has no elements.
@@ -271,6 +296,25 @@ var Heap = (function () {
          */
         get: function () {
             return this.heapArray.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Heap.prototype, "limit", {
+        /**
+         * Get length limit of the heap.
+         * @return {Number}
+         */
+        get: function () {
+            return this._limit;
+        },
+        /**
+         * Set length limit of the heap.
+         * @return {Number}
+         */
+        set: function (_l) {
+            this._limit = _l;
+            this._applyLimit();
         },
         enumerable: true,
         configurable: true
@@ -382,40 +426,31 @@ var Heap = (function () {
     /**
      * Return the top N elements of the heap.
      *
-     * This algorithm is not memory efficient, as it takes double of heap size,
-     * but it uses the heap properties.
-     *
      * @param  {Number} n  Number of elements.
      * @return {Array}    Array of length <= N.
      */
     Heap.prototype.top = function (n) {
         if (n === void 0) { n = 1; }
         if (n <= 0) {
+            // Nothing to do
             return [];
         }
         else if (n === 1) {
+            // Just the peek
             return [this.heapArray[0]];
         }
         else if (n >= this.heapArray.length) {
+            // The whole peek
             // Clone is needed due to the sort method (in-place) that would destroy the heap
             var cloned = this.heapArray.slice(0);
             cloned.sort(this.compare);
             return cloned;
         }
         else {
-            var max = Math.min(n, this.length);
-            var values = [];
-            var cloned = this.clone();
-            while (values.length < max) {
-                var pop = cloned.pop();
-                if (pop !== undefined) {
-                    values.push(pop);
-                }
-                else {
-                    break;
-                }
-            }
-            return values;
+            // Some elements
+            var result = this._topN(n);
+            result.sort(this.compare);
+            return result;
         }
     };
     /**
@@ -459,6 +494,19 @@ var Heap = (function () {
         return this.heapArray[pi];
     };
     /**
+     * Limit heap size if needed
+     */
+    Heap.prototype._applyLimit = function () {
+        if (this._limit && this._limit < this.heapArray.length) {
+            var rm = this.heapArray.length - this._limit;
+            // It's much faster than splice
+            while (rm) {
+                this.heapArray.pop();
+                --rm;
+            }
+        }
+    };
+    /**
      * Move a node to a new index, switching places
      * @param  {Number} j First node index
      * @param  {Number} k Another node index
@@ -470,26 +518,6 @@ var Heap = (function () {
             this.heapArray[j]
         ], this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
         var _a;
-    };
-    /**
-     * Move a node up the tree (to the root) to find a place where the heap is sorted.
-     * @param  {Number} i Index of the node
-     */
-    Heap.prototype._sortNodeUp = function (i) {
-        var moveIt = i > 0;
-        var moved = false;
-        while (moveIt) {
-            var pi = Heap.getParentIndexOf(i);
-            if (pi >= 0 && this.compare(this.heapArray[pi], this.heapArray[i]) > 0) {
-                this._moveNode(i, pi);
-                i = pi;
-                moved = true;
-            }
-            else {
-                moveIt = false;
-            }
-        }
-        return moved;
     };
     /**
      * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
@@ -521,6 +549,53 @@ var Heap = (function () {
             }
         }
         return moved;
+    };
+    /**
+     * Move a node up the tree (to the root) to find a place where the heap is sorted.
+     * @param  {Number} i Index of the node
+     */
+    Heap.prototype._sortNodeUp = function (i) {
+        var moveIt = i > 0;
+        var moved = false;
+        while (moveIt) {
+            var pi = Heap.getParentIndexOf(i);
+            if (pi >= 0 && this.compare(this.heapArray[pi], this.heapArray[i]) > 0) {
+                this._moveNode(i, pi);
+                i = pi;
+                moved = true;
+            }
+            else {
+                moveIt = false;
+            }
+        }
+        return moved;
+    };
+    /**
+     * Return the top N elements of the heap, without corner cases, unsorted
+     *
+     * @param  {Number} n  Number of elements.
+     * @return {Array}    Array of length <= N.
+     */
+    Heap.prototype._topN = function (n) {
+        // Use an inverted heap
+        var bottomHeap = new Heap(this._invertedCompare);
+        bottomHeap.limit = n;
+        var indices = [0];
+        var arr = this.heapArray;
+        while (indices.length) {
+            var i = indices.shift();
+            if (i < arr.length) {
+                if (bottomHeap.length < n) {
+                    bottomHeap.push(arr[i]);
+                    indices.push.apply(indices, Heap.getChildrenIndexOf(i));
+                }
+                else if (this.compare(arr[i], bottomHeap.peek()) <= 0) {
+                    bottomHeap.replace(arr[i]);
+                    indices.push.apply(indices, Heap.getChildrenIndexOf(i));
+                }
+            }
+        }
+        return bottomHeap.toArray();
     };
     return Heap;
 }());

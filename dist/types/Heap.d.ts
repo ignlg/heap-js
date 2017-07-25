@@ -7,6 +7,7 @@ export declare type IsEqual<T> = (a: T, b: T) => boolean;
 export declare class Heap<T> {
     heapArray: Array<T>;
     compare: Comparator<T>;
+    _limit: number | null;
     /**
      * Alias of add
      */
@@ -78,7 +79,7 @@ export declare class Heap<T> {
      */
     static heappop<N>(heapArr: Array<N>, compare?: Comparator<N>): N | undefined;
     /**
-     * Pushes a value into an array-heap
+     * Pushes a item into an array-heap
      * @param  {Array} heapArr     Array to be modified, should be a heap
      * @param  {any}   item        Item to push
      * @param  {Function} compare  Optional compare function
@@ -92,6 +93,14 @@ export declare class Heap<T> {
      * @return {any}   Returns the extracted peek
      */
     static heappushpop<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>): N;
+    /**
+     * Replace peek with item
+     * @param  {Array} heapArr     Array to be modified, should be a heap
+     * @param  {any}   item        Item as replacement
+     * @param  {Function} compare  Optional compare function
+     * @return {any}   Returns the extracted peek
+     */
+    static heapreplace<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>): N;
     /**
      * Adds an element to the heap. Aliases: `offer`.
      * Same as: push(element)
@@ -148,6 +157,15 @@ export declare class Heap<T> {
      */
     readonly length: number;
     /**
+     * Get length limit of the heap.
+     * @return {Number}
+     */
+    /**
+     * Set length limit of the heap.
+     * @return {Number}
+     */
+    limit: number | null;
+    /**
      * Top node. Aliases: `element`.
      * Same as: `top(1)[0]`
      * @return {any} Top node
@@ -191,9 +209,6 @@ export declare class Heap<T> {
     /**
      * Return the top N elements of the heap.
      *
-     * This algorithm is not memory efficient, as it takes double of heap size,
-     * but it uses the heap properties.
-     *
      * @param  {Number} n  Number of elements.
      * @return {Array}    Array of length <= N.
      */
@@ -227,20 +242,36 @@ export declare class Heap<T> {
      */
     getParentOf(idx: number): T | undefined;
     /**
+     * Limit heap size if needed
+     */
+    _applyLimit(): void;
+    /**
+     * Returns the inverse to the comparison function.
+     * @return {Function}
+     */
+    _invertedCompare: (a: T, b: T) => number;
+    /**
      * Move a node to a new index, switching places
      * @param  {Number} j First node index
      * @param  {Number} k Another node index
      */
     _moveNode(j: number, k: number): void;
     /**
+     * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
+     * @param  {Number} i Index of the node
+     */
+    _sortNodeDown(i: number): boolean;
+    /**
      * Move a node up the tree (to the root) to find a place where the heap is sorted.
      * @param  {Number} i Index of the node
      */
     _sortNodeUp(i: number): boolean;
     /**
-     * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
-     * @param  {Number} i Index of the node
+     * Return the top N elements of the heap, without corner cases, unsorted
+     *
+     * @param  {Number} n  Number of elements.
+     * @return {Array}    Array of length <= N.
      */
-    _sortNodeDown(i: number): boolean;
+    _topN(n: number): Array<T>;
 }
 export default Heap;
