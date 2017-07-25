@@ -428,35 +428,27 @@ export class Heap<T> {
   /**
    * Return the top N elements of the heap.
    *
-   * This algorithm is not memory efficient, as it takes double of heap size,
-   * but it uses the heap properties.
-   *
    * @param  {Number} n  Number of elements.
    * @return {Array}    Array of length <= N.
    */
   top(n: number = 1): Array<T> {
     if (n <= 0) {
+      // Nothing to do
       return []
     } else if (n === 1) {
+      // Just the peek
       return [this.heapArray[0]]
     } else if (n >= this.heapArray.length) {
+      // The whole peek
       // Clone is needed due to the sort method (in-place) that would destroy the heap
       const cloned = this.heapArray.slice(0)
       cloned.sort(this.compare)
       return cloned
     } else {
-      const max = Math.min(n, this.length)
-      const values = []
-      const cloned = this.clone()
-      while (values.length < max) {
-        const pop = cloned.pop()
-        if (pop !== undefined) {
-          values.push(pop)
-        } else {
-          break
-        }
-      }
-      return values
+      // Some elements
+      const result = this._topN(n)
+      result.sort(this.compare)
+      return result
     }
   }
 
@@ -516,6 +508,14 @@ export class Heap<T> {
         --rm
       }
     }
+  }
+
+  /**
+   * Returns the inverse to the comparison function.
+   * @return {Function}
+   */
+  _invertedCompare = (a: T, b: T): number => {
+    return -1 * this.compare(a, b)
   }
 
   /**
@@ -585,6 +585,33 @@ export class Heap<T> {
       }
     }
     return moved
+  }
+
+  /**
+   * Return the top N elements of the heap, without corner cases, unsorted
+   *
+   * @param  {Number} n  Number of elements.
+   * @return {Array}    Array of length <= N.
+   */
+  _topN(n: number): Array<T> {
+    // Use an inverted heap
+    const bottomHeap = new Heap(this._invertedCompare)
+    bottomHeap.limit = n
+    const indices = [0]
+    const arr = this.heapArray
+    while (indices.length) {
+      const i = indices.shift() as number
+      if (i < arr.length) {
+        if (bottomHeap.length < n) {
+          bottomHeap.push(arr[i])
+          indices.push(...Heap.getChildrenIndexOf(i))
+        } else if (this.compare(arr[i], bottomHeap.peek() as T) <= 0) {
+          bottomHeap.replace(arr[i])
+          indices.push(...Heap.getChildrenIndexOf(i))
+        }
+      }
+    }
+    return bottomHeap.toArray()
   }
 }
 
