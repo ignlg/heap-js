@@ -6,7 +6,7 @@
   "module": "dist/heap-js.es5.js",
   "types": "dist/types/heap-js.d.ts",
   "author": "Ignacio Lago @ignlg <ignacio@ignaciolago.com>",
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "git@github.com:ignlg/heap-js.git"
