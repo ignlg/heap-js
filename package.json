@@ -1,7 +1,7 @@
 {
   "name": "heap-js",
   "version": "1.1.0",
-  "description": "",
+  "description": "Heap data structure for JavaScript.",
   "main": "dist/heap-js.umd.js",
   "module": "dist/heap-js.es5.js",
   "types": "dist/types/heap-js.d.ts",
