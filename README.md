@@ -7,12 +7,18 @@
 [![Coverage Status](https://img.shields.io/coveralls/ignlg/heap-js/master.svg?style=flat)](https://coveralls.io/github/ignlg/heap-js?branch=master)
 [![npm version](https://img.shields.io/npm/v/heap-js.svg?style=flat)](https://www.npmjs.com/package/heap-js)
 
-Heap data structure for JavaScript. Instances are `min heap` by default.
+**Heap data structure for JavaScript.**
 
-Usage
------
+Easy to use, known interfaces, tested, and well documented JavaScript binary heap library.
+
+Instances are `integer min heap` by default.
+
+Examples
+--------------
 ```js
 // Basic usage example
+import Heap from 'heap-js';
+
 const minHeap = new Heap();
 const maxHeap = new Heap(Heap.maxComparator);
 
@@ -25,6 +31,8 @@ console.log(minHeap.peek()); //> 2
 
 ```js
 // Priority Queue usage example
+const { Heap } = require('heap-js');
+
 const tasks = db.collection.find().toArray();
 const customPriorityComparator = (a, b) => a.priority - b.priority;
 
@@ -38,6 +46,7 @@ while (let task = priorityQueue.pop()) {
 
 ```js
 // Python-like static methods example
+import { Heap } from 'heap-js';
 const numbers = [ 2, 3, 7, 5 ];
 
 Heap.heapify(numbers);
@@ -47,13 +56,24 @@ Heap.heappush(numbers, 1);
 console.log(numbers); //> [ 1, 2, 5, 7, 3 ]
 ```
 
+Installation
+------------
+```bash
+yarn add heap-js # if you use yarn
+
+npm install --save heap-js # if you use npm
+```
+
 Constructor
 -----------
 ```js
 new Heap([comparator])
 ```
 
-Comparator for _min heap_ by default: `Heap.minComparator` = `(a, b) => a - b`
+Basic comparators already included:
+
+* `Heap.minComparator` Integer min heap _(default)_
+* `Heap.maxComparator` Integer max heap
 
 Implements JavaScript style methods
 -----------------------------------
@@ -90,7 +110,7 @@ To do:
 * iterator()
 * retainAll
 
-Implements static Python's `heaqp` interface:
+Implements static Python's `heapq` interface:
 ---------------------------------------------
 * `Heap.heapify(array)` that converts an array to an array-heap
 * `Heap.heappop(heapArray)` that takes the peek of the array-heap
@@ -103,16 +123,31 @@ To do:
 * nlargest(n, iterable, key=None)
 * nsmallest(n, iterable, key=None)
 
-Dev setup
----------
+Documentation
+-------------
+Extensive documentation included at `./dist/docs`. It'll be published to `gh-pages` in a next release.
+
+Contributing
+------------
+Development of **Heap.js** happens in the open on GitHub, and I am grateful to the community for contributing bugfixes and improvements.
+
+
+### Dev setup
+
 ```bash
 yarn # if you use yarn
+
 npm install # if you use npm
 ```
 
-Tests
------
+### Tests
+
 ```bash
 yarn test # if you use yarn
+
 npm test # if you use npm
 ```
+
+### License
+
+Heap.js is [BSD licensed](LICENSE).

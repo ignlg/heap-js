@@ -920,9 +920,13 @@ img { max-width: 100%; }
 				<a href="https://david-dm.org/ignlg/heap-js#info=devDependencies"><img src="https://david-dm.org/ignlg/heap-js/dev-status.svg" alt="devDependency Status"></a>
 				<a href="https://coveralls.io/github/ignlg/heap-js?branch=master"><img src="https://img.shields.io/coveralls/ignlg/heap-js/master.svg?style=flat" alt="Coverage Status"></a>
 			<a href="https://www.npmjs.com/package/heap-js"><img src="https://img.shields.io/npm/v/heap-js.svg?style=flat" alt="npm version"></a></p>
-			<p>Heap data structure for JavaScript. Instances are <code>min heap</code> by default.</p>
-			<h2 id="usage">Usage</h2>
+			<p><strong>Heap data structure for JavaScript.</strong></p>
+			<p>Easy to use, known interfaces, tested, and well documented JavaScript binary heap library.</p>
+			<p>Instances are <code>integer min heap</code> by default.</p>
+			<h2 id="examples">Examples</h2>
 			<pre><code class="lang-js"><span class="hljs-comment">// Basic usage example</span>
+<span class="hljs-keyword">import</span> Heap <span class="hljs-keyword">from</span> <span class="hljs-string">'heap-js'</span>;
+
 <span class="hljs-keyword">const</span> minHeap = <span class="hljs-keyword">new</span> Heap();
 <span class="hljs-keyword">const</span> maxHeap = <span class="hljs-keyword">new</span> Heap(Heap.maxComparator);
 
@@ -933,6 +937,8 @@ minHeap.push(<span class="hljs-number">2</span>);
 <span class="hljs-built_in">console</span>.log(minHeap.peek()); <span class="hljs-comment">//&gt; 2</span>
 </code></pre>
 			<pre><code class="lang-js"><span class="hljs-comment">// Priority Queue usage example</span>
+<span class="hljs-keyword">const</span> { Heap } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'heap-js'</span>);
+
 <span class="hljs-keyword">const</span> tasks = db.collection.find().toArray();
 <span class="hljs-keyword">const</span> customPriorityComparator = <span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a.priority - b.priority;
 
@@ -944,6 +950,7 @@ priorityQueue.init(tasks);
 }
 </code></pre>
 			<pre><code class="lang-js"><span class="hljs-comment">// Python-like static methods example</span>
+<span class="hljs-keyword">import</span> { Heap } <span class="hljs-keyword">from</span> <span class="hljs-string">'heap-js'</span>;
 <span class="hljs-keyword">const</span> numbers = [ <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span> ];
 
 Heap.heapify(numbers);
@@ -952,10 +959,19 @@ Heap.heapify(numbers);
 Heap.heappush(numbers, <span class="hljs-number">1</span>);
 <span class="hljs-built_in">console</span>.log(numbers); <span class="hljs-comment">//&gt; [ 1, 2, 5, 7, 3 ]</span>
 </code></pre>
+			<h2 id="installation">Installation</h2>
+			<pre><code class="lang-bash">yarn add heap-js <span class="hljs-comment"># if you use yarn</span>
+
+npm install --save heap-js <span class="hljs-comment"># if you use npm</span>
+</code></pre>
 			<h2 id="constructor">Constructor</h2>
 			<pre><code class="lang-js"><span class="hljs-keyword">new</span> Heap([comparator])
 </code></pre>
-			<p>Comparator for <em>min heap</em> by default: <code>Heap.minComparator</code> = <code>(a, b) =&gt; a - b</code></p>
+			<p>Basic comparators already included:</p>
+			<ul>
+				<li><code>Heap.minComparator</code> Integer min heap <em>(default)</em></li>
+				<li><code>Heap.maxComparator</code> Integer max heap</li>
+			</ul>
 			<h2 id="implements-javascript-style-methods">Implements JavaScript style methods</h2>
 			<ul>
 				<li><code>length</code> of the heap</li>
@@ -992,7 +1008,7 @@ Heap.heappush(numbers, <span class="hljs-number">1</span>);
 				<li>iterator()</li>
 				<li>retainAll</li>
 			</ul>
-			<h2 id="implements-static-python-s-heaqp-interface-">Implements static Python&#39;s <code>heaqp</code> interface:</h2>
+			<h2 id="implements-static-python-s-heapq-interface-">Implements static Python&#39;s <code>heapq</code> interface:</h2>
 			<ul>
 				<li><code>Heap.heapify(array)</code> that converts an array to an array-heap</li>
 				<li><code>Heap.heappop(heapArray)</code> that takes the peek of the array-heap</li>
@@ -1006,14 +1022,22 @@ Heap.heappush(numbers, <span class="hljs-number">1</span>);
 				<li>nlargest(n, iterable, key=None)</li>
 				<li>nsmallest(n, iterable, key=None)</li>
 			</ul>
-			<h2 id="dev-setup">Dev setup</h2>
+			<h2 id="documentation">Documentation</h2>
+			<p>Extensive documentation included at <code>./dist/docs</code>. It&#39;ll be published to <code>gh-pages</code> in a next release.</p>
+			<h2 id="contributing">Contributing</h2>
+			<p>Development of <strong>Heap.js</strong> happens in the open on GitHub, and I am grateful to the community for contributing bugfixes and improvements.</p>
+			<h3 id="dev-setup">Dev setup</h3>
 			<pre><code class="lang-bash">yarn <span class="hljs-comment"># if you use yarn</span>
+
 npm install <span class="hljs-comment"># if you use npm</span>
 </code></pre>
-			<h2 id="tests">Tests</h2>
+			<h3 id="tests">Tests</h3>
 			<pre><code class="lang-bash">yarn <span class="hljs-built_in">test</span> <span class="hljs-comment"># if you use yarn</span>
+
 npm <span class="hljs-built_in">test</span> <span class="hljs-comment"># if you use npm</span>
 </code></pre>
+			<h3 id="license">License</h3>
+			<p>Heap.js is <a href="LICENSE">BSD licensed</a>.</p>
 		</div>
 		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">
