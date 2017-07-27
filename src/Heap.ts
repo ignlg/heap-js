@@ -462,16 +462,16 @@ export class Heap<T> {
   }
 
   /**
-   * Return the top N elements of the heap.
+   * Return the top (highest value) N elements of the heap.
    *
    * @param  {Number} n  Number of elements.
    * @return {Array}    Array of length <= N.
    */
   top(n: number = 1): Array<T> {
-    if (n <= 0) {
+    if (this.heapArray.length === 0 || n <= 0) {
       // Nothing to do
       return []
-    } else if (n === 1) {
+    } else if (this.heapArray.length === 1 || n === 1) {
       // Just the peek
       return [this.heapArray[0]]
     } else if (n >= this.heapArray.length) {
@@ -624,7 +624,7 @@ export class Heap<T> {
   }
 
   /**
-   * Return the top N elements of the heap, without corner cases, unsorted
+   * Return the top (highest value) N elements of the heap, without corner cases, unsorted
    *
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
