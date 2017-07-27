@@ -380,7 +380,7 @@ export class Heap<T> {
    * @return {any}  Extracted top node
    */
   pushpop(element: T): T {
-    if (this.heapArray[0] < element) {
+    if (this.compare(this.heapArray[0], element) < 0) {
       ;[element, this.heapArray[0]] = [this.heapArray[0], element]
       this._sortNodeDown(0)
     }
