@@ -170,7 +170,7 @@ export class Heap<T> {
    * Converts an array into an array-heap
    * @param  {Array}    arr      Array to be modified
    * @param  {Function} compare  Optional compare function
-   * @return {Heap}   For convenience, it returns a Heap instance
+   * @return {Heap}              For convenience, it returns a Heap instance
    */
   static heapify<N>(arr: Array<N>, compare?: Comparator<N>) {
     const heap = new Heap(compare)
@@ -180,9 +180,9 @@ export class Heap<T> {
   }
   /**
    * Extract the peek of an array-heap
-   * @param  {Array} heapArr     Array to be modified, should be a heap
+   * @param  {Array}    heapArr  Array to be modified, should be a heap
    * @param  {Function} compare  Optional compare function
-   * @return {any}   Returns the extracted peek
+   * @return {any}               Returns the extracted peek
    */
   static heappop<N>(heapArr: Array<N>, compare?: Comparator<N>) {
     const heap = new Heap(compare)
@@ -191,8 +191,8 @@ export class Heap<T> {
   }
   /**
    * Pushes a item into an array-heap
-   * @param  {Array} heapArr     Array to be modified, should be a heap
-   * @param  {any}   item        Item to push
+   * @param  {Array}    heapArr  Array to be modified, should be a heap
+   * @param  {any}      item     Item to push
    * @param  {Function} compare  Optional compare function
    */
   static heappush<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>) {
@@ -202,10 +202,10 @@ export class Heap<T> {
   }
   /**
    * Push followed by pop, faster
-   * @param  {Array} heapArr     Array to be modified, should be a heap
-   * @param  {any}   item        Item to push
+   * @param  {Array}    heapArr  Array to be modified, should be a heap
+   * @param  {any}      item     Item to push
    * @param  {Function} compare  Optional compare function
-   * @return {any}   Returns the extracted peek
+   * @return {any}               Returns the extracted peek
    */
   static heappushpop<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>) {
     const heap = new Heap(compare)
@@ -214,15 +214,45 @@ export class Heap<T> {
   }
   /**
    * Replace peek with item
-   * @param  {Array} heapArr     Array to be modified, should be a heap
-   * @param  {any}   item        Item as replacement
+   * @param  {Array}    heapArr  Array to be modified, should be a heap
+   * @param  {any}      item     Item as replacement
    * @param  {Function} compare  Optional compare function
-   * @return {any}   Returns the extracted peek
+   * @return {any}               Returns the extracted peek
    */
   static heapreplace<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>) {
     const heap = new Heap(compare)
     heap.heapArray = heapArr
     return heap.replace(item)
+  }
+
+  /**
+   * Return the `n` most valuable elements
+   * @param  {Array}    heapArr  Array, should be a heap
+   * @param  {number}   n        Max number of elements
+   * @param  {Function} compare  Optional compare function
+   * @return {any}               Elements
+   */
+  static heaptop<N>(heapArr: Array<N>, n: number = 1, compare?: Comparator<N>) {
+    const heap = new Heap(compare)
+    heap.heapArray = heapArr
+    return heap.top(n)
+  }
+
+  /**
+   * Return the `n` least valuable elements
+   * @param  {Array}    heapArr  Array, should be a heap
+   * @param  {number}   n        Max number of elements
+   * @param  {Function} compare  Optional compare function
+   * @return {any}               Elements
+   */
+  static heapbottom<N>(
+    heapArr: Array<N>,
+    n: number = 1,
+    compare?: Comparator<N>
+  ) {
+    const heap = new Heap(compare)
+    heap.heapArray = heapArr
+    return heap.bottom(n)
   }
 
   /*

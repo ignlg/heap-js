@@ -78,12 +78,15 @@ Basic comparators already included:
 Implements JavaScript style methods
 -----------------------------------
 * `length` of the heap
-* `limit` number of elements in the heap
-* `pop()` top element
-* `push(...elements)` to the heap
+* `limit` amount of elements in the heap
+
+* `pop()` the top element
+* `push(...elements)` one or more elements to the heap
 * `pushpop(element)` faster than `push` & `pop`
 * `replace(element)` faster than `pop` & `push`
-* `top(number?)` elements from the heap
+
+* `top(number?)` most valuable elements from the heap
+* `bottom(number?)` least valuable elements from the heap
 
 Implements Java's `PriorityQueue` interface:
 --------------------------------------------
@@ -105,23 +108,27 @@ Implements Java's `PriorityQueue` interface:
 * `toString()`
 
 To do:
-* containsAll
-* equals
-* iterator()
-* retainAll
+* `containsAll`
+* `equals`
+* `iterator()`
+* `retainAll`
 
 Implements static Python's `heapq` interface:
 ---------------------------------------------
-* `Heap.heapify(array)` that converts an array to an array-heap
-* `Heap.heappop(heapArray)` that takes the peek of the array-heap
-* `Heap.heappush(heapArray, item)` that appends elements to the array-heap
-* `Heap.heappushpop(heapArray, item)` faster than `heappush` & `heappop`
-* `Heap.heapreplace(heapArray, item)` faster than `heappop` & `heappush`
+* `Heap.heapify(array, comparator?)` that converts an array to an array-heap
+* `Heap.heappop(heapArray, comparator?)` that takes the peek of the array-heap
+* `Heap.heappush(heapArray, item, comparator?)` that appends elements to the array-heap
+* `Heap.heappushpop(heapArray, item, comparator?)` faster than `heappush` & `heappop`
+* `Heap.heapreplace(heapArray, item, comparator?)` faster than `heappop` & `heappush`
+
+Extras:
+* `Heap.heaptop(n, heapArray, comparator?)` that returns the `n` most valuable elements of the array-heap
+* `Heap.heapbottom(n, heapArray, comparator?)` that returns the `n` least valuable elements of the array-heap
 
 To do:
-* merge(*iterables, key=None, reverse=False)
-* nlargest(n, iterable, key=None)
-* nsmallest(n, iterable, key=None)
+* `merge(...iterables, comparator?)`
+* `nlargest(n, iterable, comparator?)`
+* `nsmallest(n, iterable, comparator?)`
 
 Documentation
 -------------

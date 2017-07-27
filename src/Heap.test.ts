@@ -129,6 +129,26 @@ describe("Heap class", function() {
       expect(checkHeap.check()).not.toBeDefined()
     })
   })
+  describe("#heaptop", function() {
+    it("should return the most valuable elements", function() {
+      const arr = [1, 12, 3, 41, 51, 16, 7]
+      Heap.heapify(arr)
+      expect(Heap.heaptop(arr, 1)).toEqual([Math.min(...arr)])
+      expect(Heap.heaptop(arr, 3)).toEqual([1, 3, 7])
+      expect(Heap.heaptop(arr, 4)).toEqual([1, 3, 7, 12])
+      expect(Heap.heaptop(arr)).toEqual(Heap.heaptop(arr, 1))
+    })
+  })
+  describe("#heapbottom", function() {
+    it("should return the least valuable elements", function() {
+      const arr = [1, 12, 3, 41, 51, 16, 7]
+      Heap.heapify(arr)
+      expect(Heap.heapbottom(arr, 1)).toEqual([Math.max(...arr)])
+      expect(Heap.heapbottom(arr, 3)).toEqual([51, 41, 16])
+      expect(Heap.heapbottom(arr, 4)).toEqual([51, 41, 16, 12])
+      expect(Heap.heapbottom(arr)).toEqual(Heap.heapbottom(arr, 1))
+    })
+  })
 })
 
 describe("Heap instances", function() {
@@ -499,14 +519,6 @@ describe("Heap instances", function() {
           heap.init(someValues)
           expect(heap.toString().length).toEqual(someValues.toString().length)
         })
-      })
-
-      describe("#nlargest(N)", function() {
-        it("should return the largest (top) N elements of the heap")
-      })
-
-      describe("#nsmallest(N)", function() {
-        it("should return the smallest (bottom) N elements of the heap")
       })
     })
   })
