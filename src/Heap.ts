@@ -1,5 +1,5 @@
 export type Comparator<T> = (a: T, b: T) => number
-export type IsEqual<T> = (a: T, b: T) => boolean
+export type IsEqual<T> = (e: T, o: T) => boolean
 
 /**
  * Heap
@@ -576,7 +576,9 @@ export class Heap<T> {
    * @return {Array(any)}  Children elements
    */
   getChildrenOf(idx: number): Array<T> {
-    return Heap.getChildrenIndexOf(idx).map(i => this.heapArray[i])
+    return Heap.getChildrenIndexOf(idx)
+      .map(i => this.heapArray[i])
+      .filter(e => e !== undefined)
   }
 
   /**

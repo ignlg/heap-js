@@ -314,6 +314,15 @@ describe("Heap instances", function() {
         })
       })
 
+      describe("#getChildrenOf(index)", function() {
+        it("should return the parent element", function() {
+          heap.init(someValues)
+          expect(heap.getChildrenOf(heap.length - 1)).toEqual([])
+          expect(heap.getChildrenOf(5)).toEqual(
+            Heap.getChildrenIndexOf(5).map(heap.get.bind(heap))
+          )
+        })
+      })
       describe("#init()", function() {
         it("should initialize a new heap", function() {
           heap.init(someValues)
