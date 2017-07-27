@@ -975,12 +975,17 @@ npm install --save heap-js <span class="hljs-comment"># if you use npm</span>
 			<h2 id="implements-javascript-style-methods">Implements JavaScript style methods</h2>
 			<ul>
 				<li><code>length</code> of the heap</li>
-				<li><code>limit</code> number of elements in the heap</li>
-				<li><code>pop()</code> top element</li>
-				<li><code>push(...elements)</code> to the heap</li>
+				<li><p><code>limit</code> amount of elements in the heap</p>
+				</li>
+				<li><p><code>pop()</code> the top element</p>
+				</li>
+				<li><code>push(...elements)</code> one or more elements to the heap</li>
 				<li><code>pushpop(element)</code> faster than <code>push</code> &amp; <code>pop</code></li>
-				<li><code>replace(element)</code> faster than <code>pop</code> &amp; <code>push</code></li>
-				<li><code>top(number?)</code> elements from the heap</li>
+				<li><p><code>replace(element)</code> faster than <code>pop</code> &amp; <code>push</code></p>
+				</li>
+				<li><p><code>top(number?)</code> most valuable elements from the heap</p>
+				</li>
+				<li><code>bottom(number?)</code> least valuable elements from the heap</li>
 			</ul>
 			<h2 id="implements-java-s-priorityqueue-interface-">Implements Java&#39;s <code>PriorityQueue</code> interface:</h2>
 			<ul>
@@ -1003,24 +1008,29 @@ npm install --save heap-js <span class="hljs-comment"># if you use npm</span>
 			</ul>
 			<p>To do:</p>
 			<ul>
-				<li>containsAll</li>
-				<li>equals</li>
-				<li>iterator()</li>
-				<li>retainAll</li>
+				<li><code>containsAll</code></li>
+				<li><code>equals</code></li>
+				<li><code>iterator()</code></li>
+				<li><code>retainAll</code></li>
 			</ul>
 			<h2 id="implements-static-python-s-heapq-interface-">Implements static Python&#39;s <code>heapq</code> interface:</h2>
 			<ul>
-				<li><code>Heap.heapify(array)</code> that converts an array to an array-heap</li>
-				<li><code>Heap.heappop(heapArray)</code> that takes the peek of the array-heap</li>
-				<li><code>Heap.heappush(heapArray, item)</code> that appends elements to the array-heap</li>
-				<li><code>Heap.heappushpop(heapArray, item)</code> faster than <code>heappush</code> &amp; <code>heappop</code></li>
-				<li><code>Heap.heapreplace(heapArray, item)</code> faster than <code>heappop</code> &amp; <code>heappush</code></li>
+				<li><code>Heap.heapify(array, comparator?)</code> that converts an array to an array-heap</li>
+				<li><code>Heap.heappop(heapArray, comparator?)</code> that takes the peek of the array-heap</li>
+				<li><code>Heap.heappush(heapArray, item, comparator?)</code> that appends elements to the array-heap</li>
+				<li><code>Heap.heappushpop(heapArray, item, comparator?)</code> faster than <code>heappush</code> &amp; <code>heappop</code></li>
+				<li><code>Heap.heapreplace(heapArray, item, comparator?)</code> faster than <code>heappop</code> &amp; <code>heappush</code></li>
+			</ul>
+			<p>Extras:</p>
+			<ul>
+				<li><code>Heap.heaptop(n, heapArray, comparator?)</code> that returns the <code>n</code> most valuable elements of the array-heap</li>
+				<li><code>Heap.heapbottom(n, heapArray, comparator?)</code> that returns the <code>n</code> least valuable elements of the array-heap</li>
 			</ul>
 			<p>To do:</p>
 			<ul>
-				<li>merge(*iterables, key=None, reverse=False)</li>
-				<li>nlargest(n, iterable, key=None)</li>
-				<li>nsmallest(n, iterable, key=None)</li>
+				<li><code>merge(...iterables, comparator?)</code></li>
+				<li><code>nlargest(n, iterable, comparator?)</code></li>
+				<li><code>nsmallest(n, iterable, comparator?)</code></li>
 			</ul>
 			<h2 id="documentation">Documentation</h2>
 			<p>Extensive documentation included at <code>./dist/docs</code>. It&#39;ll be published to <code>gh-pages</code> in a next release.</p>

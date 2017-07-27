@@ -53,7 +53,7 @@ var Heap = (function () {
     /**
      * Gets parent index for given index.
      * @param  {Number} idx  Children index
-     * @return {Number | undefined}      Parent index, undefined if idx is 0
+     * @return {Number | undefined}      Parent index, -1 if idx is 0
      */
     Heap.getParentIndexOf = function (idx) {
         if (idx <= 0) {
@@ -61,6 +61,18 @@ var Heap = (function () {
         }
         var whichChildren = idx % 2 ? 1 : 2;
         return Math.floor((idx - whichChildren) / 2);
+    };
+    /**
+     * Gets sibling index for given index.
+     * @param  {Number} idx  Children index
+     * @return {Number | undefined}      Sibling index, -1 if idx is 0
+     */
+    Heap.getSiblingIndexOf = function (idx) {
+        if (idx <= 0) {
+            return -1;
+        }
+        var whichChildren = idx % 2 ? 1 : -1;
+        return idx + whichChildren;
     };
     /**
      * Min heap comparison function, default.
@@ -148,7 +160,7 @@ var Heap = (function () {
      * Converts an array into an array-heap
      * @param  {Array}    arr      Array to be modified
      * @param  {Function} compare  Optional compare function
-     * @return {Heap}   For convenience, it returns a Heap instance
+     * @return {Heap}              For convenience, it returns a Heap instance
      */
     Heap.heapify = function (arr, compare) {
         var heap = new Heap(compare);
@@ -158,9 +170,9 @@ var Heap = (function () {
     };
     /**
      * Extract the peek of an array-heap
-     * @param  {Array} heapArr     Array to be modified, should be a heap
+     * @param  {Array}    heapArr  Array to be modified, should be a heap
      * @param  {Function} compare  Optional compare function
-     * @return {any}   Returns the extracted peek
+     * @return {any}               Returns the extracted peek
      */
     Heap.heappop = function (heapArr, compare) {
         var heap = new Heap(compare);
@@ -169,8 +181,8 @@ var Heap = (function () {
     };
     /**
      * Pushes a item into an array-heap
-     * @param  {Array} heapArr     Array to be modified, should be a heap
-     * @param  {any}   item        Item to push
+     * @param  {Array}    heapArr  Array to be modified, should be a heap
+     * @param  {any}      item     Item to push
      * @param  {Function} compare  Optional compare function
      */
     Heap.heappush = function (heapArr, item, compare) {
@@ -180,10 +192,10 @@ var Heap = (function () {
     };
     /**
      * Push followed by pop, faster
-     * @param  {Array} heapArr     Array to be modified, should be a heap
-     * @param  {any}   item        Item to push
+     * @param  {Array}    heapArr  Array to be modified, should be a heap
+     * @param  {any}      item     Item to push
      * @param  {Function} compare  Optional compare function
-     * @return {any}   Returns the extracted peek
+     * @return {any}               Returns the extracted peek
      */
     Heap.heappushpop = function (heapArr, item, compare) {
         var heap = new Heap(compare);
@@ -192,15 +204,41 @@ var Heap = (function () {
     };
     /**
      * Replace peek with item
-     * @param  {Array} heapArr     Array to be modified, should be a heap
-     * @param  {any}   item        Item as replacement
+     * @param  {Array}    heapArr  Array to be modified, should be a heap
+     * @param  {any}      item     Item as replacement
      * @param  {Function} compare  Optional compare function
-     * @return {any}   Returns the extracted peek
+     * @return {any}               Returns the extracted peek
      */
     Heap.heapreplace = function (heapArr, item, compare) {
         var heap = new Heap(compare);
         heap.heapArray = heapArr;
         return heap.replace(item);
+    };
+    /**
+     * Return the `n` most valuable elements
+     * @param  {Array}    heapArr  Array, should be a heap
+     * @param  {number}   n        Max number of elements
+     * @param  {Function} compare  Optional compare function
+     * @return {any}               Elements
+     */
+    Heap.heaptop = function (heapArr, n, compare) {
+        if (n === void 0) { n = 1; }
+        var heap = new Heap(compare);
+        heap.heapArray = heapArr;
+        return heap.top(n);
+    };
+    /**
+     * Return the `n` least valuable elements
+     * @param  {Array}    heapArr  Array, should be a heap
+     * @param  {number}   n        Max number of elements
+     * @param  {Function} compare  Optional compare function
+     * @return {any}               Elements
+     */
+    Heap.heapbottom = function (heapArr, n, compare) {
+        if (n === void 0) { n = 1; }
+        var heap = new Heap(compare);
+        heap.heapArray = heapArr;
+        return heap.bottom(n);
     };
     /*
               Instance methods
@@ -231,6 +269,36 @@ var Heap = (function () {
         this._applyLimit();
         return true;
         var _a;
+    };
+    /**
+     * Return the bottom (lowest value) N elements of the heap.
+     *
+     * @param  {Number} n  Number of elements.
+     * @return {Array}     Array of length <= N.
+     */
+    Heap.prototype.bottom = function (n) {
+        if (n === void 0) { n = 1; }
+        if (this.heapArray.length === 0 || n <= 0) {
+            // Nothing to do
+            return [];
+        }
+        else if (this.heapArray.length === 1) {
+            // Just the peek
+            return [this.heapArray[0]];
+        }
+        else if (n >= this.heapArray.length) {
+            // The whole peek
+            // Clone is needed due to the sort method (in-place) that would destroy the heap
+            var cloned = this.heapArray.slice(0);
+            cloned.sort(this._invertedCompare);
+            return cloned;
+        }
+        else {
+            // Some elements
+            var result = this._bottomN(n);
+            result.sort(this._invertedCompare);
+            return result;
+        }
     };
     /**
      * Check if the heap is sorted, useful for testing purposes.
@@ -294,6 +362,16 @@ var Heap = (function () {
      */
     Heap.prototype.isEmpty = function () {
         return this.length === 0;
+    };
+    /**
+     * Get the leafs of the tree (no children nodes)
+     */
+    Heap.prototype.leafs = function () {
+        if (this.heapArray.length === 0) {
+            return [];
+        }
+        var pi = Heap.getParentIndexOf(this.heapArray.length - 1);
+        return this.heapArray.slice(pi + 1);
     };
     Object.defineProperty(Heap.prototype, "length", {
         /**
@@ -370,7 +448,7 @@ var Heap = (function () {
      * @return {any}  Extracted top node
      */
     Heap.prototype.pushpop = function (element) {
-        if (this.heapArray[0] < element) {
+        if (this.compare(this.heapArray[0], element) < 0) {
             
             _a = [this.heapArray[0], element], element = _a[0], this.heapArray[0] = _a[1];
             this._sortNodeDown(0);
@@ -430,18 +508,18 @@ var Heap = (function () {
         return this.length;
     };
     /**
-     * Return the top N elements of the heap.
+     * Return the top (highest value) N elements of the heap.
      *
      * @param  {Number} n  Number of elements.
      * @return {Array}    Array of length <= N.
      */
     Heap.prototype.top = function (n) {
         if (n === void 0) { n = 1; }
-        if (n <= 0) {
+        if (this.heapArray.length === 0 || n <= 0) {
             // Nothing to do
             return [];
         }
-        else if (n === 1) {
+        else if (this.heapArray.length === 1 || n === 1) {
             // Just the peek
             return [this.heapArray[0]];
         }
@@ -513,6 +591,35 @@ var Heap = (function () {
         }
     };
     /**
+     * Return the bottom (lowest value) N elements of the heap, without corner cases, unsorted
+     *
+     * @param  {Number} n  Number of elements.
+     * @return {Array}     Array of length <= N.
+     */
+    Heap.prototype._bottomN = function (n) {
+        // Use an inverted heap
+        var bottomHeap = new Heap(this.compare);
+        bottomHeap.limit = n;
+        bottomHeap.init(this.heapArray.slice(-n));
+        var startAt = this.heapArray.length - 1 - n;
+        var parentStartAt = Heap.getParentIndexOf(startAt);
+        var indices = [];
+        for (var i = startAt; i > parentStartAt; --i) {
+            indices.push(i);
+        }
+        var arr = this.heapArray;
+        while (indices.length) {
+            var i = indices.shift();
+            if (this.compare(arr[i], bottomHeap.peek()) > 0) {
+                bottomHeap.replace(arr[i]);
+                if (i % 2) {
+                    indices.push(Heap.getParentIndexOf(i));
+                }
+            }
+        }
+        return bottomHeap.toArray();
+    };
+    /**
      * Move a node to a new index, switching places
      * @param  {Number} j First node index
      * @param  {Number} k Another node index
@@ -577,31 +684,31 @@ var Heap = (function () {
         return moved;
     };
     /**
-     * Return the top N elements of the heap, without corner cases, unsorted
+     * Return the top (highest value) N elements of the heap, without corner cases, unsorted
      *
      * @param  {Number} n  Number of elements.
-     * @return {Array}    Array of length <= N.
+     * @return {Array}     Array of length <= N.
      */
     Heap.prototype._topN = function (n) {
         // Use an inverted heap
-        var bottomHeap = new Heap(this._invertedCompare);
-        bottomHeap.limit = n;
+        var topHeap = new Heap(this._invertedCompare);
+        topHeap.limit = n;
         var indices = [0];
         var arr = this.heapArray;
         while (indices.length) {
             var i = indices.shift();
             if (i < arr.length) {
-                if (bottomHeap.length < n) {
-                    bottomHeap.push(arr[i]);
+                if (topHeap.length < n) {
+                    topHeap.push(arr[i]);
                     indices.push.apply(indices, Heap.getChildrenIndexOf(i));
                 }
-                else if (this.compare(arr[i], bottomHeap.peek()) <= 0) {
-                    bottomHeap.replace(arr[i]);
+                else if (this.compare(arr[i], topHeap.peek()) <= 0) {
+                    topHeap.replace(arr[i]);
                     indices.push.apply(indices, Heap.getChildrenIndexOf(i));
                 }
             }
         }
-        return bottomHeap.toArray();
+        return topHeap.toArray();
     };
     return Heap;
 }());

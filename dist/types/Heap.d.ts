@@ -34,9 +34,15 @@ export declare class Heap<T> {
     /**
      * Gets parent index for given index.
      * @param  {Number} idx  Children index
-     * @return {Number | undefined}      Parent index, undefined if idx is 0
+     * @return {Number | undefined}      Parent index, -1 if idx is 0
      */
     static getParentIndexOf(idx: number): number;
+    /**
+     * Gets sibling index for given index.
+     * @param  {Number} idx  Children index
+     * @return {Number | undefined}      Sibling index, -1 if idx is 0
+     */
+    static getSiblingIndexOf(idx: number): number;
     /**
      * Min heap comparison function, default.
      * @param  {any} a     First element
@@ -68,39 +74,55 @@ export declare class Heap<T> {
      * Converts an array into an array-heap
      * @param  {Array}    arr      Array to be modified
      * @param  {Function} compare  Optional compare function
-     * @return {Heap}   For convenience, it returns a Heap instance
+     * @return {Heap}              For convenience, it returns a Heap instance
      */
     static heapify<N>(arr: Array<N>, compare?: Comparator<N>): Heap<N>;
     /**
      * Extract the peek of an array-heap
-     * @param  {Array} heapArr     Array to be modified, should be a heap
+     * @param  {Array}    heapArr  Array to be modified, should be a heap
      * @param  {Function} compare  Optional compare function
-     * @return {any}   Returns the extracted peek
+     * @return {any}               Returns the extracted peek
      */
     static heappop<N>(heapArr: Array<N>, compare?: Comparator<N>): N | undefined;
     /**
      * Pushes a item into an array-heap
-     * @param  {Array} heapArr     Array to be modified, should be a heap
-     * @param  {any}   item        Item to push
+     * @param  {Array}    heapArr  Array to be modified, should be a heap
+     * @param  {any}      item     Item to push
      * @param  {Function} compare  Optional compare function
      */
     static heappush<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>): void;
     /**
      * Push followed by pop, faster
-     * @param  {Array} heapArr     Array to be modified, should be a heap
-     * @param  {any}   item        Item to push
+     * @param  {Array}    heapArr  Array to be modified, should be a heap
+     * @param  {any}      item     Item to push
      * @param  {Function} compare  Optional compare function
-     * @return {any}   Returns the extracted peek
+     * @return {any}               Returns the extracted peek
      */
     static heappushpop<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>): N;
     /**
      * Replace peek with item
-     * @param  {Array} heapArr     Array to be modified, should be a heap
-     * @param  {any}   item        Item as replacement
+     * @param  {Array}    heapArr  Array to be modified, should be a heap
+     * @param  {any}      item     Item as replacement
      * @param  {Function} compare  Optional compare function
-     * @return {any}   Returns the extracted peek
+     * @return {any}               Returns the extracted peek
      */
     static heapreplace<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>): N;
+    /**
+     * Return the `n` most valuable elements
+     * @param  {Array}    heapArr  Array, should be a heap
+     * @param  {number}   n        Max number of elements
+     * @param  {Function} compare  Optional compare function
+     * @return {any}               Elements
+     */
+    static heaptop<N>(heapArr: Array<N>, n?: number, compare?: Comparator<N>): N[];
+    /**
+     * Return the `n` least valuable elements
+     * @param  {Array}    heapArr  Array, should be a heap
+     * @param  {number}   n        Max number of elements
+     * @param  {Function} compare  Optional compare function
+     * @return {any}               Elements
+     */
+    static heapbottom<N>(heapArr: Array<N>, n?: number, compare?: Comparator<N>): N[];
     /**
      * Adds an element to the heap. Aliases: `offer`.
      * Same as: push(element)
@@ -115,6 +137,13 @@ export declare class Heap<T> {
      * @return {Boolean} true
      */
     addAll(elements: Array<T>): boolean;
+    /**
+     * Return the bottom (lowest value) N elements of the heap.
+     *
+     * @param  {Number} n  Number of elements.
+     * @return {Array}     Array of length <= N.
+     */
+    bottom(n?: number): Array<T>;
     /**
      * Check if the heap is sorted, useful for testing purposes.
      * @return {Undefined | Element}  Returns an element if something wrong is found, otherwise it's undefined
@@ -151,6 +180,10 @@ export declare class Heap<T> {
      * @return {Boolean} True if no elements on the heap
      */
     isEmpty(): boolean;
+    /**
+     * Get the leafs of the tree (no children nodes)
+     */
+    leafs(): T[];
     /**
      * Length of the heap.
      * @return {Number}
@@ -207,7 +240,7 @@ export declare class Heap<T> {
      */
     size(): number;
     /**
-     * Return the top N elements of the heap.
+     * Return the top (highest value) N elements of the heap.
      *
      * @param  {Number} n  Number of elements.
      * @return {Array}    Array of length <= N.
@@ -246,6 +279,13 @@ export declare class Heap<T> {
      */
     _applyLimit(): void;
     /**
+     * Return the bottom (lowest value) N elements of the heap, without corner cases, unsorted
+     *
+     * @param  {Number} n  Number of elements.
+     * @return {Array}     Array of length <= N.
+     */
+    _bottomN(n: number): Array<T>;
+    /**
      * Returns the inverse to the comparison function.
      * @return {Function}
      */
@@ -267,10 +307,10 @@ export declare class Heap<T> {
      */
     _sortNodeUp(i: number): boolean;
     /**
-     * Return the top N elements of the heap, without corner cases, unsorted
+     * Return the top (highest value) N elements of the heap, without corner cases, unsorted
      *
      * @param  {Number} n  Number of elements.
-     * @return {Array}    Array of length <= N.
+     * @return {Array}     Array of length <= N.
      */
     _topN(n: number): Array<T>;
 }
