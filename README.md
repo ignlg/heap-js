@@ -71,7 +71,6 @@ new Heap([comparator])
 ```
 
 Basic comparators already included:
-
 * `Heap.minComparator` Integer min heap _(default)_
 * `Heap.maxComparator` Integer max heap
 
@@ -79,12 +78,10 @@ Implements JavaScript style methods
 -----------------------------------
 * `length` of the heap
 * `limit` amount of elements in the heap
-
 * `pop()` the top element
 * `push(...elements)` one or more elements to the heap
 * `pushpop(element)` faster than `push` & `pop`
 * `replace(element)` faster than `pop` & `push`
-
 * `top(number?)` most valuable elements from the heap
 * `bottom(number?)` least valuable elements from the heap
 
