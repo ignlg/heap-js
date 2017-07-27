@@ -60,6 +60,19 @@ export class Heap<T> {
   }
 
   /**
+   * Gets sibling index for given index.
+   * @param  {Number} idx  Children index
+   * @return {Number | undefined}      Parent index, undefined if idx is 0
+   */
+  static getSiblingIndexOf(idx: number): number {
+    if (idx <= 0) {
+      return -1
+    }
+    const whichChildren = idx % 2 ? 1 : -1
+    return idx + whichChildren
+  }
+
+  /**
    * Min heap comparison function, default.
    * @param  {any} a     First element
    * @param  {any} b     Second element

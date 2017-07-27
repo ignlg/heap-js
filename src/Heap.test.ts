@@ -26,6 +26,14 @@ describe("Heap class", function() {
       }
     })
   })
+  describe("#getSiblingIndexOf()", function() {
+    it("should return sibling index", function() {
+      expect(Heap.getSiblingIndexOf(1)).toEqual(2)
+      expect(Heap.getSiblingIndexOf(2)).toEqual(1)
+      expect(Heap.getSiblingIndexOf(20)).toEqual(19)
+      expect(Heap.getSiblingIndexOf(11)).toEqual(12)
+    })
+  })
   describe("#heapify", function() {
     it("should return a heap from an array", function() {
       const heapArr = someValues.slice(0)
