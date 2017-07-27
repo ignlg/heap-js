@@ -28,10 +28,22 @@ describe("Heap class", function() {
   })
   describe("#getSiblingIndexOf()", function() {
     it("should return sibling index", function() {
+      expect(Heap.getSiblingIndexOf(0)).toEqual(-1)
       expect(Heap.getSiblingIndexOf(1)).toEqual(2)
       expect(Heap.getSiblingIndexOf(2)).toEqual(1)
       expect(Heap.getSiblingIndexOf(20)).toEqual(19)
       expect(Heap.getSiblingIndexOf(11)).toEqual(12)
+    })
+  })
+  describe("#print()", function() {
+    it("should output a pretty print", function() {
+      const heap = new Heap()
+      heap.init(someValues)
+      const printed = Heap.print(heap)
+      const values = someValues.slice(0)
+      while (values.length) {
+        expect(printed).toContain(values.pop())
+      }
     })
   })
   describe("#heapify", function() {
@@ -323,6 +335,15 @@ describe("Heap instances", function() {
           )
         })
       })
+
+      describe("#getParentOf(index)", function() {
+        it("should return the parent element", function() {
+          heap.init(someValues)
+          expect(heap.getParentOf(0)).toBeUndefined()
+          expect(heap.getParentOf(5)).toBe(heap.get(2))
+        })
+      })
+
       describe("#init()", function() {
         it("should initialize a new heap", function() {
           heap.init(someValues)
@@ -393,10 +414,22 @@ describe("Heap instances", function() {
         })
       })
 
-      describe("#print()", function() {
-        it("should output a pretty print", function() {
+      describe("#pop() / poll", function() {
+        it("should return undefined if heap is empty", function() {
+          expect(heap.pop()).toBeUndefined()
+        })
+        it("should extract the peek if length is 1", function() {
+          heap.init([999])
+          expect(heap.pop()).toBe(999)
+          expect(heap.length).toBe(0)
+        })
+        it("should extract the element at the top, and keep the heap sorted", function() {
           heap.init(someValues)
-          expect(Heap.print(heap)).toContain(someValues[3])
+          const peek = heap.peek()
+          const len = heap.length
+          expect(heap.pop()).toEqual(peek)
+          expect(heap.length).toEqual(len - 1)
+          expect(heap.check()).not.toBeDefined()
         })
       })
 
@@ -419,17 +452,6 @@ describe("Heap instances", function() {
           const len = heap.length
           expect(heap.push()).toBe(false)
           expect(heap.length).toEqual(len)
-        })
-      })
-
-      describe("#pop() / poll", function() {
-        it("should extract the element at the top, and keep the heap sorted", function() {
-          heap.init(someValues)
-          const peek = heap.peek()
-          const len = heap.length
-          expect(heap.pop()).toEqual(peek)
-          expect(heap.length).toEqual(len - 1)
-          expect(heap.check()).not.toBeDefined()
         })
       })
 
@@ -497,7 +519,6 @@ describe("Heap instances", function() {
         })
         it("with comparison function, should remove custom match element", function() {
           heap.init(someValues)
-          const peek = heap.peek()
           const len = heap.length
           // Custom function that matches latest value, ignoring 999
           expect(
