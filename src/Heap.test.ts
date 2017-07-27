@@ -427,16 +427,16 @@ describe("Heap instances", function() {
       describe("#pushpop(element)", function() {
         it("should push a below-peek and pop the peek, and keep the heap sorted", function() {
           heap.init(someValues)
-          const peek = heap.peek()
+          const peek = heap.peek() as number
           const len = heap.length
-          let next = -1 * heap.compare(peek, 5000)
+          const next = -1 * heap.compare(peek, 5000)
           expect(heap.pushpop(next)).toEqual(peek)
           expect(heap.length).toEqual(len)
           expect(heap.check()).not.toBeDefined()
         })
         it("should push an above-peek and pop the peek, and keep the heap sorted", function() {
           heap.init(someValues)
-          const peek = heap.peek()
+          const peek = heap.peek() as number
           const len = heap.length
           const next = heap.compare(peek, 5000)
           expect(heap.pushpop(next)).toEqual(next)
