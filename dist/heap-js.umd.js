@@ -464,27 +464,27 @@ var Heap = (function () {
      */
     Heap.prototype.remove = function (o, fn) {
         if (fn === void 0) { fn = Heap.defaultIsEqual; }
-        if (o === undefined) {
-            this.pop();
-            return true;
-        }
-        else {
-            var idx = this.heapArray.findIndex(function (el) { return fn(el, o); });
-            if (idx === this.length - 1) {
-                this.heapArray.pop();
+        if (this.length > 0) {
+            if (o === undefined) {
+                this.pop();
                 return true;
             }
-            else if (idx >= 0) {
-                var pop = this.heapArray.pop();
-                if (pop !== undefined) {
-                    this.heapArray.splice(idx, 1, pop);
+            else {
+                var idx = this.heapArray.findIndex(function (el) { return fn(el, o); });
+                if (idx >= 0) {
+                    if (idx === 0) {
+                        this.pop();
+                    }
+                    else if (idx === this.length - 1) {
+                        this.heapArray.pop();
+                    }
+                    else {
+                        this.heapArray.splice(idx, 1, this.heapArray.pop());
+                        this._sortNodeUp(idx);
+                        this._sortNodeDown(idx);
+                    }
+                    return true;
                 }
-                else {
-                    this.heapArray.splice(idx, 1);
-                }
-                this._sortNodeUp(idx);
-                this._sortNodeDown(idx);
-                return true;
             }
         }
         return false;
@@ -566,7 +566,9 @@ var Heap = (function () {
      */
     Heap.prototype.getChildrenOf = function (idx) {
         var _this = this;
-        return Heap.getChildrenIndexOf(idx).map(function (i) { return _this.heapArray[i]; });
+        return Heap.getChildrenIndexOf(idx)
+            .map(function (i) { return _this.heapArray[i]; })
+            .filter(function (e) { return e !== undefined; });
     };
     /**
      * Get the element of this node's parent

@@ -1,5 +1,5 @@
 export declare type Comparator<T> = (a: T, b: T) => number;
-export declare type IsEqual<T> = (a: T, b: T) => boolean;
+export declare type IsEqual<T> = (e: T, o: T) => boolean;
 /**
  * Heap
  * @type {Class}
@@ -227,7 +227,7 @@ export declare class Heap<T> {
      * @param  {Function} fn  Optional function to compare
      * @return {Boolean}      True if the heap was modified
      */
-    remove(o: T, fn?: IsEqual<T>): boolean;
+    remove(o?: T, fn?: IsEqual<T>): boolean;
     /**
      * Pop the current peek value, and add the new item.
      * @param  {any} element  Element to replace peek
