@@ -627,27 +627,27 @@ export class Heap<T> {
    * Return the top N elements of the heap, without corner cases, unsorted
    *
    * @param  {Number} n  Number of elements.
-   * @return {Array}    Array of length <= N.
+   * @return {Array}     Array of length <= N.
    */
   _topN(n: number): Array<T> {
     // Use an inverted heap
-    const bottomHeap = new Heap(this._invertedCompare)
-    bottomHeap.limit = n
+    const topHeap = new Heap(this._invertedCompare)
+    topHeap.limit = n
     const indices = [0]
     const arr = this.heapArray
     while (indices.length) {
       const i = indices.shift() as number
       if (i < arr.length) {
-        if (bottomHeap.length < n) {
-          bottomHeap.push(arr[i])
+        if (topHeap.length < n) {
+          topHeap.push(arr[i])
           indices.push(...Heap.getChildrenIndexOf(i))
-        } else if (this.compare(arr[i], bottomHeap.peek() as T) <= 0) {
-          bottomHeap.replace(arr[i])
+        } else if (this.compare(arr[i], topHeap.peek() as T) <= 0) {
+          topHeap.replace(arr[i])
           indices.push(...Heap.getChildrenIndexOf(i))
         }
       }
     }
-    return bottomHeap.toArray()
+    return topHeap.toArray()
   }
 }
 

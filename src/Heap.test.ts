@@ -429,16 +429,25 @@ describe("Heap instances", function() {
       })
 
       describe("#top(N)", function() {
+        it("should return an empty array for an empty heap", function() {
+          expect(heap.top(10)).toEqual([])
+        })
+        it("should return an empty array for invalid N", function() {
+          heap.init(someValues)
+          expect(heap.top(0)).toEqual([])
+          expect(heap.top(-10)).toEqual([])
+        })
         it("should return the top N elements of the heap", function() {
           heap.init(someValues.concat(someValues))
           const top = heap.toArray().slice(0)
           top.sort(heap.comparator())
-          expect(heap.top(0)).toEqual([])
-          expect(heap.top(-10)).toEqual([])
-          expect(heap.top()).toEqual(top.slice(0, 1))
           expect(heap.top(1)).toEqual(top.slice(0, 1))
           expect(heap.top(6)).toEqual(top.slice(0, 6))
           expect(heap.top(someValues.length + 100)).toEqual(top)
+        })
+        it("should return the top element of the heap if no N", function() {
+          heap.init(someValues.concat(someValues))
+          expect(heap.top()).toEqual(heap.top(1))
         })
       })
 
