@@ -49,7 +49,7 @@ export class Heap<T> {
   /**
    * Gets parent index for given index.
    * @param  {Number} idx  Children index
-   * @return {Number | undefined}      Parent index, undefined if idx is 0
+   * @return {Number | undefined}      Parent index, -1 if idx is 0
    */
   static getParentIndexOf(idx: number): number {
     if (idx <= 0) {
@@ -62,7 +62,7 @@ export class Heap<T> {
   /**
    * Gets sibling index for given index.
    * @param  {Number} idx  Children index
-   * @return {Number | undefined}      Parent index, undefined if idx is 0
+   * @return {Number | undefined}      Sibling index, -1 if idx is 0
    */
   static getSiblingIndexOf(idx: number): number {
     if (idx <= 0) {
