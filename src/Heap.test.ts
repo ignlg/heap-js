@@ -446,21 +446,58 @@ describe("Heap instances", function() {
       })
 
       describe("#remove()", function() {
-        it("should remove the element from the heap, and keep the heap sorted", function() {
+        it("should skip an empty heap", function() {
+          expect(heap.remove()).toBe(false)
+        })
+        it("should skip if no element matches", function() {
           heap.init(someValues)
           const len = heap.length
           expect(heap.remove(50000)).toBe(false)
-          expect(heap.remove(someValues[3])).toBe(true)
-          expect(heap.remove(someValues[4])).toBe(true)
-          expect(heap.length).toEqual(len - 2)
+          expect(heap.length).toBe(len)
+        })
+        it("should remove the peek if it matches and length is 1", function() {
+          heap.init([999])
+          expect(heap.remove(999)).toBe(true)
+          expect(heap.length).toBe(0)
+        })
+        it("should remove the leaf if it matches the end", function() {
+          heap.init(someValues)
+          const len = heap.length
+          const bottom = heap.heapArray[heap.length - 1]
+          expect(heap.remove(bottom)).toBe(true)
+          expect(heap.heapArray[heap.length - 1]).not.toBe(bottom)
+          expect(heap.length).toBe(len - 1)
           expect(heap.check()).not.toBeDefined()
         })
-        it("whithout element should act like a pop", function() {
+        it("should remove the element from the heap, and keep the heap sorted", function() {
+          heap.init(someValues)
+          const len = heap.length
+          expect(heap.remove(someValues[3])).toBe(true)
+          expect(heap.remove(someValues[4])).toBe(true)
+          expect(heap.length).toBe(len - 2)
+          expect(heap.check()).not.toBeDefined()
+        })
+        it("whithout element, should remove the peek", function() {
           heap.init(someValues)
           const peek = heap.peek()
           const len = heap.length
-          expect(heap.pop()).toEqual(peek)
-          expect(heap.length).toEqual(len - 1)
+          expect(heap.remove()).toBe(true)
+          expect(heap.peek()).not.toBe(peek)
+          expect(heap.length).toBe(len - 1)
+          expect(heap.check()).not.toBeDefined()
+        })
+        it("with comparison function, should remove custom match element", function() {
+          heap.init(someValues)
+          const peek = heap.peek()
+          const len = heap.length
+          // Custom function that matches latest value, ignoring 999
+          expect(
+            heap.remove(
+              999,
+              (el, o) => el === someValues[someValues.length - 1]
+            )
+          ).toBe(true)
+          expect(heap.length).toBe(len - 1)
           expect(heap.check()).not.toBeDefined()
         })
       })

@@ -474,25 +474,25 @@ export class Heap<T> {
    * @param  {Function} fn  Optional function to compare
    * @return {Boolean}      True if the heap was modified
    */
-  remove(o: T, fn: IsEqual<T> = Heap.defaultIsEqual) {
-    if (o === undefined) {
-      this.pop()
-      return true
-    } else {
-      const idx = this.heapArray.findIndex(el => fn(el, o))
-      if (idx === this.length - 1) {
-        this.heapArray.pop()
+  remove(o?: T, fn: IsEqual<T> = Heap.defaultIsEqual) {
+    if (this.length > 0) {
+      if (o === undefined) {
+        this.pop()
         return true
-      } else if (idx >= 0) {
-        const pop = this.heapArray.pop()
-        if (pop !== undefined) {
-          this.heapArray.splice(idx, 1, pop)
-        } else {
-          this.heapArray.splice(idx, 1)
+      } else {
+        const idx = this.heapArray.findIndex(el => fn(el, o))
+        if (idx >= 0) {
+          if (idx === 0) {
+            this.pop()
+          } else if (idx === this.length - 1) {
+            this.heapArray.pop()
+          } else {
+            this.heapArray.splice(idx, 1, this.heapArray.pop() as T)
+            this._sortNodeUp(idx)
+            this._sortNodeDown(idx)
+          }
+          return true
         }
-        this._sortNodeUp(idx)
-        this._sortNodeDown(idx)
-        return true
       }
     }
     return false
