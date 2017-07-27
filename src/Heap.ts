@@ -258,6 +258,33 @@ export class Heap<T> {
   }
 
   /**
+   * Return the bottom (lowest value) N elements of the heap.
+   *
+   * @param  {Number} n  Number of elements.
+   * @return {Array}     Array of length <= N.
+   */
+  bottom(n: number = 1): Array<T> {
+    if (this.heapArray.length === 0 || n <= 0) {
+      // Nothing to do
+      return []
+    } else if (this.heapArray.length === 1) {
+      // Just the peek
+      return [this.heapArray[0]]
+    } else if (n >= this.heapArray.length) {
+      // The whole peek
+      // Clone is needed due to the sort method (in-place) that would destroy the heap
+      const cloned = this.heapArray.slice(0)
+      cloned.sort(this._invertedCompare)
+      return cloned
+    } else {
+      // Some elements
+      const result = this._bottomN(n)
+      result.sort(this._invertedCompare)
+      return result
+    }
+  }
+
+  /**
    * Check if the heap is sorted, useful for testing purposes.
    * @return {Undefined | Element}  Returns an element if something wrong is found, otherwise it's undefined
    */
@@ -544,6 +571,36 @@ export class Heap<T> {
         --rm
       }
     }
+  }
+
+  /**
+   * Return the bottom (lowest value) N elements of the heap, without corner cases, unsorted
+   *
+   * @param  {Number} n  Number of elements.
+   * @return {Array}     Array of length <= N.
+   */
+  _bottomN(n: number): Array<T> {
+    // Use an inverted heap
+    const bottomHeap = new Heap(this.compare)
+    bottomHeap.limit = n
+    bottomHeap.init(this.heapArray.slice(-n))
+    const startAt = this.heapArray.length - 1 - n
+    const parentStartAt = Heap.getParentIndexOf(startAt)
+    const indices = []
+    for (let i = startAt; i > parentStartAt; --i) {
+      indices.push(i)
+    }
+    const arr = this.heapArray
+    while (indices.length) {
+      const i = indices.shift() as number
+      if (this.compare(arr[i], bottomHeap.peek() as T) > 0) {
+        bottomHeap.replace(arr[i])
+        if (i % 2) {
+          indices.push(Heap.getParentIndexOf(i))
+        }
+      }
+    }
+    return bottomHeap.toArray()
   }
 
   /**

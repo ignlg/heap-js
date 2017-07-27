@@ -196,6 +196,35 @@ describe("Heap instances", function() {
         })
       })
 
+      describe("#bottom(N)", function() {
+        it("should return an empty array for an empty heap", function() {
+          expect(heap.bottom()).toEqual([])
+          expect(heap.bottom(10)).toEqual([])
+        })
+        it("should return an empty array for invalid N", function() {
+          heap.init(someValues)
+          expect(heap.bottom(0)).toEqual([])
+          expect(heap.bottom(-10)).toEqual([])
+        })
+        it("should return the peek for an one-element heap", function() {
+          heap.push(1)
+          expect(heap.bottom()).toEqual([1])
+          expect(heap.bottom(10)).toEqual([1])
+        })
+        it("should return the lowest value N (<= length) elements of the heap", function() {
+          heap.init(someValues.concat(someValues))
+          const bottom = heap.toArray().slice(0)
+          bottom.sort(heap._invertedCompare)
+          expect(heap.bottom(1)).toEqual(bottom.slice(0, 1))
+          expect(heap.bottom(6)).toEqual(bottom.slice(0, 6))
+          expect(heap.bottom(someValues.length + 100)).toEqual(bottom)
+        })
+        it("should return the lowest element of the heap if no N", function() {
+          heap.init(someValues.concat(someValues))
+          expect(heap.bottom()).toEqual(heap.bottom(1))
+        })
+      })
+
       describe("#check()", function() {
         it("should check if the heap is sorted", function() {
           heap.init(someValues)
