@@ -2,6 +2,16 @@
   "name": "heap-js",
   "version": "1.2.1",
   "description": "Heap data structure for JavaScript.",
+  "keywords": [
+    "heap",
+    "binary heap",
+    "priority queue",
+    "tree",
+    "binary tree",
+    "data structure",
+    "algorithm",
+    "typescript"
+  ],
   "main": "dist/heap-js.umd.js",
   "module": "dist/heap-js.es5.js",
   "types": "dist/types/heap-js.d.ts",
