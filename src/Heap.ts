@@ -314,6 +314,17 @@ export class Heap<T> {
   }
 
   /**
+   * Get the leafs of the tree (no children nodes)
+   */
+  leafs() {
+    if (this.heapArray.length === 0) {
+      return []
+    }
+    const pi = Heap.getParentIndexOf(this.heapArray.length - 1)
+    return this.heapArray.slice(pi + 1)
+  }
+
+  /**
    * Length of the heap.
    * @return {Number}
    */

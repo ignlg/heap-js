@@ -280,6 +280,20 @@ describe("Heap instances", function() {
         })
       })
 
+      describe("#leafs()", function() {
+        it("should return an empty array for an empty heap", function() {
+          expect(heap.leafs()).toEqual([])
+        })
+        it("should return the peek in a heap size one", function() {
+          heap.init([1])
+          expect(heap.leafs()).toEqual([1])
+        })
+        it("should return all the nodes without children", function() {
+          heap.init(someValues)
+          expect(heap.leafs()).toEqual(heap.toArray().slice(-8))
+        })
+      })
+
       describe("#lenght / size()", function() {
         it("should return the heap length", function() {
           expect(heap.length).toEqual(0)
