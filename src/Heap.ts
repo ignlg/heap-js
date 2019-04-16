@@ -7,8 +7,7 @@ export type IsEqual<T> = (e: T, o: T) => boolean
  */
 export class Heap<T> {
   heapArray: Array<T> = []
-  compare: Comparator<T>
-  _limit: number | null = null
+  _limit: number = 0
 
   /**
    * Alias of add
@@ -29,9 +28,7 @@ export class Heap<T> {
    * Heap instance constructor.
    * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
    */
-  constructor(compare: Comparator<T | number> = Heap.minComparator) {
-    this.compare = compare
-  }
+  constructor(public compare: Comparator<T> = Heap.minComparator) {}
 
   /*
             Static methods
@@ -78,8 +75,14 @@ export class Heap<T> {
    * @param  {any} b     Second element
    * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
    */
-  static minComparator(a: number, b: number): number {
-    return a - b
+  static minComparator<N>(a: N, b: N): number {
+    if (a > b) {
+      return 1
+    } else if (a < b) {
+      return -1
+    } else {
+      return 0
+    }
   }
 
   /**
@@ -88,7 +91,33 @@ export class Heap<T> {
    * @param  {any} b     Second element
    * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
    */
-  static maxComparator(a: number, b: number): number {
+  static maxComparator<N>(a: N, b: N): number {
+    if (b > a) {
+      return 1
+    } else if (b < a) {
+      return -1
+    } else {
+      return 0
+    }
+  }
+
+  /**
+   * Min number heap comparison function, default.
+   * @param  {Number} a     First element
+   * @param  {Number} b     Second element
+   * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
+   */
+  static minComparatorNumber(a: number, b: number): number {
+    return a - b
+  }
+
+  /**
+   * Max number heap comparison function.
+   * @param  {Number} a     First element
+   * @param  {Number} b     Second element
+   * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
+   */
+  static maxComparatorNumber(a: number, b: number): number {
     return b - a
   }
 
@@ -114,7 +143,7 @@ export class Heap<T> {
     }
 
     function repeat(str: string, times: number) {
-      let out = ""
+      let out = ''
       for (; times > 0; --times) {
         out += str
       }
@@ -146,21 +175,17 @@ export class Heap<T> {
       .map((line, i) => {
         const times = Math.pow(2, maxLines - i) - 1
         return (
-          repeat(" ", Math.floor(times / 2) * maxLength) +
+          repeat(' ', Math.floor(times / 2) * maxLength) +
           line
             .map(el => {
               // centered
               const half = (maxLength - el.length) / 2
-              return (
-                repeat(" ", Math.ceil(half)) +
-                el +
-                repeat(" ", Math.floor(half))
-              )
+              return repeat(' ', Math.ceil(half)) + el + repeat(' ', Math.floor(half))
             })
-            .join(repeat(" ", times * maxLength))
+            .join(repeat(' ', times * maxLength))
         )
       })
-      .join("\n")
+      .join('\n')
   }
 
   /*
@@ -245,11 +270,7 @@ export class Heap<T> {
    * @param  {Function} compare  Optional compare function
    * @return {any}               Elements
    */
-  static heapbottom<N>(
-    heapArr: Array<N>,
-    n: number = 1,
-    compare?: Comparator<N>
-  ) {
+  static heapbottom<N>(heapArr: Array<N>, n: number = 1, compare?: Comparator<N>) {
     const heap = new Heap(compare)
     heap.heapArray = heapArr
     return heap.bottom(n)
@@ -320,8 +341,7 @@ export class Heap<T> {
    */
   check(): T | undefined {
     return this.heapArray.find(
-      (el: T, j: number, arr: Array<T>) =>
-        !!this.getChildrenOf(j).find(ch => this.compare(el, ch) > 0)
+      (el: T, j: number, arr: Array<T>) => !!this.getChildrenOf(j).find(ch => this.compare(el, ch) > 0)
     )
   }
 
@@ -406,7 +426,7 @@ export class Heap<T> {
    * Get length limit of the heap.
    * @return {Number}
    */
-  get limit(): number | null {
+  get limit(): number {
     return this._limit
   }
 
@@ -414,7 +434,7 @@ export class Heap<T> {
    * Set length limit of the heap.
    * @return {Number}
    */
-  set limit(_l: number | null) {
+  set limit(_l: number) {
     this._limit = _l
     this._applyLimit()
   }
@@ -649,10 +669,7 @@ export class Heap<T> {
    * @param  {Number} k Another node index
    */
   _moveNode(j: number, k: number): void {
-    ;[this.heapArray[j], this.heapArray[k]] = [
-      this.heapArray[k],
-      this.heapArray[j]
-    ]
+    ;[this.heapArray[j], this.heapArray[k]] = [this.heapArray[k], this.heapArray[j]]
   }
 
   /**
@@ -673,15 +690,9 @@ export class Heap<T> {
 
     while (moveIt) {
       const childrenIdx = Heap.getChildrenIndexOf(i)
-      const bestChildIndex = childrenIdx.reduce(
-        getPotentialParent,
-        childrenIdx[0]
-      )
+      const bestChildIndex = childrenIdx.reduce(getPotentialParent, childrenIdx[0])
       const bestChild = this.heapArray[bestChildIndex]
-      if (
-        typeof bestChild !== "undefined" &&
-        this.compare(self, bestChild) > 0
-      ) {
+      if (typeof bestChild !== 'undefined' && this.compare(self, bestChild) > 0) {
         this._moveNode(i, bestChildIndex)
         i = bestChildIndex
         moved = true
