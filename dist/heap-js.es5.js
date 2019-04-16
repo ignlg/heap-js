@@ -2,16 +2,17 @@
  * Heap
  * @type {Class}
  */
-var Heap = (function () {
+var Heap = /** @class */ (function () {
     /**
      * Heap instance constructor.
      * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
      */
     function Heap(compare) {
-        if (compare === void 0) { compare = Heap.minComparator; }
         var _this = this;
+        if (compare === void 0) { compare = Heap.minComparator; }
+        this.compare = compare;
         this.heapArray = [];
-        this._limit = null;
+        this._limit = 0;
         /**
          * Alias of add
          */
@@ -31,7 +32,6 @@ var Heap = (function () {
         this._invertedCompare = function (a, b) {
             return -1 * _this.compare(a, b);
         };
-        this.compare = compare;
     }
     /*
               Static methods
@@ -75,7 +75,15 @@ var Heap = (function () {
      * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
      */
     Heap.minComparator = function (a, b) {
-        return a - b;
+        if (a > b) {
+            return 1;
+        }
+        else if (a < b) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
     };
     /**
      * Max heap comparison function.
@@ -84,6 +92,32 @@ var Heap = (function () {
      * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
      */
     Heap.maxComparator = function (a, b) {
+        if (b > a) {
+            return 1;
+        }
+        else if (b < a) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+    };
+    /**
+     * Min number heap comparison function, default.
+     * @param  {Number} a     First element
+     * @param  {Number} b     Second element
+     * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
+     */
+    Heap.minComparatorNumber = function (a, b) {
+        return a - b;
+    };
+    /**
+     * Max number heap comparison function.
+     * @param  {Number} a     First element
+     * @param  {Number} b     Second element
+     * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
+     */
+    Heap.maxComparatorNumber = function (a, b) {
         return b - a;
     };
     /**
@@ -106,7 +140,7 @@ var Heap = (function () {
             return Math.floor(Math.log2(pi + 1));
         }
         function repeat(str, times) {
-            var out = "";
+            var out = '';
             for (; times > 0; --times) {
                 out += str;
             }
@@ -134,18 +168,16 @@ var Heap = (function () {
         return lines
             .map(function (line, i) {
             var times = Math.pow(2, maxLines - i) - 1;
-            return (repeat(" ", Math.floor(times / 2) * maxLength) +
+            return (repeat(' ', Math.floor(times / 2) * maxLength) +
                 line
                     .map(function (el) {
                     // centered
                     var half = (maxLength - el.length) / 2;
-                    return (repeat(" ", Math.ceil(half)) +
-                        el +
-                        repeat(" ", Math.floor(half)));
+                    return repeat(' ', Math.ceil(half)) + el + repeat(' ', Math.floor(half));
                 })
-                    .join(repeat(" ", times * maxLength)));
+                    .join(repeat(' ', times * maxLength)));
         })
-            .join("\n");
+            .join('\n');
     };
     /*
               Python style
@@ -255,6 +287,7 @@ var Heap = (function () {
      * @return {Boolean} true
      */
     Heap.prototype.addAll = function (elements) {
+        var _a;
         var i = this.length;
         (_a = this.heapArray).push.apply(_a, elements);
         for (var l = this.length; i < l; ++i) {
@@ -262,7 +295,6 @@ var Heap = (function () {
         }
         this._applyLimit();
         return true;
-        var _a;
     };
     /**
      * Return the bottom (lowest value) N elements of the heap.
@@ -300,9 +332,7 @@ var Heap = (function () {
      */
     Heap.prototype.check = function () {
         var _this = this;
-        return this.heapArray.find(function (el, j, arr) {
-            return !!_this.getChildrenOf(j).find(function (ch) { return _this.compare(el, ch) > 0; });
-        });
+        return this.heapArray.find(function (el, j, arr) { return !!_this.getChildrenOf(j).find(function (ch) { return _this.compare(el, ch) > 0; }); });
     };
     /**
      * Remove all of the elements from this heap.
@@ -442,13 +472,12 @@ var Heap = (function () {
      * @return {any}  Extracted top node
      */
     Heap.prototype.pushpop = function (element) {
+        var _a;
         if (this.compare(this.heapArray[0], element) < 0) {
-            
             _a = [this.heapArray[0], element], element = _a[0], this.heapArray[0] = _a[1];
             this._sortNodeDown(0);
         }
         return element;
-        var _a;
     };
     /**
      * Remove an element from the heap.
@@ -621,12 +650,8 @@ var Heap = (function () {
      * @param  {Number} k Another node index
      */
     Heap.prototype._moveNode = function (j, k) {
-        
-        _a = [
-            this.heapArray[k],
-            this.heapArray[j]
-        ], this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
         var _a;
+        _a = [this.heapArray[k], this.heapArray[j]], this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
     };
     /**
      * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
@@ -647,8 +672,7 @@ var Heap = (function () {
             var childrenIdx = Heap.getChildrenIndexOf(i);
             var bestChildIndex = childrenIdx.reduce(getPotentialParent, childrenIdx[0]);
             var bestChild = this.heapArray[bestChildIndex];
-            if (typeof bestChild !== "undefined" &&
-                this.compare(self, bestChild) > 0) {
+            if (typeof bestChild !== 'undefined' && this.compare(self, bestChild) > 0) {
                 this._moveNode(i, bestChildIndex);
                 i = bestChildIndex;
                 moved = true;
@@ -709,5 +733,5 @@ var Heap = (function () {
     return Heap;
 }());
 
-export { Heap };export default Heap;
-//# sourceMappingURL=heap-js.es5.js.map
+export default Heap;
+export { Heap };

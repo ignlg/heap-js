@@ -914,7 +914,7 @@ img { max-width: 100%; }
 <div class="container container-main">
 	<div class="content-wrap">
 		<div class="tsd-panel tsd-typography">
-			<h1 id="-heap-js-assets-heap-js-png-heap-js"><img src="assets/heap-js.png" alt="Heap.js"> Heap.js</h1>
+			<h1 id="heap-js-heap-js"><img src="assets/heap-js.png" alt="Heap.js"> Heap.js</h1>
 			<p><a href="https://travis-ci.org/ignlg/heap-js"><img src="https://travis-ci.org/ignlg/heap-js.svg?branch=master" alt="Build Status"></a>
 				<a href="https://david-dm.org/ignlg/heap-js"><img src="https://david-dm.org/ignlg/heap-js.png?theme=shields.io" alt="Dependencies"></a>
 				<a href="https://david-dm.org/ignlg/heap-js#info=devDependencies"><img src="https://david-dm.org/ignlg/heap-js/dev-status.svg" alt="devDependency Status"></a>
@@ -924,7 +924,7 @@ img { max-width: 100%; }
 			<p>Easy to use, known interfaces, tested, and well documented JavaScript binary heap library.</p>
 			<p>Instances are <code>integer min heap</code> by default.</p>
 			<h2 id="examples">Examples</h2>
-			<pre><code class="lang-js"><span class="hljs-comment">// Basic usage example</span>
+			<pre><code class="language-js"><span class="hljs-comment">// Basic usage example</span>
 <span class="hljs-keyword">import</span> Heap <span class="hljs-keyword">from</span> <span class="hljs-string">'heap-js'</span>;
 
 <span class="hljs-keyword">const</span> minHeap = <span class="hljs-keyword">new</span> Heap();
@@ -934,9 +934,8 @@ minHeap.init([<span class="hljs-number">5</span>, <span class="hljs-number">18</
 minHeap.push(<span class="hljs-number">2</span>);
 <span class="hljs-built_in">console</span>.log(minHeap.peek()); <span class="hljs-comment">//&gt; 1</span>
 <span class="hljs-built_in">console</span>.log(minHeap.pop()); <span class="hljs-comment">//&gt; 1</span>
-<span class="hljs-built_in">console</span>.log(minHeap.peek()); <span class="hljs-comment">//&gt; 2</span>
-</code></pre>
-			<pre><code class="lang-js"><span class="hljs-comment">// Priority Queue usage example</span>
+<span class="hljs-built_in">console</span>.log(minHeap.peek()); <span class="hljs-comment">//&gt; 2</span></code></pre>
+			<pre><code class="language-js"><span class="hljs-comment">// Priority Queue usage example</span>
 <span class="hljs-keyword">const</span> { Heap } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'heap-js'</span>);
 
 <span class="hljs-keyword">const</span> tasks = db.collection.find().toArray();
@@ -947,9 +946,8 @@ priorityQueue.init(tasks);
 
 <span class="hljs-keyword">while</span> (<span class="hljs-keyword">let</span> task = priorityQueue.pop()) {
   <span class="hljs-comment">// Do something</span>
-}
-</code></pre>
-			<pre><code class="lang-js"><span class="hljs-comment">// Python-like static methods example</span>
+}</code></pre>
+			<pre><code class="language-js"><span class="hljs-comment">// Python-like static methods example</span>
 <span class="hljs-keyword">import</span> { Heap } <span class="hljs-keyword">from</span> <span class="hljs-string">'heap-js'</span>;
 <span class="hljs-keyword">const</span> numbers = [ <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span> ];
 
@@ -957,16 +955,13 @@ Heap.heapify(numbers);
 <span class="hljs-built_in">console</span>.log(numbers); <span class="hljs-comment">//&gt; [ 2, 3, 5, 7 ]</span>
 
 Heap.heappush(numbers, <span class="hljs-number">1</span>);
-<span class="hljs-built_in">console</span>.log(numbers); <span class="hljs-comment">//&gt; [ 1, 2, 5, 7, 3 ]</span>
-</code></pre>
+<span class="hljs-built_in">console</span>.log(numbers); <span class="hljs-comment">//&gt; [ 1, 2, 5, 7, 3 ]</span></code></pre>
 			<h2 id="installation">Installation</h2>
-			<pre><code class="lang-bash">yarn add heap-js <span class="hljs-comment"># if you use yarn</span>
+			<pre><code class="language-bash">yarn add heap-js <span class="hljs-comment"># if you use yarn</span>
 
-npm install --save heap-js <span class="hljs-comment"># if you use npm</span>
-</code></pre>
+npm install --save heap-js <span class="hljs-comment"># if you use npm</span></code></pre>
 			<h2 id="constructor">Constructor</h2>
-			<pre><code class="lang-js"><span class="hljs-keyword">new</span> Heap([comparator])
-</code></pre>
+			<pre><code class="language-js"><span class="hljs-keyword">new</span> Heap([comparator])</code></pre>
 			<p>Basic comparators already included:</p>
 			<ul>
 				<li><code>Heap.minComparator</code> Integer min heap <em>(default)</em></li>
@@ -1033,15 +1028,13 @@ npm install --save heap-js <span class="hljs-comment"># if you use npm</span>
 			<h2 id="contributing">Contributing</h2>
 			<p>Development of <strong>Heap.js</strong> happens in the open on GitHub, and I am grateful to the community for contributing bugfixes and improvements.</p>
 			<h3 id="dev-setup">Dev setup</h3>
-			<pre><code class="lang-bash">yarn <span class="hljs-comment"># if you use yarn</span>
+			<pre><code class="language-bash">yarn <span class="hljs-comment"># if you use yarn</span>
 
-npm install <span class="hljs-comment"># if you use npm</span>
-</code></pre>
+npm install <span class="hljs-comment"># if you use npm</span></code></pre>
 			<h3 id="tests">Tests</h3>
-			<pre><code class="lang-bash">yarn <span class="hljs-built_in">test</span> <span class="hljs-comment"># if you use yarn</span>
+			<pre><code class="language-bash">yarn <span class="hljs-built_in">test</span> <span class="hljs-comment"># if you use yarn</span>
 
-npm <span class="hljs-built_in">test</span> <span class="hljs-comment"># if you use npm</span>
-</code></pre>
+npm <span class="hljs-built_in">test</span> <span class="hljs-comment"># if you use npm</span></code></pre>
 			<h3 id="license">License</h3>
 			<p>Heap.js is <a href="LICENSE">BSD licensed</a>.</p>
 		</div>

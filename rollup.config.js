@@ -1,16 +1,17 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-const pkg = require('./package.json')
-const camelCase = require('lodash.camelcase')
+import commonjs from 'rollup-plugin-commonjs';
+import resolve from 'rollup-plugin-node-resolve';
+import sourceMaps from 'rollup-plugin-sourcemaps';
 
-const libraryName = 'Heap'
+const pkg = require('./package.json');
+const camelCase = require('lodash.camelcase');
+
+const libraryName = 'Heap';
 
 export default {
-  entry: `compiled/${libraryName}.js`,
-  targets: [
-	  { dest: pkg.main, moduleName: camelCase(libraryName), format: 'umd' },
-	  { dest: pkg.module, format: 'es' }
+  input: `compiled/${libraryName}.js`,
+  output: [
+    { file: pkg.main, name: camelCase(libraryName), format: 'umd' },
+    { file: pkg.module, name: camelCase(libraryName), format: 'es' }
   ],
   sourceMap: true,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
@@ -26,4 +27,4 @@ export default {
     // Resolve source maps to the original source
     sourceMaps()
   ]
-}
+};

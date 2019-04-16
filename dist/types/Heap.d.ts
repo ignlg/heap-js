@@ -5,9 +5,9 @@ export declare type IsEqual<T> = (e: T, o: T) => boolean;
  * @type {Class}
  */
 export declare class Heap<T> {
-    heapArray: Array<T>;
     compare: Comparator<T>;
-    _limit: number | null;
+    heapArray: Array<T>;
+    _limit: number;
     /**
      * Alias of add
      */
@@ -24,7 +24,7 @@ export declare class Heap<T> {
      * Heap instance constructor.
      * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
      */
-    constructor(compare?: Comparator<T | number>);
+    constructor(compare?: Comparator<T>);
     /**
      * Gets children indices for given index.
      * @param  {Number} idx     Parent index
@@ -49,14 +49,28 @@ export declare class Heap<T> {
      * @param  {any} b     Second element
      * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
      */
-    static minComparator(a: number, b: number): number;
+    static minComparator<N>(a: N, b: N): number;
     /**
      * Max heap comparison function.
      * @param  {any} a     First element
      * @param  {any} b     Second element
      * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
      */
-    static maxComparator(a: number, b: number): number;
+    static maxComparator<N>(a: N, b: N): number;
+    /**
+     * Min number heap comparison function, default.
+     * @param  {Number} a     First element
+     * @param  {Number} b     Second element
+     * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
+     */
+    static minComparatorNumber(a: number, b: number): number;
+    /**
+     * Max number heap comparison function.
+     * @param  {Number} a     First element
+     * @param  {Number} b     Second element
+     * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
+     */
+    static maxComparatorNumber(a: number, b: number): number;
     /**
      * Default equality function.
      * @param  {any} a    First element
@@ -194,10 +208,10 @@ export declare class Heap<T> {
      * @return {Number}
      */
     /**
-     * Set length limit of the heap.
-     * @return {Number}
-     */
-    limit: number | null;
+    * Set length limit of the heap.
+    * @return {Number}
+    */
+    limit: number;
     /**
      * Top node. Aliases: `element`.
      * Same as: `top(1)[0]`
