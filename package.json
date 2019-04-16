@@ -1,6 +1,6 @@
 {
   "name": "heap-js",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Heap data structure for JavaScript.",
   "keywords": [
     "heap",
