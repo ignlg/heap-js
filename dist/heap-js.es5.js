@@ -156,7 +156,7 @@ var Heap = /** @class */ (function () {
                 i = 0;
             }
             // Text representation
-            var nodeText = heap.get(node).toString();
+            var nodeText = String(heap.get(node));
             if (nodeText.length > maxLength) {
                 maxLength = nodeText.length;
             }

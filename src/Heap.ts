@@ -161,7 +161,7 @@ export class Heap<T> {
         i = 0
       }
       // Text representation
-      const nodeText = heap.get(node).toString()
+      const nodeText = String(heap.get(node))
       if (nodeText.length > maxLength) {
         maxLength = nodeText.length
       }
