@@ -10,10 +10,9 @@ const libraryName = 'Heap';
 export default {
   input: `compiled/${libraryName}.js`,
   output: [
-    { file: pkg.main, name: camelCase(libraryName), format: 'umd' },
-    { file: pkg.module, name: camelCase(libraryName), format: 'es' }
+    { file: pkg.main, name: camelCase(libraryName), format: 'umd', exports: 'named' },
+    { file: pkg.module, name: camelCase(libraryName), format: 'es', exports: 'named' }
   ],
-  sourceMap: true,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [],
   plugins: [
