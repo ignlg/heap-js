@@ -18,7 +18,6 @@
 .env.test.local
 .env.production.local
 .nyc_output
-.DS_Store
 *.log
 .vscode
 .idea
