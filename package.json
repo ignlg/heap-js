@@ -79,7 +79,6 @@
   "devDependencies": {
     "@types/jest": "^24.0.17",
     "@types/node": "^12.7.2",
-    "commitizen": "^4.0.3",
     "coveralls": "^3.0.6",
     "cross-env": "^5.2.0",
     "cz-conventional-changelog": "^3.0.2",
