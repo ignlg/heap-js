@@ -5,7 +5,7 @@ export type IsEqual<T> = (e: T, o: T) => boolean
  * Heap
  * @type {Class}
  */
-export class Heap<T> {
+export class Heap<T> implements Iterable<T> {
   heapArray: Array<T> = []
   _limit: number = 0
 
@@ -609,6 +609,22 @@ export class Heap<T> {
   getParentOf(idx: number): T | undefined {
     const pi = Heap.getParentIndexOf(idx)
     return this.heapArray[pi]
+  }
+
+  /**
+   * Iterator interface
+   */
+  *[Symbol.iterator]() {
+    while (this.length) {
+      yield this.pop() as T
+    }
+  }
+
+  /**
+   * Returns an iterator. To comply with Java interface.
+   */
+  iterator() {
+    return this
   }
 
   /**

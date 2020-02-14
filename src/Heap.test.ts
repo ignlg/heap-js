@@ -1,4 +1,4 @@
-import Heap from './Heap'
+import Heap from './Heap';
 
 const someValues = [3, 15, 2, 300, 16, 4, 1, 8, 50, 21, 58, 7, 4, 9, 78, 88]
 const otherValues = [12, 1, 2, 30, 116, 42, 12, 18, 1, 1, 1, 1]
@@ -167,20 +167,20 @@ describe('Heap instances', function() {
   const heaps = [
     {
       type: 'min heap (default)',
-      factory: () => new Heap<any>()
+      factory: () => new Heap<any>(),
     },
     {
       type: 'max heap',
-      factory: () => new Heap<any>(Heap.maxComparator)
+      factory: () => new Heap<any>(Heap.maxComparator),
     },
     {
       type: 'min number heap',
-      factory: () => new Heap<number>(Heap.minComparatorNumber)
+      factory: () => new Heap<number>(Heap.minComparatorNumber),
     },
     {
       type: 'max number heap',
-      factory: () => new Heap<number>(Heap.maxComparatorNumber)
-    }
+      factory: () => new Heap<number>(Heap.maxComparatorNumber),
+    },
   ]
 
   heaps.forEach(heapInstance => {
@@ -588,6 +588,19 @@ describe('Heap instances', function() {
         it('should return an string', function() {
           heap.init(someValues)
           expect(heap.toString().length).toEqual(someValues.toString().length)
+        })
+      })
+
+      describe('is Iterable', function() {
+        it('should be iterable via for...of', function() {
+          heap.init(someValues.concat(someValues))
+          const top = heap.toArray().slice(0)
+          top.sort(heap.comparator())
+          const result = []
+          for (const value of heap) {
+            result.push(value)
+          }
+          expect(result).toEqual(top)
         })
       })
     })
