@@ -14,27 +14,27 @@ Instances are `integer min heap` by default.
 
 ## Recent changes
 
-_v1.5.0:_ Adds `Iterator` interface and `iterator()` method.
+_v1.5:_ Adds `Iterator` interface and `iterator()` method.
 
 ## Examples
 
 ```js
 // Basic usage example
-import Heap from 'heap-js'
+import Heap from 'heap-js';
 
-const minHeap = new Heap()
-const maxHeap = new Heap(Heap.maxComparator)
+const minHeap = new Heap();
+const maxHeap = new Heap(Heap.maxComparator);
 
-minHeap.init([5, 18, 1])
-minHeap.push(2)
-console.log(minHeap.peek()) //> 1
-console.log(minHeap.pop()) //> 1
-console.log(minHeap.peek()) //> 2
+minHeap.init([5, 18, 1]);
+minHeap.push(2);
+console.log(minHeap.peek()); //> 1
+console.log(minHeap.pop()); //> 1
+console.log(minHeap.peek()); //> 2
 
 // Iterator
-maxHeap.init([3, 4, 1, 12, 8])
+maxHeap.init([3, 4, 1, 12, 8]);
 for (const value of maxHeap) {
-  console.log('Next top value is', value)
+  console.log('Next top value is', value);
 }
 ```
 
@@ -48,21 +48,22 @@ const customPriorityComparator = (a, b) => a.priority - b.priority;
 const priorityQueue = new Heap(customPriorityComparator);
 priorityQueue.init(tasks);
 
-while (let task = priorityQueue.pop()) {
+// priorityQueue === priorityQueue.iterator()
+for (const task of priorityQueue) {
   // Do something
 }
 ```
 
 ```js
 // Python-like static methods example
-import { Heap } from 'heap-js'
-const numbers = [2, 3, 7, 5]
+import { Heap } from 'heap-js';
+const numbers = [2, 3, 7, 5];
 
-Heap.heapify(numbers)
-console.log(numbers) //> [ 2, 3, 5, 7 ]
+Heap.heapify(numbers);
+console.log(numbers); //> [ 2, 3, 5, 7 ]
 
-Heap.heappush(numbers, 1)
-console.log(numbers) //> [ 1, 2, 5, 7, 3 ]
+Heap.heappush(numbers, 1);
+console.log(numbers); //> [ 1, 2, 5, 7, 3 ]
 ```
 
 ## Installation
@@ -76,7 +77,7 @@ npm install --save heap-js # if you use npm
 ## Constructor
 
 ```js
-new Heap([comparator])
+new Heap([comparator]);
 ```
 
 Basic comparators already included:

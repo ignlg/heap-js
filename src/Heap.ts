@@ -1,28 +1,28 @@
-export type Comparator<T> = (a: T, b: T) => number
-export type IsEqual<T> = (e: T, o: T) => boolean
+export type Comparator<T> = (a: T, b: T) => number;
+export type IsEqual<T> = (e: T, o: T) => boolean;
 
 /**
  * Heap
  * @type {Class}
  */
 export class Heap<T> implements Iterable<T> {
-  heapArray: Array<T> = []
-  _limit: number = 0
+  heapArray: Array<T> = [];
+  _limit: number = 0;
 
   /**
    * Alias of add
    */
-  offer = this.add
+  offer = this.add;
 
   /**
    * Alias of peek
    */
-  element = this.peek
+  element = this.peek;
 
   /**
    * Alias of pop
    */
-  poll = this.pop
+  poll = this.pop;
 
   /**
    * Heap instance constructor.
@@ -40,7 +40,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Array(Number)}  Array of children indices
    */
   static getChildrenIndexOf(idx: number): Array<number> {
-    return [idx * 2 + 1, idx * 2 + 2]
+    return [idx * 2 + 1, idx * 2 + 2];
   }
 
   /**
@@ -50,10 +50,10 @@ export class Heap<T> implements Iterable<T> {
    */
   static getParentIndexOf(idx: number): number {
     if (idx <= 0) {
-      return -1
+      return -1;
     }
-    const whichChildren = idx % 2 ? 1 : 2
-    return Math.floor((idx - whichChildren) / 2)
+    const whichChildren = idx % 2 ? 1 : 2;
+    return Math.floor((idx - whichChildren) / 2);
   }
 
   /**
@@ -63,10 +63,10 @@ export class Heap<T> implements Iterable<T> {
    */
   static getSiblingIndexOf(idx: number): number {
     if (idx <= 0) {
-      return -1
+      return -1;
     }
-    const whichChildren = idx % 2 ? 1 : -1
-    return idx + whichChildren
+    const whichChildren = idx % 2 ? 1 : -1;
+    return idx + whichChildren;
   }
 
   /**
@@ -77,11 +77,11 @@ export class Heap<T> implements Iterable<T> {
    */
   static minComparator<N>(a: N, b: N): number {
     if (a > b) {
-      return 1
+      return 1;
     } else if (a < b) {
-      return -1
+      return -1;
     } else {
-      return 0
+      return 0;
     }
   }
 
@@ -93,11 +93,11 @@ export class Heap<T> implements Iterable<T> {
    */
   static maxComparator<N>(a: N, b: N): number {
     if (b > a) {
-      return 1
+      return 1;
     } else if (b < a) {
-      return -1
+      return -1;
     } else {
-      return 0
+      return 0;
     }
   }
 
@@ -108,7 +108,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
    */
   static minComparatorNumber(a: number, b: number): number {
-    return a - b
+    return a - b;
   }
 
   /**
@@ -118,7 +118,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
    */
   static maxComparatorNumber(a: number, b: number): number {
-    return b - a
+    return b - a;
   }
 
   /**
@@ -128,7 +128,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Boolean}  True if equal, false otherwise
    */
   static defaultIsEqual<N>(a: N, b: N): boolean {
-    return a === b
+    return a === b;
   }
 
   /**
@@ -138,54 +138,54 @@ export class Heap<T> implements Iterable<T> {
    */
   static print<N>(heap: Heap<N>): string {
     function deep(i: number) {
-      const pi = Heap.getParentIndexOf(i)
-      return Math.floor(Math.log2(pi + 1))
+      const pi = Heap.getParentIndexOf(i);
+      return Math.floor(Math.log2(pi + 1));
     }
 
     function repeat(str: string, times: number) {
-      let out = ''
+      let out = '';
       for (; times > 0; --times) {
-        out += str
+        out += str;
       }
-      return out
+      return out;
     }
 
-    let node = 0
-    const lines: Array<Array<string>> = []
-    const maxLines = deep(heap.length - 1) + 2
-    let maxLength = 0
+    let node = 0;
+    const lines: Array<Array<string>> = [];
+    const maxLines = deep(heap.length - 1) + 2;
+    let maxLength = 0;
 
     while (node < heap.length) {
-      let i = deep(node) + 1
+      let i = deep(node) + 1;
       if (node === 0) {
-        i = 0
+        i = 0;
       }
       // Text representation
-      const nodeText = String(heap.get(node))
+      const nodeText = String(heap.get(node));
       if (nodeText.length > maxLength) {
-        maxLength = nodeText.length
+        maxLength = nodeText.length;
       }
       // Add to line
-      lines[i] = lines[i] || []
-      lines[i].push(nodeText)
-      node += 1
+      lines[i] = lines[i] || [];
+      lines[i].push(nodeText);
+      node += 1;
     }
 
     return lines
       .map((line, i) => {
-        const times = Math.pow(2, maxLines - i) - 1
+        const times = Math.pow(2, maxLines - i) - 1;
         return (
           repeat(' ', Math.floor(times / 2) * maxLength) +
           line
             .map(el => {
               // centered
-              const half = (maxLength - el.length) / 2
-              return repeat(' ', Math.ceil(half)) + el + repeat(' ', Math.floor(half))
+              const half = (maxLength - el.length) / 2;
+              return repeat(' ', Math.ceil(half)) + el + repeat(' ', Math.floor(half));
             })
             .join(repeat(' ', times * maxLength))
-        )
+        );
       })
-      .join('\n')
+      .join('\n');
   }
 
   /*
@@ -198,10 +198,10 @@ export class Heap<T> implements Iterable<T> {
    * @return {Heap}              For convenience, it returns a Heap instance
    */
   static heapify<N>(arr: Array<N>, compare?: Comparator<N>) {
-    const heap = new Heap(compare)
-    heap.heapArray = arr
-    heap.init()
-    return heap
+    const heap = new Heap(compare);
+    heap.heapArray = arr;
+    heap.init();
+    return heap;
   }
   /**
    * Extract the peek of an array-heap
@@ -210,9 +210,9 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}               Returns the extracted peek
    */
   static heappop<N>(heapArr: Array<N>, compare?: Comparator<N>) {
-    const heap = new Heap(compare)
-    heap.heapArray = heapArr
-    return heap.pop()
+    const heap = new Heap(compare);
+    heap.heapArray = heapArr;
+    return heap.pop();
   }
   /**
    * Pushes a item into an array-heap
@@ -221,9 +221,9 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} compare  Optional compare function
    */
   static heappush<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>) {
-    const heap = new Heap(compare)
-    heap.heapArray = heapArr
-    heap.push(item)
+    const heap = new Heap(compare);
+    heap.heapArray = heapArr;
+    heap.push(item);
   }
   /**
    * Push followed by pop, faster
@@ -233,9 +233,9 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}               Returns the extracted peek
    */
   static heappushpop<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>) {
-    const heap = new Heap(compare)
-    heap.heapArray = heapArr
-    return heap.pushpop(item)
+    const heap = new Heap(compare);
+    heap.heapArray = heapArr;
+    return heap.pushpop(item);
   }
   /**
    * Replace peek with item
@@ -245,9 +245,9 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}               Returns the extracted peek
    */
   static heapreplace<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>) {
-    const heap = new Heap(compare)
-    heap.heapArray = heapArr
-    return heap.replace(item)
+    const heap = new Heap(compare);
+    heap.heapArray = heapArr;
+    return heap.replace(item);
   }
 
   /**
@@ -258,9 +258,9 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}               Elements
    */
   static heaptop<N>(heapArr: Array<N>, n: number = 1, compare?: Comparator<N>) {
-    const heap = new Heap(compare)
-    heap.heapArray = heapArr
-    return heap.top(n)
+    const heap = new Heap(compare);
+    heap.heapArray = heapArr;
+    return heap.top(n);
   }
 
   /**
@@ -271,9 +271,9 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}               Elements
    */
   static heapbottom<N>(heapArr: Array<N>, n: number = 1, compare?: Comparator<N>) {
-    const heap = new Heap(compare)
-    heap.heapArray = heapArr
-    return heap.bottom(n)
+    const heap = new Heap(compare);
+    heap.heapArray = heapArr;
+    return heap.bottom(n);
   }
 
   /*
@@ -287,9 +287,9 @@ export class Heap<T> implements Iterable<T> {
    * @return {Boolean} true
    */
   add(element: T): boolean {
-    this._sortNodeUp(this.heapArray.push(element) - 1)
-    this._applyLimit()
-    return true
+    this._sortNodeUp(this.heapArray.push(element) - 1);
+    this._applyLimit();
+    return true;
   }
 
   /**
@@ -299,13 +299,13 @@ export class Heap<T> implements Iterable<T> {
    * @return {Boolean} true
    */
   addAll(elements: Array<T>): boolean {
-    let i = this.length
-    this.heapArray.push(...elements)
+    let i = this.length;
+    this.heapArray.push(...elements);
     for (const l = this.length; i < l; ++i) {
-      this._sortNodeUp(i)
+      this._sortNodeUp(i);
     }
-    this._applyLimit()
-    return true
+    this._applyLimit();
+    return true;
   }
 
   /**
@@ -317,21 +317,21 @@ export class Heap<T> implements Iterable<T> {
   bottom(n: number = 1): Array<T> {
     if (this.heapArray.length === 0 || n <= 0) {
       // Nothing to do
-      return []
+      return [];
     } else if (this.heapArray.length === 1) {
       // Just the peek
-      return [this.heapArray[0]]
+      return [this.heapArray[0]];
     } else if (n >= this.heapArray.length) {
       // The whole peek
       // Clone is needed due to the sort method (in-place) that would destroy the heap
-      const cloned = this.heapArray.slice(0)
-      cloned.sort(this._invertedCompare)
-      return cloned
+      const cloned = this.heapArray.slice(0);
+      cloned.sort(this._invertedCompare);
+      return cloned;
     } else {
       // Some elements
-      const result = this._bottomN(n)
-      result.sort(this._invertedCompare)
-      return result
+      const result = this._bottomN(n);
+      result.sort(this._invertedCompare);
+      return result;
     }
   }
 
@@ -342,14 +342,14 @@ export class Heap<T> implements Iterable<T> {
   check(): T | undefined {
     return this.heapArray.find(
       (el: T, j: number, arr: Array<T>) => !!this.getChildrenOf(j).find(ch => this.compare(el, ch) > 0)
-    )
+    );
   }
 
   /**
    * Remove all of the elements from this heap.
    */
   clear(): void {
-    this.heapArray = []
+    this.heapArray = [];
   }
 
   /**
@@ -357,10 +357,10 @@ export class Heap<T> implements Iterable<T> {
    * @return {Heap}
    */
   clone(): Heap<T> {
-    const cloned = new Heap<T>(this.comparator())
-    cloned.heapArray = this.toArray()
-    cloned._limit = this._limit
-    return cloned
+    const cloned = new Heap<T>(this.comparator());
+    cloned.heapArray = this.toArray();
+    cloned._limit = this._limit;
+    return cloned;
   }
 
   /**
@@ -368,7 +368,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Function}
    */
   comparator(): Comparator<T> {
-    return this.compare
+    return this.compare;
   }
 
   /**
@@ -378,7 +378,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Boolean}
    */
   contains(o: T, fn: IsEqual<T> = Heap.defaultIsEqual): boolean {
-    return this.heapArray.findIndex(el => fn(el, o)) >= 0
+    return this.heapArray.findIndex(el => fn(el, o)) >= 0;
   }
 
   /**
@@ -387,12 +387,12 @@ export class Heap<T> implements Iterable<T> {
    */
   init(array?: Array<T>): void {
     if (array) {
-      this.heapArray = array.slice(0)
+      this.heapArray = array.slice(0);
     }
     for (let i = Math.floor(this.heapArray.length); i >= 0; --i) {
-      this._sortNodeDown(i)
+      this._sortNodeDown(i);
     }
-    this._applyLimit()
+    this._applyLimit();
   }
 
   /**
@@ -400,7 +400,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Boolean} True if no elements on the heap
    */
   isEmpty(): boolean {
-    return this.length === 0
+    return this.length === 0;
   }
 
   /**
@@ -408,10 +408,10 @@ export class Heap<T> implements Iterable<T> {
    */
   leafs() {
     if (this.heapArray.length === 0) {
-      return []
+      return [];
     }
-    const pi = Heap.getParentIndexOf(this.heapArray.length - 1)
-    return this.heapArray.slice(pi + 1)
+    const pi = Heap.getParentIndexOf(this.heapArray.length - 1);
+    return this.heapArray.slice(pi + 1);
   }
 
   /**
@@ -419,7 +419,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Number}
    */
   get length(): number {
-    return this.heapArray.length
+    return this.heapArray.length;
   }
 
   /**
@@ -427,7 +427,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Number}
    */
   get limit(): number {
-    return this._limit
+    return this._limit;
   }
 
   /**
@@ -435,8 +435,8 @@ export class Heap<T> implements Iterable<T> {
    * @return {Number}
    */
   set limit(_l: number) {
-    this._limit = _l
-    this._applyLimit()
+    this._limit = _l;
+    this._applyLimit();
   }
 
   /**
@@ -445,7 +445,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {any} Top node
    */
   peek(): T | undefined {
-    return this.heapArray[0]
+    return this.heapArray[0];
   }
 
   /**
@@ -453,11 +453,11 @@ export class Heap<T> implements Iterable<T> {
    * @return {any} Extracted top node, undefined if empty
    */
   pop(): T | undefined {
-    const pop = this.heapArray.pop()
+    const pop = this.heapArray.pop();
     if (this.length > 0 && pop !== undefined) {
-      return this.replace(pop)
+      return this.replace(pop);
     }
-    return pop
+    return pop;
   }
 
   /**
@@ -467,11 +467,11 @@ export class Heap<T> implements Iterable<T> {
    */
   push(...elements: Array<T>): boolean {
     if (elements.length < 1) {
-      return false
+      return false;
     } else if (elements.length === 1) {
-      return this.add(elements[0])
+      return this.add(elements[0]);
     } else {
-      return this.addAll(elements)
+      return this.addAll(elements);
     }
   }
 
@@ -482,10 +482,10 @@ export class Heap<T> implements Iterable<T> {
    */
   pushpop(element: T): T {
     if (this.compare(this.heapArray[0], element) < 0) {
-      ;[element, this.heapArray[0]] = [this.heapArray[0], element]
-      this._sortNodeDown(0)
+      [element, this.heapArray[0]] = [this.heapArray[0], element];
+      this._sortNodeDown(0);
     }
-    return element
+    return element;
   }
 
   /**
@@ -497,25 +497,25 @@ export class Heap<T> implements Iterable<T> {
   remove(o?: T, fn: IsEqual<T> = Heap.defaultIsEqual) {
     if (this.length > 0) {
       if (o === undefined) {
-        this.pop()
-        return true
+        this.pop();
+        return true;
       } else {
-        const idx = this.heapArray.findIndex(el => fn(el, o))
+        const idx = this.heapArray.findIndex(el => fn(el, o));
         if (idx >= 0) {
           if (idx === 0) {
-            this.pop()
+            this.pop();
           } else if (idx === this.length - 1) {
-            this.heapArray.pop()
+            this.heapArray.pop();
           } else {
-            this.heapArray.splice(idx, 1, this.heapArray.pop() as T)
-            this._sortNodeUp(idx)
-            this._sortNodeDown(idx)
+            this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
+            this._sortNodeUp(idx);
+            this._sortNodeDown(idx);
           }
-          return true
+          return true;
         }
       }
     }
-    return false
+    return false;
   }
 
   /**
@@ -524,10 +524,10 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}         Old peek
    */
   replace(element: T): T {
-    const peek = this.heapArray[0]
-    this.heapArray[0] = element
-    this._sortNodeDown(0)
-    return peek
+    const peek = this.heapArray[0];
+    this.heapArray[0] = element;
+    this._sortNodeDown(0);
+    return peek;
   }
 
   /**
@@ -535,7 +535,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Number}
    */
   size(): number {
-    return this.length
+    return this.length;
   }
 
   /**
@@ -547,21 +547,21 @@ export class Heap<T> implements Iterable<T> {
   top(n: number = 1): Array<T> {
     if (this.heapArray.length === 0 || n <= 0) {
       // Nothing to do
-      return []
+      return [];
     } else if (this.heapArray.length === 1 || n === 1) {
       // Just the peek
-      return [this.heapArray[0]]
+      return [this.heapArray[0]];
     } else if (n >= this.heapArray.length) {
       // The whole peek
       // Clone is needed due to the sort method (in-place) that would destroy the heap
-      const cloned = this.heapArray.slice(0)
-      cloned.sort(this.compare)
-      return cloned
+      const cloned = this.heapArray.slice(0);
+      cloned.sort(this.compare);
+      return cloned;
     } else {
       // Some elements
-      const result = this._topN(n)
-      result.sort(this.compare)
-      return result
+      const result = this._topN(n);
+      result.sort(this.compare);
+      return result;
     }
   }
 
@@ -570,7 +570,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Array}
    */
   toArray(): Array<T> {
-    return this.heapArray.slice(0)
+    return this.heapArray.slice(0);
   }
 
   /**
@@ -578,7 +578,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {String}
    */
   toString(): string {
-    return this.heapArray.toString()
+    return this.heapArray.toString();
   }
 
   /**
@@ -587,7 +587,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}       Element at that index
    */
   get(i: number): T {
-    return this.heapArray[i]
+    return this.heapArray[i];
   }
 
   /**
@@ -598,7 +598,7 @@ export class Heap<T> implements Iterable<T> {
   getChildrenOf(idx: number): Array<T> {
     return Heap.getChildrenIndexOf(idx)
       .map(i => this.heapArray[i])
-      .filter(e => e !== undefined)
+      .filter(e => e !== undefined);
   }
 
   /**
@@ -607,8 +607,8 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}     Parent element
    */
   getParentOf(idx: number): T | undefined {
-    const pi = Heap.getParentIndexOf(idx)
-    return this.heapArray[pi]
+    const pi = Heap.getParentIndexOf(idx);
+    return this.heapArray[pi];
   }
 
   /**
@@ -616,7 +616,7 @@ export class Heap<T> implements Iterable<T> {
    */
   *[Symbol.iterator]() {
     while (this.length) {
-      yield this.pop() as T
+      yield this.pop() as T;
     }
   }
 
@@ -624,7 +624,7 @@ export class Heap<T> implements Iterable<T> {
    * Returns an iterator. To comply with Java interface.
    */
   iterator() {
-    return this
+    return this;
   }
 
   /**
@@ -632,11 +632,11 @@ export class Heap<T> implements Iterable<T> {
    */
   _applyLimit() {
     if (this._limit && this._limit < this.heapArray.length) {
-      let rm = this.heapArray.length - this._limit
+      let rm = this.heapArray.length - this._limit;
       // It's much faster than splice
       while (rm) {
-        this.heapArray.pop()
-        --rm
+        this.heapArray.pop();
+        --rm;
       }
     }
   }
@@ -649,26 +649,26 @@ export class Heap<T> implements Iterable<T> {
    */
   _bottomN(n: number): Array<T> {
     // Use an inverted heap
-    const bottomHeap = new Heap(this.compare)
-    bottomHeap.limit = n
-    bottomHeap.init(this.heapArray.slice(-n))
-    const startAt = this.heapArray.length - 1 - n
-    const parentStartAt = Heap.getParentIndexOf(startAt)
-    const indices = []
+    const bottomHeap = new Heap(this.compare);
+    bottomHeap.limit = n;
+    bottomHeap.init(this.heapArray.slice(-n));
+    const startAt = this.heapArray.length - 1 - n;
+    const parentStartAt = Heap.getParentIndexOf(startAt);
+    const indices = [];
     for (let i = startAt; i > parentStartAt; --i) {
-      indices.push(i)
+      indices.push(i);
     }
-    const arr = this.heapArray
+    const arr = this.heapArray;
     while (indices.length) {
-      const i = indices.shift() as number
+      const i = indices.shift() as number;
       if (this.compare(arr[i], bottomHeap.peek() as T) > 0) {
-        bottomHeap.replace(arr[i])
+        bottomHeap.replace(arr[i]);
         if (i % 2) {
-          indices.push(Heap.getParentIndexOf(i))
+          indices.push(Heap.getParentIndexOf(i));
         }
       }
     }
-    return bottomHeap.toArray()
+    return bottomHeap.toArray();
   }
 
   /**
@@ -676,8 +676,8 @@ export class Heap<T> implements Iterable<T> {
    * @return {Function}
    */
   _invertedCompare = (a: T, b: T): number => {
-    return -1 * this.compare(a, b)
-  }
+    return -1 * this.compare(a, b);
+  };
 
   /**
    * Move a node to a new index, switching places
@@ -685,7 +685,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} k Another node index
    */
   _moveNode(j: number, k: number): void {
-    ;[this.heapArray[j], this.heapArray[k]] = [this.heapArray[k], this.heapArray[j]]
+    [this.heapArray[j], this.heapArray[k]] = [this.heapArray[k], this.heapArray[j]];
   }
 
   /**
@@ -693,30 +693,30 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} i Index of the node
    */
   _sortNodeDown(i: number): boolean {
-    let moveIt = i < this.heapArray.length - 1
-    let moved = false
-    const self = this.heapArray[i]
+    let moveIt = i < this.heapArray.length - 1;
+    let moved = false;
+    const self = this.heapArray[i];
 
     const getPotentialParent = (best: number, j: number) => {
       if (this.compare(this.heapArray[j], this.heapArray[best]) < 0) {
-        best = j
+        best = j;
       }
-      return best
-    }
+      return best;
+    };
 
     while (moveIt) {
-      const childrenIdx = Heap.getChildrenIndexOf(i)
-      const bestChildIndex = childrenIdx.reduce(getPotentialParent, childrenIdx[0])
-      const bestChild = this.heapArray[bestChildIndex]
+      const childrenIdx = Heap.getChildrenIndexOf(i);
+      const bestChildIndex = childrenIdx.reduce(getPotentialParent, childrenIdx[0]);
+      const bestChild = this.heapArray[bestChildIndex];
       if (typeof bestChild !== 'undefined' && this.compare(self, bestChild) > 0) {
-        this._moveNode(i, bestChildIndex)
-        i = bestChildIndex
-        moved = true
+        this._moveNode(i, bestChildIndex);
+        i = bestChildIndex;
+        moved = true;
       } else {
-        moveIt = false
+        moveIt = false;
       }
     }
-    return moved
+    return moved;
   }
 
   /**
@@ -724,19 +724,19 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} i Index of the node
    */
   _sortNodeUp(i: number): boolean {
-    let moveIt = i > 0
-    let moved = false
+    let moveIt = i > 0;
+    let moved = false;
     while (moveIt) {
-      const pi = Heap.getParentIndexOf(i)
+      const pi = Heap.getParentIndexOf(i);
       if (pi >= 0 && this.compare(this.heapArray[pi], this.heapArray[i]) > 0) {
-        this._moveNode(i, pi)
-        i = pi
-        moved = true
+        this._moveNode(i, pi);
+        i = pi;
+        moved = true;
       } else {
-        moveIt = false
+        moveIt = false;
       }
     }
-    return moved
+    return moved;
   }
 
   /**
@@ -747,24 +747,24 @@ export class Heap<T> implements Iterable<T> {
    */
   _topN(n: number): Array<T> {
     // Use an inverted heap
-    const topHeap = new Heap(this._invertedCompare)
-    topHeap.limit = n
-    const indices = [0]
-    const arr = this.heapArray
+    const topHeap = new Heap(this._invertedCompare);
+    topHeap.limit = n;
+    const indices = [0];
+    const arr = this.heapArray;
     while (indices.length) {
-      const i = indices.shift() as number
+      const i = indices.shift() as number;
       if (i < arr.length) {
         if (topHeap.length < n) {
-          topHeap.push(arr[i])
-          indices.push(...Heap.getChildrenIndexOf(i))
+          topHeap.push(arr[i]);
+          indices.push(...Heap.getChildrenIndexOf(i));
         } else if (this.compare(arr[i], topHeap.peek() as T) <= 0) {
-          topHeap.replace(arr[i])
-          indices.push(...Heap.getChildrenIndexOf(i))
+          topHeap.replace(arr[i]);
+          indices.push(...Heap.getChildrenIndexOf(i));
         }
       }
     }
-    return topHeap.toArray()
+    return topHeap.toArray();
   }
 }
 
-export default Heap
+export default Heap;
