@@ -4,7 +4,7 @@ export declare type IsEqual<T> = (e: T, o: T) => boolean;
  * Heap
  * @type {Class}
  */
-export declare class Heap<T> {
+export declare class Heap<T> implements Iterable<T> {
     compare: Comparator<T>;
     heapArray: Array<T>;
     _limit: number;
@@ -202,16 +202,17 @@ export declare class Heap<T> {
      * Length of the heap.
      * @return {Number}
      */
-    readonly length: number;
+    get length(): number;
     /**
      * Get length limit of the heap.
      * @return {Number}
      */
+    get limit(): number;
     /**
-    * Set length limit of the heap.
-    * @return {Number}
-    */
-    limit: number;
+     * Set length limit of the heap.
+     * @return {Number}
+     */
+    set limit(_l: number);
     /**
      * Top node. Aliases: `element`.
      * Same as: `top(1)[0]`
@@ -288,6 +289,14 @@ export declare class Heap<T> {
      * @return {any}     Parent element
      */
     getParentOf(idx: number): T | undefined;
+    /**
+     * Iterator interface
+     */
+    [Symbol.iterator](): Generator<T, void, unknown>;
+    /**
+     * Returns an iterator. To comply with Java interface.
+     */
+    iterator(): this;
     /**
      * Limit heap size if needed
      */
