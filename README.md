@@ -1,12 +1,14 @@
 # ![Heap.js](assets/heap-js.png) Heap.js
 
+[![npm version](https://img.shields.io/npm/v/heap-js.svg?style=flat)](https://www.npmjs.com/package/heap-js)
 [![Build Status](https://travis-ci.org/ignlg/heap-js.svg?branch=master)](https://travis-ci.org/ignlg/heap-js)
+[![Coverage Status](https://img.shields.io/coveralls/ignlg/heap-js/master.svg?style=flat)](https://coveralls.io/github/ignlg/heap-js?branch=master)
 [![Dependencies](https://david-dm.org/ignlg/heap-js.png?theme=shields.io)](https://david-dm.org/ignlg/heap-js)
 [![devDependency Status](https://david-dm.org/ignlg/heap-js/dev-status.svg)](https://david-dm.org/ignlg/heap-js#info=devDependencies)
-[![Coverage Status](https://img.shields.io/coveralls/ignlg/heap-js/master.svg?style=flat)](https://coveralls.io/github/ignlg/heap-js?branch=master)
-[![npm version](https://img.shields.io/npm/v/heap-js.svg?style=flat)](https://www.npmjs.com/package/heap-js)
 
-**Heap data structure for JavaScript and TypeScript.**
+**Efficient Binary heap (priority queue, binary tree) data structure for JavaScript / TypeScript.**
+
+Includes JavaScript methods, Python's _heapq module_ methods, and Java's _PriorityQueue_ methods.
 
 Easy to use, known interfaces, tested, and well documented JavaScript binary heap library.
 
