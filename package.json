@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "@types/jest": "^25.1.4",
-    "@types/node": "^13.11.1",
+    "@types/node": "^13.13.0",
     "coveralls": "^3.0.11",
     "cross-env": "^7.0.2",
     "cz-conventional-changelog": "^3.1.0",
