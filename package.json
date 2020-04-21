@@ -35,6 +35,7 @@
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "start": "tsc-watch --onSuccess \"rollup -c\"",
     "test": "jest --coverage --no-cache",
+    "test:heapUsage": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
     "test:watch": "jest --watch"
   },
