@@ -14,6 +14,16 @@ Easy to use, known interfaces, tested, and well documented JavaScript binary hea
 
 Instances are `integer min heap` by default.
 
+## Is it faster than sorting an array?
+
+It depends on your usage, but for some scenarios it is much faster, like getting the smallest number:
+
+    Size:  1000000 numbers
+    Range: 0..10000
+
+    heap push + peek        =>  83.869ms
+    array push + sort + [0] => 438.619ms
+
 ## Recent changes
 
 _v1.5:_ Adds `Iterator` interface and `iterator()` method.
