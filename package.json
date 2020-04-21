@@ -1,6 +1,6 @@
 {
   "name": "heap-js",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Efficient Binary heap (priority queue, binary tree) data structure for JavaScript / TypeScript. Includes JavaScript methods, Python's heapq module methods, and Java's PriorityQueue methods.",
   "keywords": [
     "heap",
@@ -29,20 +29,20 @@
   },
   "scripts": {
     "build": "tsc --project tsconfig.build.json && rollup -c && rimraf compiled && typedoc --out dist/docs --target es6 --theme minimal src",
-    "commit": "git-cz",
     "lint": "eslint --fix 'src/**/*.ts'",
     "prebuild": "rimraf dist",
     "precommit": "lint-staged",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "start": "tsc-watch --onSuccess \"rollup -c\"",
-    "test": "jest",
+    "test": "jest --coverage --no-cache",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
     "test:watch": "jest --watch"
   },
   "lint-staged": {
     "src/**/*.ts": [
+      "eslint --fix",
       "prettier --write --no-semi",
-      "git add"
+      "jest --coverage --no-cache"
     ]
   },
   "jest": {
