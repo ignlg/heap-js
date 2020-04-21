@@ -38,7 +38,7 @@
     "test:heapUsage": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
     "test:watch": "jest --watch",
-    "benchmark": "tsc --project benchmark/tsconfig.benchmark.json && node benchmark/compiled/benchmark/benchmark.js && rimraf benchmark/compiled"
+    "benchmark": "node benchmark/benchmark.js"
   },
   "lint-staged": {
     "src/**/*.ts": [
@@ -72,10 +72,12 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-node-resolve": "^7.1.3",
+    "@types/benchmark": "^1.0.31",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.1",
     "@typescript-eslint/eslint-plugin": "2",
     "@typescript-eslint/parser": "^2.29.0",
+    "benchmark": "^2.1.4",
     "coveralls": "^3.0.11",
     "cross-env": "^7.0.2",
     "eslint": "6",

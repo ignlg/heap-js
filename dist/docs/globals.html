@@ -2739,6 +2739,15 @@ img {
 			<p>Includes JavaScript methods, Python&#39;s <em>heapq module</em> methods, and Java&#39;s <em>PriorityQueue</em> methods.</p>
 			<p>Easy to use, known interfaces, tested, and well documented JavaScript binary heap library.</p>
 			<p>Instances are <code>integer min heap</code> by default.</p>
+			<a href="#is-it-faster-than-sorting-an-array" id="is-it-faster-than-sorting-an-array" style="color: inherit; text-decoration: none;">
+				<h2>Is it faster than sorting an array?</h2>
+			</a>
+			<p>It depends on your usage, but for some scenarios it is much faster, like getting the smallest number:</p>
+			<pre><code><span class="hljs-attribute">Size</span>:  1000000 numbers
+<span class="hljs-attribute">Range</span>: 0..10000
+
+<span class="smali">heap push + peek        =&gt;  83.869ms<span class="hljs-built_in">
+array </span>push + sort + [0] =&gt; 438.619ms</span></code></pre>
 			<a href="#recent-changes" id="recent-changes" style="color: inherit; text-decoration: none;">
 				<h2>Recent changes</h2>
 			</a>
@@ -2895,7 +2904,6 @@ npm <span class="hljs-built_in">test</span> <span class="hljs-comment"># if you 
 						<h3>Modules</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-module"><a href="modules/_heap_.html" class="tsd-kind-icon">&quot;<wbr>Heap&quot;</a></li>
-							<li class="tsd-kind-module"><a href="modules/_heap_test_.html" class="tsd-kind-icon">&quot;<wbr>Heap.test&quot;</a></li>
 						</ul>
 					</section>
 				</div>
@@ -2906,7 +2914,6 @@ npm <span class="hljs-built_in">test</span> <span class="hljs-comment"># if you 
 				<h2>Legend</h2>
 				<div class="tsd-legend-group">
 					<ul class="tsd-legend">
-						<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 						<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 					</ul>
 					<ul class="tsd-legend">

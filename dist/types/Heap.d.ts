@@ -323,12 +323,12 @@ export declare class Heap<T> implements Iterable<T> {
      * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
      * @param  {Number} i Index of the node
      */
-    _sortNodeDown(i: number): boolean;
+    _sortNodeDown(i: number): void;
     /**
      * Move a node up the tree (to the root) to find a place where the heap is sorted.
      * @param  {Number} i Index of the node
      */
-    _sortNodeUp(i: number): boolean;
+    _sortNodeUp(i: number): void;
     /**
      * Return the top (highest value) N elements of the heap, without corner cases, unsorted
      *
@@ -336,5 +336,29 @@ export declare class Heap<T> implements Iterable<T> {
      * @return {Array}     Array of length <= N.
      */
     _topN(n: number): Array<T>;
+    /**
+     * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+     *
+     * @param  {Number} n  Number of elements.
+     * @return {Array}     Array of length <= N.
+     */
+    _topLeafN(n: number): Array<T>;
+    /**
+     * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+     *
+     * @param  {Number} n  Number of elements.
+     * @return {Array}     Array of length <= N.
+     */
+    _topHeapN(n: number): Array<T>;
+    /**
+     * Return index of the top element
+     * @param list
+     */
+    _topIdxOf(list: Array<T>): number;
+    /**
+     * Return the top element
+     * @param list
+     */
+    _topOf(...list: Array<T>): T | undefined;
 }
 export default Heap;

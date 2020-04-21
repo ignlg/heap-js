@@ -346,16 +346,12 @@
                 return [this.heapArray[0]];
             }
             else if (n >= this.heapArray.length) {
-                // The whole peek
-                // Clone is needed due to the sort method (in-place) that would destroy the heap
-                var cloned = this.heapArray.slice(0);
-                cloned.sort(this._invertedCompare);
-                return cloned;
+                // The whole heap
+                return this.heapArray.slice(0);
             }
             else {
                 // Some elements
                 var result = this._bottomN(n);
-                result.sort(this._invertedCompare);
                 return result;
             }
         };
@@ -473,11 +469,11 @@
          * @return {any} Extracted top node, undefined if empty
          */
         Heap.prototype.pop = function () {
-            var pop = this.heapArray.pop();
-            if (this.length > 0 && pop !== undefined) {
-                return this.replace(pop);
+            var last = this.heapArray.pop();
+            if (this.length > 0 && last !== undefined) {
+                return this.replace(last);
             }
-            return pop;
+            return last;
         };
         /**
          * Pushes element(s) to the heap.
@@ -581,15 +577,11 @@
             }
             else if (n >= this.heapArray.length) {
                 // The whole peek
-                // Clone is needed due to the sort method (in-place) that would destroy the heap
-                var cloned = this.heapArray.slice(0);
-                cloned.sort(this.compare);
-                return cloned;
+                return this.heapArray.slice(0);
             }
             else {
                 // Some elements
-                var result = this._topN(n);
-                result.sort(this.compare);
+                var result = this._topLeafN(n);
                 return result;
             }
         };
@@ -715,7 +707,6 @@
         Heap.prototype._sortNodeDown = function (i) {
             var _this = this;
             var moveIt = i < this.heapArray.length - 1;
-            var moved = false;
             var self = this.heapArray[i];
             var getPotentialParent = function (best, j) {
                 if (_this.compare(_this.heapArray[j], _this.heapArray[best]) < 0) {
@@ -730,13 +721,11 @@
                 if (typeof bestChild !== 'undefined' && this.compare(self, bestChild) > 0) {
                     this._moveNode(i, bestChildIndex);
                     i = bestChildIndex;
-                    moved = true;
                 }
                 else {
                     moveIt = false;
                 }
             }
-            return moved;
         };
         /**
          * Move a node up the tree (to the root) to find a place where the heap is sorted.
@@ -744,19 +733,16 @@
          */
         Heap.prototype._sortNodeUp = function (i) {
             var moveIt = i > 0;
-            var moved = false;
             while (moveIt) {
                 var pi = Heap.getParentIndexOf(i);
                 if (pi >= 0 && this.compare(this.heapArray[pi], this.heapArray[i]) > 0) {
                     this._moveNode(i, pi);
                     i = pi;
-                    moved = true;
                 }
                 else {
                     moveIt = false;
                 }
             }
-            return moved;
         };
         /**
          * Return the top (highest value) N elements of the heap, without corner cases, unsorted
@@ -777,13 +763,90 @@
                         topHeap.push(arr[i]);
                         indices.push.apply(indices, Heap.getChildrenIndexOf(i));
                     }
-                    else if (this.compare(arr[i], topHeap.peek()) <= 0) {
+                    else if (this.compare(arr[i], topHeap.peek()) < 0) {
                         topHeap.replace(arr[i]);
                         indices.push.apply(indices, Heap.getChildrenIndexOf(i));
                     }
                 }
             }
             return topHeap.toArray();
+        };
+        /**
+         * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+         *
+         * @param  {Number} n  Number of elements.
+         * @return {Array}     Array of length <= N.
+         */
+        Heap.prototype._topLeafN = function (n) {
+            // Use an inverted heap
+            var heapArray = this.heapArray;
+            var topHeap = new Heap(this._invertedCompare);
+            topHeap.limit = n;
+            topHeap.init(heapArray.slice(0, n));
+            var branch = Heap.getParentIndexOf(n - 1) + 1;
+            var indices = [];
+            for (var i = branch; i < n; ++i) {
+                indices.push.apply(indices, Heap.getChildrenIndexOf(i).filter(function (l) { return l < heapArray.length; }));
+            }
+            if ((n - 1) % 2) {
+                indices.push(n);
+            }
+            while (indices.length) {
+                var i = indices.shift();
+                if (i < heapArray.length) {
+                    if (this.compare(heapArray[i], topHeap.peek()) < 0) {
+                        topHeap.replace(heapArray[i]);
+                        indices.push.apply(indices, Heap.getChildrenIndexOf(i));
+                    }
+                }
+            }
+            return topHeap.toArray();
+        };
+        /**
+         * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+         *
+         * @param  {Number} n  Number of elements.
+         * @return {Array}     Array of length <= N.
+         */
+        Heap.prototype._topHeapN = function (n) {
+            var topHeap = this.clone();
+            var result = [];
+            for (var i = 0; i < n; ++i) {
+                result.push(topHeap.pop());
+            }
+            return result;
+        };
+        /**
+         * Return index of the top element
+         * @param list
+         */
+        Heap.prototype._topIdxOf = function (list) {
+            if (!list.length) {
+                return -1;
+            }
+            var idx = 0;
+            var top = list[idx];
+            for (var i = 1; i < list.length; ++i) {
+                var comp = this.compare(list[i], top);
+                if (comp < 0) {
+                    idx = i;
+                    top = list[i];
+                }
+            }
+            return idx;
+        };
+        /**
+         * Return the top element
+         * @param list
+         */
+        Heap.prototype._topOf = function () {
+            var list = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                list[_i] = arguments[_i];
+            }
+            var heap = new Heap(this.compare);
+            heap.init(list);
+            return heap.peek();
         };
         return Heap;
     }());

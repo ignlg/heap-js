@@ -1,167 +1,7 @@
-import Heap from './Heap';
+import Heap from '../src/Heap';
 
 const someValues = [3, 15, 2, 300, 16, 4, 1, 8, 50, 21, 58, 7, 4, 9, 78, 88];
 const otherValues = [12, 1, 2, 30, 116, 42, 12, 18, 1, 1, 1, 1];
-
-describe('Heap class', function () {
-  describe('#getParentIndexOf()', function () {
-    it('should return parent for every children', function () {
-      let p;
-      for (let i = 100; i > 0; --i) {
-        p = (i - 2 + (i % 2)) / 2;
-        expect(Heap.getParentIndexOf(i)).toEqual(p);
-      }
-    });
-    it('should return -1 for index <= 0', function () {
-      expect(Heap.getParentIndexOf(0)).toEqual(-1);
-      expect(Heap.getParentIndexOf(-100)).toEqual(-1);
-    });
-  });
-  describe('#getChildrenIndexOf()', function () {
-    it('should return children for every index', function () {
-      let c;
-      for (let i = 100; i >= 0; --i) {
-        c = [i * 2 + 1, i * 2 + 2];
-        expect(Heap.getChildrenIndexOf(i)).toEqual(c);
-      }
-    });
-  });
-  describe('#getSiblingIndexOf()', function () {
-    it('should return sibling index', function () {
-      expect(Heap.getSiblingIndexOf(0)).toEqual(-1);
-      expect(Heap.getSiblingIndexOf(1)).toEqual(2);
-      expect(Heap.getSiblingIndexOf(2)).toEqual(1);
-      expect(Heap.getSiblingIndexOf(20)).toEqual(19);
-      expect(Heap.getSiblingIndexOf(11)).toEqual(12);
-    });
-  });
-  describe('#print()', function () {
-    it('should output a pretty print', function () {
-      const heap = new Heap();
-      heap.init(someValues);
-      const printed = Heap.print(heap);
-      const values = someValues.slice(0);
-      while (values.length) {
-        expect(printed).toContain(values.pop());
-      }
-    });
-  });
-  describe('#heapify', function () {
-    it('should return a heap from an array', function () {
-      const heapArr = someValues.slice(0);
-      Heap.heapify(heapArr);
-      expect(Array.isArray(heapArr)).toBe(true);
-      expect(heapArr.length).toEqual(someValues.length);
-
-      const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
-      expect(checkHeap.check()).not.toBeDefined();
-    });
-  });
-  describe('#heappush', function () {
-    it('should push an element to the array as a heap', function () {
-      const heapArr = someValues.slice(0);
-      Heap.heapify(heapArr);
-      Heap.heappush(heapArr, 30000);
-      expect(Array.isArray(heapArr)).toBe(true);
-      expect(heapArr.length).toEqual(someValues.length + 1);
-
-      const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
-      expect(checkHeap.check()).not.toBeDefined();
-      expect(checkHeap.contains(30000)).toBe(true);
-    });
-  });
-  describe('#heappop', function () {
-    it('should pop the peek of the array as a heap', function () {
-      const heapArr = someValues.slice(0);
-      Heap.heapify(heapArr);
-      const peek = Heap.heappop(heapArr) as number;
-      expect(Array.isArray(heapArr)).toBe(true);
-      expect(heapArr.length).toEqual(someValues.length - 1);
-      expect(Math.min(peek, ...heapArr)).toEqual(peek);
-
-      const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
-      expect(checkHeap.check()).not.toBeDefined();
-    });
-  });
-  describe('#heappushpop', function () {
-    it('should push and pop as a heap', function () {
-      const heapArr = someValues.slice(0);
-      Heap.heapify(heapArr);
-
-      let peek = Heap.heappushpop(heapArr, -1);
-      expect(Array.isArray(heapArr)).toBe(true);
-      expect(heapArr.length).toEqual(someValues.length);
-      expect(peek).toEqual(-1);
-
-      peek = Heap.heappushpop(heapArr, 1);
-      expect(heapArr.length).toEqual(someValues.length);
-      expect(peek).toBeLessThanOrEqual(Math.min(...heapArr));
-
-      peek = Heap.heappushpop(heapArr, 500);
-      expect(heapArr.length).toEqual(someValues.length);
-      expect(peek).toBeLessThan(500);
-
-      const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
-      expect(checkHeap.check()).not.toBeDefined();
-    });
-  });
-  describe('#heapreplace', function () {
-    it('should pop and push as a heap', function () {
-      const heapArr = someValues.slice(0);
-      Heap.heapify(heapArr);
-
-      let _in = -1;
-      let peek = Heap.heapreplace(heapArr, _in);
-      expect(Array.isArray(heapArr)).toBe(true);
-      expect(heapArr.length).toBe(someValues.length);
-      expect(peek).toBe(Math.min(...someValues));
-      expect(heapArr[0]).toBe(_in);
-      expect(heapArr[0]).toBeLessThanOrEqual(Math.min(...heapArr));
-
-      _in = 1;
-      peek = Heap.heapreplace(heapArr, _in);
-      expect(heapArr.length).toEqual(someValues.length);
-      expect(peek).toBe(-1);
-      expect(heapArr[0]).toBe(_in);
-      expect(heapArr[0]).toBeLessThanOrEqual(Math.min(...heapArr));
-
-      _in = 500;
-      peek = Heap.heapreplace(heapArr, _in);
-      expect(heapArr.length).toEqual(someValues.length);
-      expect(peek).toBeLessThan(_in);
-      expect(heapArr[0]).not.toBe(_in);
-      expect(heapArr[0]).toBeLessThanOrEqual(Math.min(...heapArr));
-
-      const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
-      expect(checkHeap.check()).not.toBeDefined();
-    });
-  });
-  describe('#heaptop', function () {
-    it('should return the most valuable elements', function () {
-      const arr = [1, 12, 3, 41, 51, 16, 7];
-      Heap.heapify(arr);
-      expect(Heap.heaptop(arr, 1)).toEqual([Math.min(...arr)]);
-      expect(Heap.heaptop(arr, 3)).toEqual([1, 3, 7]);
-      expect(Heap.heaptop(arr, 4)).toEqual([1, 3, 7, 12]);
-      expect(Heap.heaptop(arr)).toEqual(Heap.heaptop(arr, 1));
-    });
-  });
-  describe('#heapbottom', function () {
-    it('should return the least valuable elements', function () {
-      const arr = [1, 12, 3, 41, 51, 16, 7];
-      Heap.heapify(arr);
-      expect(Heap.heapbottom(arr, 1)).toEqual([Math.max(...arr)]);
-      expect(Heap.heapbottom(arr, 3)).toEqual([51, 41, 16]);
-      expect(Heap.heapbottom(arr, 4)).toEqual([51, 41, 16, 12]);
-      expect(Heap.heapbottom(arr)).toEqual(Heap.heapbottom(arr, 1));
-    });
-  });
-});
 
 describe('Heap instances', function () {
   const heaps = [
@@ -191,51 +31,6 @@ describe('Heap instances', function () {
         heap = factory();
       });
 
-      describe('#_moveNode(i, j)', function () {
-        it('should switch elements', function () {
-          heap.init(someValues);
-          const iv = heap.get(2);
-          const jv = heap.get(5);
-          heap._moveNode(2, 5);
-          expect(iv).not.toBe(jv);
-          expect(heap.get(5)).toEqual(iv);
-          expect(heap.get(2)).toEqual(jv);
-        });
-      });
-
-      describe('#_sortNodeUp(i)', function () {
-        it('should move the element up the hierarchy', function () {
-          const arr = [3, 2, 1];
-          arr.sort((a, b) => heap.comparator()(a, b) * -1);
-          heap.heapArray = arr.slice(0);
-          // move it
-          heap._sortNodeUp(2);
-          expect(heap.heapArray[0]).toEqual(arr[2]);
-          expect(heap.heapArray[2]).toEqual(arr[0]);
-          // do not move it
-          heap._sortNodeUp(2);
-          expect(arr.slice(0, 2)).not.toContain(heap.heapArray[0]);
-          expect(arr.slice(0, 2)).toContain(heap.heapArray[2]);
-        });
-      });
-
-      describe('#_sortNodeDown(i)', function () {
-        it('should move the element down the hierarchy', function () {
-          const arr = [3, 2, 1];
-          // reverse order
-          arr.sort((a, b) => heap.comparator()(a, b) * -1);
-          heap.heapArray = arr.slice(0);
-          // move it
-          heap._sortNodeDown(0);
-          expect(heap.heapArray[2]).toEqual(arr[0]);
-          expect(heap.heapArray[0]).toEqual(arr[2]);
-          // do not move it
-          heap._sortNodeDown(0);
-          expect(arr.slice(0, 2)).not.toContain(heap.heapArray[0]);
-          expect(arr.slice(0, 2)).toContain(heap.heapArray[2]);
-        });
-      });
-
       describe('#bottom(N)', function () {
         it('should return an empty array for an empty heap', function () {
           expect(heap.bottom()).toEqual([]);
@@ -255,9 +50,11 @@ describe('Heap instances', function () {
           heap.init(someValues.concat(someValues));
           const bottom = heap.toArray().slice(0);
           bottom.sort(heap._invertedCompare);
-          expect(heap.bottom(1)).toEqual(bottom.slice(0, 1));
-          expect(heap.bottom(6)).toEqual(bottom.slice(0, 6));
-          expect(heap.bottom(someValues.length + 100)).toEqual(bottom);
+          for (const slice of [1, 6, someValues.length, someValues.length + 100]) {
+            const b = heap.bottom(slice);
+            b.sort(heap._invertedCompare);
+            expect(b).toEqual(bottom.slice(0, slice));
+          }
         });
         it('should return the lowest element of the heap if no N', function () {
           heap.init(someValues.concat(someValues));
@@ -384,6 +181,8 @@ describe('Heap instances', function () {
         it('should return all the nodes without children', function () {
           heap.init(someValues);
           expect(heap.leafs()).toEqual(heap.toArray().slice(-8));
+          heap.init(otherValues);
+          expect(heap.leafs()).toEqual(heap.toArray().slice(-6));
         });
       });
 
@@ -561,9 +360,11 @@ describe('Heap instances', function () {
           heap.init(someValues.concat(someValues));
           const top = heap.toArray().slice(0);
           top.sort(heap.comparator());
-          expect(heap.top(1)).toEqual(top.slice(0, 1));
-          expect(heap.top(6)).toEqual(top.slice(0, 6));
-          expect(heap.top(someValues.length + 100)).toEqual(top);
+          for (const slice of [1, 6, someValues.length, someValues.length + 100]) {
+            const topValues = heap.top(slice);
+            topValues.sort(heap.compare);
+            expect(topValues).toEqual(top.slice(0, slice));
+          }
         });
         it('should return the top element of the heap if no N', function () {
           heap.init(someValues.concat(someValues));

@@ -322,15 +322,11 @@ export class Heap<T> implements Iterable<T> {
       // Just the peek
       return [this.heapArray[0]];
     } else if (n >= this.heapArray.length) {
-      // The whole peek
-      // Clone is needed due to the sort method (in-place) that would destroy the heap
-      const cloned = this.heapArray.slice(0);
-      cloned.sort(this._invertedCompare);
-      return cloned;
+      // The whole heap
+      return this.heapArray.slice(0);
     } else {
       // Some elements
       const result = this._bottomN(n);
-      result.sort(this._invertedCompare);
       return result;
     }
   }
@@ -553,14 +549,10 @@ export class Heap<T> implements Iterable<T> {
       return [this.heapArray[0]];
     } else if (n >= this.heapArray.length) {
       // The whole peek
-      // Clone is needed due to the sort method (in-place) that would destroy the heap
-      const cloned = this.heapArray.slice(0);
-      cloned.sort(this.compare);
-      return cloned;
+      return this.heapArray.slice(0);
     } else {
       // Some elements
-      const result = this._topN(n);
-      result.sort(this.compare);
+      const result = this._topLeafN(n);
       return result;
     }
   }
@@ -692,7 +684,7 @@ export class Heap<T> implements Iterable<T> {
    * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
    * @param  {Number} i Index of the node
    */
-  _sortNodeDown(i: number): boolean {
+  _sortNodeDown(i: number) {
     let moveIt = i < this.heapArray.length - 1;
     let moved = false;
     const self = this.heapArray[i];
@@ -711,32 +703,27 @@ export class Heap<T> implements Iterable<T> {
       if (typeof bestChild !== 'undefined' && this.compare(self, bestChild) > 0) {
         this._moveNode(i, bestChildIndex);
         i = bestChildIndex;
-        moved = true;
       } else {
         moveIt = false;
       }
     }
-    return moved;
   }
 
   /**
    * Move a node up the tree (to the root) to find a place where the heap is sorted.
    * @param  {Number} i Index of the node
    */
-  _sortNodeUp(i: number): boolean {
+  _sortNodeUp(i: number) {
     let moveIt = i > 0;
-    let moved = false;
     while (moveIt) {
       const pi = Heap.getParentIndexOf(i);
       if (pi >= 0 && this.compare(this.heapArray[pi], this.heapArray[i]) > 0) {
         this._moveNode(i, pi);
         i = pi;
-        moved = true;
       } else {
         moveIt = false;
       }
     }
-    return moved;
   }
 
   /**
@@ -757,13 +744,90 @@ export class Heap<T> implements Iterable<T> {
         if (topHeap.length < n) {
           topHeap.push(arr[i]);
           indices.push(...Heap.getChildrenIndexOf(i));
-        } else if (this.compare(arr[i], topHeap.peek() as T) <= 0) {
+        } else if (this.compare(arr[i], topHeap.peek() as T) < 0) {
           topHeap.replace(arr[i]);
           indices.push(...Heap.getChildrenIndexOf(i));
         }
       }
     }
     return topHeap.toArray();
+  }
+
+  /**
+   * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+   *
+   * @param  {Number} n  Number of elements.
+   * @return {Array}     Array of length <= N.
+   */
+  _topLeafN(n: number): Array<T> {
+    // Use an inverted heap
+    const { heapArray } = this;
+    const topHeap = new Heap(this._invertedCompare);
+    topHeap.limit = n;
+    topHeap.init(heapArray.slice(0, n));
+    const branch = Heap.getParentIndexOf(n - 1) + 1;
+    const indices = [];
+    for (let i = branch; i < n; ++i) {
+      indices.push(...Heap.getChildrenIndexOf(i).filter((l) => l < heapArray.length));
+    }
+    if ((n - 1) % 2) {
+      indices.push(n);
+    }
+    while (indices.length) {
+      const i = indices.shift() as number;
+      if (i < heapArray.length) {
+        if (this.compare(heapArray[i], topHeap.peek() as T) < 0) {
+          topHeap.replace(heapArray[i]);
+          indices.push(...Heap.getChildrenIndexOf(i));
+        }
+      }
+    }
+    return topHeap.toArray();
+  }
+
+  /**
+   * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+   *
+   * @param  {Number} n  Number of elements.
+   * @return {Array}     Array of length <= N.
+   */
+  _topHeapN(n: number): Array<T> {
+    const topHeap = this.clone();
+    const result: Array<T> = [];
+    for (let i = 0; i < n; ++i) {
+      result.push(topHeap.pop() as T);
+    }
+    return result;
+  }
+
+  /**
+   * Return index of the top element
+   * @param list
+   */
+  _topIdxOf(list: Array<T>): number {
+    if (!list.length) {
+      return -1;
+    }
+    let idx = 0;
+    let top = list[idx];
+    for (let i = 1; i < list.length; ++i) {
+      const comp = this.compare(list[i], top);
+      if (comp < 0) {
+        idx = i;
+        top = list[i];
+      }
+    }
+    return idx;
+  }
+
+  /**
+   * Return the top element
+   * @param list
+   */
+  _topOf(...list: Array<T>): T | undefined {
+    const heap = new Heap(this.compare);
+    heap.init(list);
+    return heap.peek();
   }
 }
 
