@@ -37,7 +37,8 @@
     "test": "jest --coverage --no-cache",
     "test:heapUsage": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "benchmark": "tsc --project benchmark/tsconfig.benchmark.json && node benchmark/compiled/benchmark/benchmark.js && rimraf benchmark/compiled"
   },
   "lint-staged": {
     "src/**/*.ts": [

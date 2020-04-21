@@ -10,6 +10,7 @@
 
 #private
 /art
+compiled/
 
 # misc
 .DS_Store
