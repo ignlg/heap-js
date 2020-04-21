@@ -177,7 +177,7 @@ export class Heap<T> implements Iterable<T> {
         return (
           repeat(' ', Math.floor(times / 2) * maxLength) +
           line
-            .map(el => {
+            .map((el) => {
               // centered
               const half = (maxLength - el.length) / 2;
               return repeat(' ', Math.ceil(half)) + el + repeat(' ', Math.floor(half));
@@ -341,7 +341,7 @@ export class Heap<T> implements Iterable<T> {
    */
   check(): T | undefined {
     return this.heapArray.find(
-      (el: T, j: number, arr: Array<T>) => !!this.getChildrenOf(j).find(ch => this.compare(el, ch) > 0)
+      (el: T, j: number, arr: Array<T>) => !!this.getChildrenOf(j).find((ch) => this.compare(el, ch) > 0)
     );
   }
 
@@ -378,7 +378,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Boolean}
    */
   contains(o: T, fn: IsEqual<T> = Heap.defaultIsEqual): boolean {
-    return this.heapArray.findIndex(el => fn(el, o)) >= 0;
+    return this.heapArray.findIndex((el) => fn(el, o)) >= 0;
   }
 
   /**
@@ -453,11 +453,11 @@ export class Heap<T> implements Iterable<T> {
    * @return {any} Extracted top node, undefined if empty
    */
   pop(): T | undefined {
-    const pop = this.heapArray.pop();
-    if (this.length > 0 && pop !== undefined) {
-      return this.replace(pop);
+    const last = this.heapArray.pop();
+    if (this.length > 0 && last !== undefined) {
+      return this.replace(last);
     }
-    return pop;
+    return last;
   }
 
   /**
@@ -500,7 +500,7 @@ export class Heap<T> implements Iterable<T> {
         this.pop();
         return true;
       } else {
-        const idx = this.heapArray.findIndex(el => fn(el, o));
+        const idx = this.heapArray.findIndex((el) => fn(el, o));
         if (idx >= 0) {
           if (idx === 0) {
             this.pop();
@@ -597,8 +597,8 @@ export class Heap<T> implements Iterable<T> {
    */
   getChildrenOf(idx: number): Array<T> {
     return Heap.getChildrenIndexOf(idx)
-      .map(i => this.heapArray[i])
-      .filter(e => e !== undefined);
+      .map((i) => this.heapArray[i])
+      .filter((e) => e !== undefined);
   }
 
   /**
