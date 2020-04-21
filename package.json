@@ -30,7 +30,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.build.json && rollup -c && rimraf compiled && typedoc --out dist/docs --target es6 --theme minimal src",
     "commit": "git-cz",
-    "lint": "tslint --fix --project tsconfig.json -t codeFrame 'src/**/*.ts'",
+    "lint": "eslint --fix 'src/**/*.ts'",
     "prebuild": "rimraf dist",
     "precommit": "lint-staged",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
@@ -44,15 +44,6 @@
       "prettier --write --no-semi",
       "git add"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    },
-    "validate-commit-msg": {
-      "types": "conventional-commit-types",
-      "helpMessage": "Use \"yarn commit\" instead, we use conventional-changelog format :) (https://github.com/commitizen/cz-cli)"
-    }
   },
   "jest": {
     "transform": {
@@ -77,11 +68,21 @@
     }
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.1.0",
+    "@rollup/plugin-node-resolve": "^7.1.3",
     "@types/jest": "^25.2.1",
-    "@types/node": "^13.11.1",
+    "@types/node": "^13.13.1",
+    "@typescript-eslint/eslint-plugin": "2",
+    "@typescript-eslint/parser": "^2.29.0",
     "coveralls": "^3.0.11",
     "cross-env": "^7.0.2",
-    "cz-conventional-changelog": "^3.1.0",
+    "eslint": "6",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-standard-with-typescript": "^15.0.1",
+    "eslint-plugin-import": "2",
+    "eslint-plugin-node": "11",
+    "eslint-plugin-promise": "4",
+    "eslint-plugin-standard": "4",
     "husky": "^4.2.5",
     "jest": "^25.2.4",
     "lint-staged": "^10.0.10",
@@ -89,17 +90,12 @@
     "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
     "rollup": "^2.6.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-sourcemaps": "^0.5.0",
     "ts-jest": "^25.3.0",
-    "ts-node": "^8.8.2",
+    "ts-node": "^8.9.0",
     "tsc-watch": "^4.2.3",
     "tslint": "^6.1.1",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-config-standard": "^9.0.0",
     "typedoc": "^0.17.4",
-    "typescript": "^3.8.3",
-    "validate-commit-msg": "^2.14.0"
+    "typescript": "^3.8.3"
   }
 }

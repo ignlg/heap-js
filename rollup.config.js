@@ -1,5 +1,5 @@
-import commonjs from 'rollup-plugin-commonjs';
-import resolve from 'rollup-plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 
 const pkg = require('./package.json');
@@ -11,7 +11,7 @@ export default {
   input: `compiled/${libraryName}.js`,
   output: [
     { file: pkg.main, name: camelCase(libraryName), format: 'umd', exports: 'named' },
-    { file: pkg.module, name: camelCase(libraryName), format: 'es', exports: 'named' }
+    { file: pkg.module, name: camelCase(libraryName), format: 'es', exports: 'named' },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [],
@@ -24,6 +24,6 @@ export default {
     resolve(),
 
     // Resolve source maps to the original source
-    sourceMaps()
-  ]
+    sourceMaps(),
+  ],
 };
