@@ -307,7 +307,7 @@ export declare class Heap<T> implements Iterable<T> {
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    _bottomN(n: number): Array<T>;
+    _bottomN_push(n: number): Array<T>;
     /**
      * Returns the inverse to the comparison function.
      * @return {Function}
@@ -331,25 +331,28 @@ export declare class Heap<T> implements Iterable<T> {
     _sortNodeUp(i: number): void;
     /**
      * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+     * Implementation: push.
      *
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    _topN(n: number): Array<T>;
+    _topN_push(n: number): Array<T>;
     /**
      * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+     * Implementation: init + push.
      *
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    _topLeafN(n: number): Array<T>;
+    _topN_fill(n: number): Array<T>;
     /**
      * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+     * Implementation: heap.
      *
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    _topHeapN(n: number): Array<T>;
+    _topN_heap(n: number): Array<T>;
     /**
      * Return index of the top element
      * @param list

@@ -345,7 +345,7 @@ var Heap = /** @class */ (function () {
         }
         else {
             // Some elements
-            var result = this._bottomN(n);
+            var result = this._bottomN_push(n);
             return result;
         }
     };
@@ -575,7 +575,7 @@ var Heap = /** @class */ (function () {
         }
         else {
             // Some elements
-            var result = this._topLeafN(n);
+            var result = this._topN_push(n);
             return result;
         }
     };
@@ -662,7 +662,7 @@ var Heap = /** @class */ (function () {
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    Heap.prototype._bottomN = function (n) {
+    Heap.prototype._bottomN_push = function (n) {
         // Use an inverted heap
         var bottomHeap = new Heap(this.compare);
         bottomHeap.limit = n;
@@ -740,11 +740,12 @@ var Heap = /** @class */ (function () {
     };
     /**
      * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+     * Implementation: push.
      *
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    Heap.prototype._topN = function (n) {
+    Heap.prototype._topN_push = function (n) {
         // Use an inverted heap
         var topHeap = new Heap(this._invertedCompare);
         topHeap.limit = n;
@@ -767,11 +768,12 @@ var Heap = /** @class */ (function () {
     };
     /**
      * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+     * Implementation: init + push.
      *
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    Heap.prototype._topLeafN = function (n) {
+    Heap.prototype._topN_fill = function (n) {
         // Use an inverted heap
         var heapArray = this.heapArray;
         var topHeap = new Heap(this._invertedCompare);
@@ -798,11 +800,12 @@ var Heap = /** @class */ (function () {
     };
     /**
      * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+     * Implementation: heap.
      *
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    Heap.prototype._topHeapN = function (n) {
+    Heap.prototype._topN_heap = function (n) {
         var topHeap = this.clone();
         var result = [];
         for (var i = 0; i < n; ++i) {
