@@ -78,7 +78,7 @@
     "@typescript-eslint/eslint-plugin": "2",
     "@typescript-eslint/parser": "^2.29.0",
     "benchmark": "^2.1.4",
-    "coveralls": "^3.0.12",
+    "coveralls": "^3.0.13",
     "cross-env": "^7.0.2",
     "eslint": "6",
     "eslint-config-prettier": "^6.11.0",
