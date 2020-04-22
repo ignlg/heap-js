@@ -326,7 +326,7 @@ export class Heap<T> implements Iterable<T> {
       return this.heapArray.slice(0);
     } else {
       // Some elements
-      const result = this._bottomN(n);
+      const result = this._bottomN_push(n);
       return result;
     }
   }
@@ -552,7 +552,7 @@ export class Heap<T> implements Iterable<T> {
       return this.heapArray.slice(0);
     } else {
       // Some elements
-      const result = this._topLeafN(n);
+      const result = this._topN_push(n);
       return result;
     }
   }
@@ -639,7 +639,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
    */
-  _bottomN(n: number): Array<T> {
+  _bottomN_push(n: number): Array<T> {
     // Use an inverted heap
     const bottomHeap = new Heap(this.compare);
     bottomHeap.limit = n;
@@ -728,11 +728,12 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+   * Implementation: push.
    *
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
    */
-  _topN(n: number): Array<T> {
+  _topN_push(n: number): Array<T> {
     // Use an inverted heap
     const topHeap = new Heap(this._invertedCompare);
     topHeap.limit = n;
@@ -755,11 +756,12 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+   * Implementation: init + push.
    *
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
    */
-  _topLeafN(n: number): Array<T> {
+  _topN_fill(n: number): Array<T> {
     // Use an inverted heap
     const { heapArray } = this;
     const topHeap = new Heap(this._invertedCompare);
@@ -787,11 +789,12 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Return the top (highest value) N elements of the heap, without corner cases, unsorted
+   * Implementation: heap.
    *
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
    */
-  _topHeapN(n: number): Array<T> {
+  _topN_heap(n: number): Array<T> {
     const topHeap = this.clone();
     const result: Array<T> = [];
     for (let i = 0; i < n; ++i) {
