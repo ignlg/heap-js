@@ -82,7 +82,7 @@ describe('Heap private', function () {
           const top = heap.toArray().slice(0);
           top.sort(heap.compare);
           for (const slice of [1, 6, 12, someValues.length]) {
-            const topN = heap._topN(slice);
+            const topN = heap._topN_push(slice);
             topN.sort(heap.compare);
             expect(topN).toEqual(top.slice(0, slice));
           }
@@ -94,7 +94,7 @@ describe('Heap private', function () {
             heap.init(someValues);
             const top = heap.toArray().slice(0);
             top.sort(heap.compare);
-            const topN = heap._topLeafN(slice);
+            const topN = heap._topN_fill(slice);
             topN.sort(heap.compare);
             expect(topN).toEqual(top.slice(0, slice));
           });
@@ -106,7 +106,7 @@ describe('Heap private', function () {
             heap.init(someValues);
             const top = heap.toArray().slice(0);
             top.sort(heap.compare);
-            expect(heap._topHeapN(slice)).toEqual(top.slice(0, slice));
+            expect(heap._topN_heap(slice)).toEqual(top.slice(0, slice));
           });
         }
       });
@@ -116,7 +116,7 @@ describe('Heap private', function () {
             heap.init(someValues);
             const bottom = heap.toArray().slice(0);
             bottom.sort(heap._invertedCompare);
-            const bottomN = heap._bottomN(slice);
+            const bottomN = heap._bottomN_push(slice);
             bottomN.sort(heap._invertedCompare);
             expect(bottomN).toEqual(bottom.slice(0, slice));
           });
