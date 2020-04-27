@@ -16,13 +16,69 @@ Instances are `integer min heap` by default.
 
 ## Is it faster than sorting an array?
 
-It depends on your usage, but for some scenarios it is much faster, like getting the smallest number:
+It depends on your usage, but for some scenarios it is much faster:
 
-    Size:  1000000 numbers
-    Range: 0..10000
+```
+heap vs array: push + pop/unshift 10
+	heap  x 554,069 ops/sec ±0.91% (90 runs sampled)
+	array x 352 ops/sec ±76.86% (5 runs sampled)
+heap vs array: push + pop/unshift 20
+	heap  x 238,919 ops/sec ±0.44% (92 runs sampled)
+	array x 168 ops/sec ±77.77% (5 runs sampled)
+heap vs array: push + pop/unshift 50
+	heap  x 72,130 ops/sec ±0.50% (93 runs sampled)
+	array x 121 ops/sec ±78.09% (5 runs sampled)
+heap vs array: push + pop/unshift 99
+	heap  x 31,122 ops/sec ±0.56% (93 runs sampled)
+	array x 102 ops/sec ±78.44% (5 runs sampled)
+heap vs array: push + peek 1
+	heap  x 14,448,496 ops/sec ±44.25% (50 runs sampled)
+	array x 2,732 ops/sec ±83.96% (5 runs sampled)
+heap vs array: push + peek 10
+	heap  x 1,313,326 ops/sec ±33.10% (57 runs sampled)
+	array x 411 ops/sec ±76.23% (5 runs sampled)
+heap vs array: push + peek 20
+	heap  x 622,332 ops/sec ±27.93% (63 runs sampled)
+	array x 207 ops/sec ±78.18% (5 runs sampled)
+heap vs array: push + peek 50
+	heap  x 210,854 ops/sec ±23.83% (74 runs sampled)
+	array x 139 ops/sec ±76.91% (5 runs sampled)
+heap vs array: push + peek 99
+	heap  x 98,478 ops/sec ±27.53% (66 runs sampled)
+	array x 121 ops/sec ±78.70% (5 runs sampled)
+heap vs array: init + peek 1
+	array x 30,050,200 ops/sec ±1.19% (93 runs sampled)
+	heap  x 16,529,194 ops/sec ±0.40% (88 runs sampled)
+heap vs array: init + peek 10
+	array x 1,732,353 ops/sec ±0.65% (92 runs sampled)
+	heap  x 992,285 ops/sec ±0.48% (93 runs sampled)
+heap vs array: init + peek 20
+	array x 766,889 ops/sec ±0.55% (91 runs sampled)
+	heap  x 534,210 ops/sec ±0.50% (94 runs sampled)
+heap vs array: init + peek 50
+	heap  x 224,072 ops/sec ±0.55% (93 runs sampled)
+	array x 208,388 ops/sec ±0.54% (92 runs sampled)
+heap vs array: init + peek 99
+	heap  x 107,524 ops/sec ±0.48% (92 runs sampled)
+	array x 84,717 ops/sec ±0.69% (93 runs sampled)
+heap vs array: push + top(1) of 100
+	heap  x 124,835 ops/sec ±40.37% (61 runs sampled)
+	array x 123 ops/sec ±78.49% (5 runs sampled)
+heap vs array: push + top(10) of 100
+	heap  x 86,513 ops/sec ±24.55% (78 runs sampled)
+	array x 133 ops/sec ±78.93% (5 runs sampled)
+heap vs array: push + top(20) of 100
+	heap  x 82,596 ops/sec ±18.41% (76 runs sampled)
+	array x 125 ops/sec ±79.28% (5 runs sampled)
+heap vs array: push + top(50) of 100
+	heap  x 59,210 ops/sec ±17.66% (82 runs sampled)
+	array x 125 ops/sec ±78.79% (5 runs sampled)
+heap vs array: push + top(99) of 100
+	heap  x 41,450 ops/sec ±6.60% (85 runs sampled)
+	array x 114 ops/sec ±78.34% (5 runs sampled)
+```
 
-    heap push + peek        =>  83.869ms
-    array push + sort + [0] => 438.619ms
+You can run your own benchmarks with `npm run benchmarks`
 
 ## Recent changes
 
