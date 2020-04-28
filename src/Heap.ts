@@ -690,7 +690,7 @@ export class Heap<T> implements Iterable<T> {
     const self = this.heapArray[i];
 
     const getPotentialParent = (best: number, j: number) => {
-      if (this.compare(this.heapArray[j], this.heapArray[best]) < 0) {
+      if (this.heapArray.length > j && this.compare(this.heapArray[j], this.heapArray[best]) < 0) {
         best = j;
       }
       return best;

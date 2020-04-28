@@ -1,7 +1,5 @@
 import Heap from '../src/Heap';
-
-const someValues = [3, 15, 2, 300, 16, 4, 1, 8, 50, 21, 58, 7, 4, 9, 78, 88];
-const otherValues = [12, 1, 2, 30, 116, 42, 12, 18, 1, 1, 1, 1];
+import { someValues } from './test-helpers';
 
 describe('Heap private', function () {
   const heaps = [
