@@ -2742,12 +2742,22 @@ img {
 			<a href="#is-it-faster-than-sorting-an-array" id="is-it-faster-than-sorting-an-array" style="color: inherit; text-decoration: none;">
 				<h2>Is it faster than sorting an array?</h2>
 			</a>
-			<p>It depends on your usage, but for some scenarios it is much faster, like getting the smallest number:</p>
-			<pre><code><span class="hljs-attribute">Size</span>:  1000000 numbers
-<span class="hljs-attribute">Range</span>: 0..10000
+			<p>It depends on your usage, but for some scenarios it is much faster:</p>
+			<pre><code>heap vs <span class="hljs-built_in">array</span>: push + pop/unshift <span class="hljs-number">50</span>
+    heap  x <span class="hljs-number">72</span>,<span class="hljs-number">130</span> ops/sec ±<span class="hljs-number">0.50</span>% (<span class="hljs-number">93</span> runs sampled)
+    <span class="hljs-built_in">array</span> x <span class="hljs-number">121</span> ops/sec ±<span class="hljs-number">78.09</span>% (<span class="hljs-number">5</span> runs sampled)
 
-<span class="smali">heap push + peek        =&gt;  83.869ms<span class="hljs-built_in">
-array </span>push + sort + [0] =&gt; 438.619ms</span></code></pre>
+heap vs <span class="hljs-built_in">array</span>: push + peek <span class="hljs-number">20</span>
+    heap  x <span class="hljs-number">622</span>,<span class="hljs-number">332</span> ops/sec ±<span class="hljs-number">27.93</span>% (<span class="hljs-number">63</span> runs sampled)
+    <span class="hljs-built_in">array</span> x <span class="hljs-number">207</span> ops/sec ±<span class="hljs-number">78.18</span>% (<span class="hljs-number">5</span> runs sampled)
+
+heap vs <span class="hljs-built_in">array</span>: push + top(<span class="hljs-number">1</span>) of <span class="hljs-number">100</span>
+    heap  x <span class="hljs-number">124</span>,<span class="hljs-number">835</span> ops/sec ±<span class="hljs-number">40.37</span>% (<span class="hljs-number">61</span> runs sampled)
+    <span class="hljs-built_in">array</span> x <span class="hljs-number">123</span> ops/sec ±<span class="hljs-number">78.49</span>% (<span class="hljs-number">5</span> runs sampled)
+
+heap vs <span class="hljs-built_in">array</span>: push + top(<span class="hljs-number">50</span>) of <span class="hljs-number">100</span>
+    heap  x <span class="hljs-number">59</span>,<span class="hljs-number">210</span> ops/sec ±<span class="hljs-number">17.66</span>% (<span class="hljs-number">82</span> runs sampled)
+    <span class="hljs-built_in">array</span> x <span class="hljs-number">125</span> ops/sec ±<span class="hljs-number">78.79</span>% (<span class="hljs-number">5</span> runs sampled)</code></pre><p>You can run your own benchmarks with <code>npm run benchmarks</code></p>
 			<a href="#recent-changes" id="recent-changes" style="color: inherit; text-decoration: none;">
 				<h2>Recent changes</h2>
 			</a>

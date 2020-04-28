@@ -703,7 +703,7 @@ var Heap = /** @class */ (function () {
         var moveIt = i < this.heapArray.length - 1;
         var self = this.heapArray[i];
         var getPotentialParent = function (best, j) {
-            if (_this.compare(_this.heapArray[j], _this.heapArray[best]) < 0) {
+            if (_this.heapArray.length > j && _this.compare(_this.heapArray[j], _this.heapArray[best]) < 0) {
                 best = j;
             }
             return best;
