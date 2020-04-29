@@ -38,9 +38,22 @@ heap vs array: push + top(50) of 100
 
 You can run your own benchmarks with `npm run benchmarks`
 
-## Recent changes
+## Changelog
 
-_v1.5:_ Adds `Iterator` interface and `iterator()` method.
+### 2.0.x
+
+The main breaking change is that now _`top(N)` does NOT sort the output_. It should not be part of the spec for a priority queue, the output should be the top N elements. It will be _partially ordered_ by definition, that is all.
+
+- `top(N)` is unordered, only the first element is guaranteed to be the top priority element.
+- Fixes custom heap issue [#31](https://github.com/ignlg/heap-js/issues/31).
+- Performance improvements.
+- More tests, even for custom heaps.
+- Auxiliary experimental topN algorithms.
+- (wip) Benchmarks.
+
+### v1.5.x
+
+- Adds `Iterator` interface and `iterator()` method.
 
 ## Examples
 

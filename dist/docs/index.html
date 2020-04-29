@@ -2758,10 +2758,27 @@ heap vs <span class="hljs-built_in">array</span>: push + top(<span class="hljs-n
 heap vs <span class="hljs-built_in">array</span>: push + top(<span class="hljs-number">50</span>) of <span class="hljs-number">100</span>
     heap  x <span class="hljs-number">59</span>,<span class="hljs-number">210</span> ops/sec ±<span class="hljs-number">17.66</span>% (<span class="hljs-number">82</span> runs sampled)
     <span class="hljs-built_in">array</span> x <span class="hljs-number">125</span> ops/sec ±<span class="hljs-number">78.79</span>% (<span class="hljs-number">5</span> runs sampled)</code></pre><p>You can run your own benchmarks with <code>npm run benchmarks</code></p>
-			<a href="#recent-changes" id="recent-changes" style="color: inherit; text-decoration: none;">
-				<h2>Recent changes</h2>
+			<a href="#changelog" id="changelog" style="color: inherit; text-decoration: none;">
+				<h2>Changelog</h2>
 			</a>
-			<p><em>v1.5:</em> Adds <code>Iterator</code> interface and <code>iterator()</code> method.</p>
+			<a href="#20x" id="20x" style="color: inherit; text-decoration: none;">
+				<h3>2.0.x</h3>
+			</a>
+			<p>The main breaking change is that now <em><code>top(N)</code> does NOT sort the output</em>. It should not be part of the spec for a priority queue, the output should be the top N elements. It will be <em>partially ordered</em> by definition, that is all.</p>
+			<ul>
+				<li><code>top(N)</code> is unordered, only the first element is guaranteed to be the top priority element.</li>
+				<li>Fixes custom heap issue <a href="https://github.com/ignlg/heap-js/issues/31">#31</a>.</li>
+				<li>Performance improvements.</li>
+				<li>More tests, even for custom heaps.</li>
+				<li>Auxiliary experimental topN algorithms.</li>
+				<li>(wip) Benchmarks.</li>
+			</ul>
+			<a href="#v15x" id="v15x" style="color: inherit; text-decoration: none;">
+				<h3>v1.5.x</h3>
+			</a>
+			<ul>
+				<li>Adds <code>Iterator</code> interface and <code>iterator()</code> method.</li>
+			</ul>
 			<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
 				<h2>Examples</h2>
 			</a>
