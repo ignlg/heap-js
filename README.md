@@ -51,7 +51,7 @@ The main breaking change is that now _`top(N)` does NOT sort the output_. It sho
 - Auxiliary experimental topN algorithms.
 - (wip) Benchmarks.
 
-### v1.5.x
+### 1.5.x
 
 - Adds `Iterator` interface and `iterator()` method.
 
