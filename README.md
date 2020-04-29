@@ -36,8 +36,6 @@ heap vs array: push + top(50) of 100
 	array x 125 ops/sec ±78.79% (5 runs sampled)
 ```
 
-You can run your own benchmarks with `npm run benchmarks`
-
 ## Changelog
 
 ### 2.0.x
@@ -191,17 +189,19 @@ Development of **Heap.js** happens in the open on GitHub, and I am grateful to t
 ### Dev setup
 
 ```bash
-yarn # if you use yarn
-
-npm install # if you use npm
+yarn
 ```
 
 ### Tests
 
 ```bash
-yarn test # if you use yarn
+npm run test
+```
 
-npm test # if you use npm
+### Benchmarks
+
+```bash
+npm run benchmarks
 ```
 
 ### License
