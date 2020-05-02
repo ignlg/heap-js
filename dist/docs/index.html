@@ -2764,12 +2764,12 @@ heap vs <span class="hljs-built_in">array</span>: push + top(<span class="hljs-n
 			<a href="#20x" id="20x" style="color: inherit; text-decoration: none;">
 				<h3>2.0.x</h3>
 			</a>
-			<p>The main breaking change is that now <em><code>top(N)</code> does NOT sort the output</em>. It should not be part of the spec for a priority queue, the output should be the top N elements. It will be <em>partially ordered</em> by definition, that is all.</p>
+			<p>The main breaking change is that now <em><code>top(N)</code> does NOT sort the output</em>. It should not be part of the spec for a priority queue, the output should be the top N elements. It will be <em>partially ordered</em> with the peek at index <code>0</code> by definition, that is all.</p>
 			<ul>
 				<li><code>top(N)</code> is unordered, only the first element is guaranteed to be the top priority element.</li>
 				<li>Fixes custom heap issue <a href="https://github.com/ignlg/heap-js/issues/31">#31</a>.</li>
 				<li>Performance improvements.</li>
-				<li>More tests, even for custom heaps.</li>
+				<li>More tests, including those for custom heaps.</li>
 				<li>Auxiliary experimental topN algorithms.</li>
 				<li>(wip) Benchmarks.</li>
 			</ul>
