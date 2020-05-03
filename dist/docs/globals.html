@@ -2886,6 +2886,8 @@ npm install --save heap-js <span class="hljs-comment"># if you use npm</span></c
 				<li><code>Heap.heappush(heapArray, item, comparator?)</code> that appends elements to the array-heap</li>
 				<li><code>Heap.heappushpop(heapArray, item, comparator?)</code> faster than <code>heappush</code> &amp; <code>heappop</code></li>
 				<li><code>Heap.heapreplace(heapArray, item, comparator?)</code> faster than <code>heappop</code> &amp; <code>heappush</code></li>
+				<li><code>Heap.nlargest(n, iterable, comparator?)</code> that gets the <code>n</code> most valuable elements of an iterable</li>
+				<li><code>Heap.nsmallest(n, iterable, comparator?)</code> that gets the <code>n</code> least valuable elements of an iterable</li>
 			</ul>
 			<p>Extras:</p>
 			<ul>
@@ -2895,8 +2897,6 @@ npm install --save heap-js <span class="hljs-comment"># if you use npm</span></c
 			<p>To do:</p>
 			<ul>
 				<li><code>merge(...iterables, comparator?)</code></li>
-				<li><code>nlargest(n, iterable, comparator?)</code></li>
-				<li><code>nsmallest(n, iterable, comparator?)</code></li>
 			</ul>
 			<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
 				<h2>Documentation</h2>
@@ -2941,6 +2941,7 @@ npm install --save heap-js <span class="hljs-comment"># if you use npm</span></c
 				<h2>Legend</h2>
 				<div class="tsd-legend-group">
 					<ul class="tsd-legend">
+						<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 						<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 					</ul>
 					<ul class="tsd-legend">

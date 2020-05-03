@@ -1,5 +1,6 @@
 export declare type Comparator<T> = (a: T, b: T) => number;
 export declare type IsEqual<T> = (e: T, o: T) => boolean;
+export declare const toInt: (n: number) => number;
 /**
  * Heap
  * @type {Class}
@@ -85,7 +86,7 @@ export declare class Heap<T> implements Iterable<T> {
      */
     static print<N>(heap: Heap<N>): string;
     /**
-     * Converts an array into an array-heap
+     * Converts an array into an array-heap, in place
      * @param  {Array}    arr      Array to be modified
      * @param  {Function} compare  Optional compare function
      * @return {Heap}              For convenience, it returns a Heap instance
@@ -122,21 +123,37 @@ export declare class Heap<T> implements Iterable<T> {
      */
     static heapreplace<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>): N;
     /**
-     * Return the `n` most valuable elements
-     * @param  {Array}    heapArr  Array, should be a heap
+     * Return the `n` most valuable elements of a heap-like Array
+     * @param  {Array}    heapArr  Array, should be an array-heap
      * @param  {number}   n        Max number of elements
      * @param  {Function} compare  Optional compare function
      * @return {any}               Elements
      */
     static heaptop<N>(heapArr: Array<N>, n?: number, compare?: Comparator<N>): N[];
     /**
-     * Return the `n` least valuable elements
-     * @param  {Array}    heapArr  Array, should be a heap
+     * Return the `n` least valuable elements of a heap-like Array
+     * @param  {Array}    heapArr  Array, should be an array-heap
      * @param  {number}   n        Max number of elements
      * @param  {Function} compare  Optional compare function
      * @return {any}               Elements
      */
     static heapbottom<N>(heapArr: Array<N>, n?: number, compare?: Comparator<N>): N[];
+    /**
+     * Return the `n` most valuable elements of an iterable
+     * @param  {number}   n        Max number of elements
+     * @param  {Iterable} Iterable Iterable list of elements
+     * @param  {Function} compare  Optional compare function
+     * @return {any}               Elements
+     */
+    static nlargest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>): N[];
+    /**
+     * Return the `n` least valuable elements of an iterable
+     * @param  {number}   n        Max number of elements
+     * @param  {Iterable} Iterable Iterable list of elements
+     * @param  {Function} compare  Optional compare function
+     * @return {any}               Elements
+     */
+    static nsmallest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>): N[];
     /**
      * Adds an element to the heap. Aliases: `offer`.
      * Same as: push(element)

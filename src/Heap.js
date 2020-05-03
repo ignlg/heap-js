@@ -1,4 +1,5 @@
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+"use strict";
+var __generator = (this && this.__generator) || function (thisArg, body) {
     var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
     return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
@@ -25,27 +26,15 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __read = (undefined && undefined.__read) || function (o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
 };
-var __spread = (undefined && undefined.__spread) || function () {
-    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
-    return ar;
-};
-var toInt = function (n) { return ~~n; };
+exports.__esModule = true;
+exports.toInt = function (n) { return ~~n; };
 /**
  * Heap
  * @type {Class}
@@ -231,7 +220,7 @@ var Heap = /** @class */ (function () {
               Python style
      */
     /**
-     * Converts an array into an array-heap, in place
+     * Converts an array into an array-heap
      * @param  {Array}    arr      Array to be modified
      * @param  {Function} compare  Optional compare function
      * @return {Heap}              For convenience, it returns a Heap instance
@@ -323,8 +312,7 @@ var Heap = /** @class */ (function () {
      */
     Heap.nlargest = function (n, iterable, compare) {
         var heap = new Heap(compare);
-        heap.heapArray = __spread(iterable);
-        heap.init();
+        heap.init(__spreadArrays(iterable));
         return heap.top(n);
     };
     /**
@@ -336,8 +324,7 @@ var Heap = /** @class */ (function () {
      */
     Heap.nsmallest = function (n, iterable, compare) {
         var heap = new Heap(compare);
-        heap.heapArray = __spread(iterable);
-        heap.init();
+        heap.init(__spreadArrays(iterable));
         return heap.bottom(n);
     };
     /*
@@ -363,7 +350,7 @@ var Heap = /** @class */ (function () {
     Heap.prototype.addAll = function (elements) {
         var _a;
         var i = this.length;
-        (_a = this.heapArray).push.apply(_a, __spread(elements));
+        (_a = this.heapArray).push.apply(_a, elements);
         for (var l = this.length; i < l; ++i) {
             this._sortNodeUp(i);
         }
@@ -388,7 +375,7 @@ var Heap = /** @class */ (function () {
         }
         else if (n >= this.heapArray.length) {
             // The whole heap
-            return __spread(this.heapArray);
+            return this.heapArray.slice(0);
         }
         else {
             // Some elements
@@ -443,7 +430,7 @@ var Heap = /** @class */ (function () {
      */
     Heap.prototype.init = function (array) {
         if (array) {
-            this.heapArray = __spread(array);
+            this.heapArray = array.slice(0);
         }
         for (var i = Math.floor(this.heapArray.length); i >= 0; --i) {
             this._sortNodeDown(i);
@@ -544,7 +531,7 @@ var Heap = /** @class */ (function () {
     Heap.prototype.pushpop = function (element) {
         var _a;
         if (this.compare(this.heapArray[0], element) < 0) {
-            _a = __read([this.heapArray[0], element], 2), element = _a[0], this.heapArray[0] = _a[1];
+            _a = [this.heapArray[0], element], element = _a[0], this.heapArray[0] = _a[1];
             this._sortNodeDown(0);
         }
         return element;
@@ -618,7 +605,7 @@ var Heap = /** @class */ (function () {
         }
         else if (n >= this.heapArray.length) {
             // The whole peek
-            return __spread(this.heapArray);
+            return this.heapArray.slice(0);
         }
         else {
             // Some elements
@@ -631,7 +618,7 @@ var Heap = /** @class */ (function () {
      * @return {Array}
      */
     Heap.prototype.toArray = function () {
-        return __spread(this.heapArray);
+        return this.heapArray.slice(0);
     };
     /**
      * String output, call to Array.prototype.toString()
@@ -713,8 +700,7 @@ var Heap = /** @class */ (function () {
         // Use an inverted heap
         var bottomHeap = new Heap(this.compare);
         bottomHeap.limit = n;
-        bottomHeap.heapArray = this.heapArray.slice(-n);
-        bottomHeap.init();
+        bottomHeap.init(this.heapArray.slice(-n));
         var startAt = this.heapArray.length - 1 - n;
         var parentStartAt = Heap.getParentIndexOf(startAt);
         var indices = [];
@@ -740,7 +726,7 @@ var Heap = /** @class */ (function () {
      */
     Heap.prototype._moveNode = function (j, k) {
         var _a;
-        _a = __read([this.heapArray[k], this.heapArray[j]], 2), this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
+        _a = [this.heapArray[k], this.heapArray[j]], this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
     };
     /**
      * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
@@ -749,6 +735,7 @@ var Heap = /** @class */ (function () {
     Heap.prototype._sortNodeDown = function (i) {
         var _this = this;
         var moveIt = i < this.heapArray.length - 1;
+        var moved = false;
         var self = this.heapArray[i];
         var getPotentialParent = function (best, j) {
             if (_this.heapArray.length > j && _this.compare(_this.heapArray[j], _this.heapArray[best]) < 0) {
@@ -804,11 +791,11 @@ var Heap = /** @class */ (function () {
             if (i < arr.length) {
                 if (topHeap.length < n) {
                     topHeap.push(arr[i]);
-                    indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i)));
+                    indices.push.apply(indices, Heap.getChildrenIndexOf(i));
                 }
                 else if (this.compare(arr[i], topHeap.peek()) < 0) {
                     topHeap.replace(arr[i]);
-                    indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i)));
+                    indices.push.apply(indices, Heap.getChildrenIndexOf(i));
                 }
             }
         }
@@ -826,12 +813,11 @@ var Heap = /** @class */ (function () {
         var heapArray = this.heapArray;
         var topHeap = new Heap(this._invertedCompare);
         topHeap.limit = n;
-        topHeap.heapArray = heapArray.slice(0, n);
-        topHeap.init();
+        topHeap.init(heapArray.slice(0, n));
         var branch = Heap.getParentIndexOf(n - 1) + 1;
         var indices = [];
         for (var i = branch; i < n; ++i) {
-            indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i).filter(function (l) { return l < heapArray.length; })));
+            indices.push.apply(indices, Heap.getChildrenIndexOf(i).filter(function (l) { return l < heapArray.length; }));
         }
         if ((n - 1) % 2) {
             indices.push(n);
@@ -841,7 +827,7 @@ var Heap = /** @class */ (function () {
             if (i < heapArray.length) {
                 if (this.compare(heapArray[i], topHeap.peek()) < 0) {
                     topHeap.replace(heapArray[i]);
-                    indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i)));
+                    indices.push.apply(indices, Heap.getChildrenIndexOf(i));
                 }
             }
         }
@@ -896,6 +882,5 @@ var Heap = /** @class */ (function () {
     };
     return Heap;
 }());
-
-export default Heap;
-export { Heap, toInt };
+exports.Heap = Heap;
+exports["default"] = Heap;

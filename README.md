@@ -166,6 +166,8 @@ To do:
 - `Heap.heappush(heapArray, item, comparator?)` that appends elements to the array-heap
 - `Heap.heappushpop(heapArray, item, comparator?)` faster than `heappush` & `heappop`
 - `Heap.heapreplace(heapArray, item, comparator?)` faster than `heappop` & `heappush`
+- `Heap.nlargest(n, iterable, comparator?)` that gets the `n` most valuable elements of an iterable
+- `Heap.nsmallest(n, iterable, comparator?)` that gets the `n` least valuable elements of an iterable
 
 Extras:
 
@@ -175,8 +177,6 @@ Extras:
 To do:
 
 - `merge(...iterables, comparator?)`
-- `nlargest(n, iterable, comparator?)`
-- `nsmallest(n, iterable, comparator?)`
 
 ## Documentation
 

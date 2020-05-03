@@ -31,6 +31,27 @@
             if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
         }
     };
+    var __read = (undefined && undefined.__read) || function (o, n) {
+        var m = typeof Symbol === "function" && o[Symbol.iterator];
+        if (!m) return o;
+        var i = m.call(o), r, ar = [], e;
+        try {
+            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+        }
+        catch (error) { e = { error: error }; }
+        finally {
+            try {
+                if (r && !r.done && (m = i["return"])) m.call(i);
+            }
+            finally { if (e) throw e.error; }
+        }
+        return ar;
+    };
+    var __spread = (undefined && undefined.__spread) || function () {
+        for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+        return ar;
+    };
+    var toInt = function (n) { return ~~n; };
     /**
      * Heap
      * @type {Class}
@@ -216,7 +237,7 @@
                   Python style
          */
         /**
-         * Converts an array into an array-heap
+         * Converts an array into an array-heap, in place
          * @param  {Array}    arr      Array to be modified
          * @param  {Function} compare  Optional compare function
          * @return {Heap}              For convenience, it returns a Heap instance
@@ -274,8 +295,8 @@
             return heap.replace(item);
         };
         /**
-         * Return the `n` most valuable elements
-         * @param  {Array}    heapArr  Array, should be a heap
+         * Return the `n` most valuable elements of a heap-like Array
+         * @param  {Array}    heapArr  Array, should be an array-heap
          * @param  {number}   n        Max number of elements
          * @param  {Function} compare  Optional compare function
          * @return {any}               Elements
@@ -287,8 +308,8 @@
             return heap.top(n);
         };
         /**
-         * Return the `n` least valuable elements
-         * @param  {Array}    heapArr  Array, should be a heap
+         * Return the `n` least valuable elements of a heap-like Array
+         * @param  {Array}    heapArr  Array, should be an array-heap
          * @param  {number}   n        Max number of elements
          * @param  {Function} compare  Optional compare function
          * @return {any}               Elements
@@ -297,6 +318,32 @@
             if (n === void 0) { n = 1; }
             var heap = new Heap(compare);
             heap.heapArray = heapArr;
+            return heap.bottom(n);
+        };
+        /**
+         * Return the `n` most valuable elements of an iterable
+         * @param  {number}   n        Max number of elements
+         * @param  {Iterable} Iterable Iterable list of elements
+         * @param  {Function} compare  Optional compare function
+         * @return {any}               Elements
+         */
+        Heap.nlargest = function (n, iterable, compare) {
+            var heap = new Heap(compare);
+            heap.heapArray = __spread(iterable);
+            heap.init();
+            return heap.top(n);
+        };
+        /**
+         * Return the `n` least valuable elements of an iterable
+         * @param  {number}   n        Max number of elements
+         * @param  {Iterable} Iterable Iterable list of elements
+         * @param  {Function} compare  Optional compare function
+         * @return {any}               Elements
+         */
+        Heap.nsmallest = function (n, iterable, compare) {
+            var heap = new Heap(compare);
+            heap.heapArray = __spread(iterable);
+            heap.init();
             return heap.bottom(n);
         };
         /*
@@ -322,7 +369,7 @@
         Heap.prototype.addAll = function (elements) {
             var _a;
             var i = this.length;
-            (_a = this.heapArray).push.apply(_a, elements);
+            (_a = this.heapArray).push.apply(_a, __spread(elements));
             for (var l = this.length; i < l; ++i) {
                 this._sortNodeUp(i);
             }
@@ -347,11 +394,11 @@
             }
             else if (n >= this.heapArray.length) {
                 // The whole heap
-                return this.heapArray.slice(0);
+                return __spread(this.heapArray);
             }
             else {
                 // Some elements
-                var result = this._bottomN_push(n);
+                var result = this._bottomN_push(~~n);
                 return result;
             }
         };
@@ -402,7 +449,7 @@
          */
         Heap.prototype.init = function (array) {
             if (array) {
-                this.heapArray = array.slice(0);
+                this.heapArray = __spread(array);
             }
             for (var i = Math.floor(this.heapArray.length); i >= 0; --i) {
                 this._sortNodeDown(i);
@@ -450,7 +497,7 @@
              * @return {Number}
              */
             set: function (_l) {
-                this._limit = _l;
+                this._limit = ~~_l;
                 this._applyLimit();
             },
             enumerable: true,
@@ -503,7 +550,7 @@
         Heap.prototype.pushpop = function (element) {
             var _a;
             if (this.compare(this.heapArray[0], element) < 0) {
-                _a = [this.heapArray[0], element], element = _a[0], this.heapArray[0] = _a[1];
+                _a = __read([this.heapArray[0], element], 2), element = _a[0], this.heapArray[0] = _a[1];
                 this._sortNodeDown(0);
             }
             return element;
@@ -577,11 +624,11 @@
             }
             else if (n >= this.heapArray.length) {
                 // The whole peek
-                return this.heapArray.slice(0);
+                return __spread(this.heapArray);
             }
             else {
                 // Some elements
-                var result = this._topN_push(n);
+                var result = this._topN_push(~~n);
                 return result;
             }
         };
@@ -590,7 +637,7 @@
          * @return {Array}
          */
         Heap.prototype.toArray = function () {
-            return this.heapArray.slice(0);
+            return __spread(this.heapArray);
         };
         /**
          * String output, call to Array.prototype.toString()
@@ -672,7 +719,8 @@
             // Use an inverted heap
             var bottomHeap = new Heap(this.compare);
             bottomHeap.limit = n;
-            bottomHeap.init(this.heapArray.slice(-n));
+            bottomHeap.heapArray = this.heapArray.slice(-n);
+            bottomHeap.init();
             var startAt = this.heapArray.length - 1 - n;
             var parentStartAt = Heap.getParentIndexOf(startAt);
             var indices = [];
@@ -698,7 +746,7 @@
          */
         Heap.prototype._moveNode = function (j, k) {
             var _a;
-            _a = [this.heapArray[k], this.heapArray[j]], this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
+            _a = __read([this.heapArray[k], this.heapArray[j]], 2), this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
         };
         /**
          * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
@@ -762,11 +810,11 @@
                 if (i < arr.length) {
                     if (topHeap.length < n) {
                         topHeap.push(arr[i]);
-                        indices.push.apply(indices, Heap.getChildrenIndexOf(i));
+                        indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i)));
                     }
                     else if (this.compare(arr[i], topHeap.peek()) < 0) {
                         topHeap.replace(arr[i]);
-                        indices.push.apply(indices, Heap.getChildrenIndexOf(i));
+                        indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i)));
                     }
                 }
             }
@@ -784,11 +832,12 @@
             var heapArray = this.heapArray;
             var topHeap = new Heap(this._invertedCompare);
             topHeap.limit = n;
-            topHeap.init(heapArray.slice(0, n));
+            topHeap.heapArray = heapArray.slice(0, n);
+            topHeap.init();
             var branch = Heap.getParentIndexOf(n - 1) + 1;
             var indices = [];
             for (var i = branch; i < n; ++i) {
-                indices.push.apply(indices, Heap.getChildrenIndexOf(i).filter(function (l) { return l < heapArray.length; }));
+                indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i).filter(function (l) { return l < heapArray.length; })));
             }
             if ((n - 1) % 2) {
                 indices.push(n);
@@ -798,7 +847,7 @@
                 if (i < heapArray.length) {
                     if (this.compare(heapArray[i], topHeap.peek()) < 0) {
                         topHeap.replace(heapArray[i]);
-                        indices.push.apply(indices, Heap.getChildrenIndexOf(i));
+                        indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i)));
                     }
                 }
             }
@@ -856,6 +905,7 @@
 
     exports.Heap = Heap;
     exports.default = Heap;
+    exports.toInt = toInt;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -1,6 +1,8 @@
 export type Comparator<T> = (a: T, b: T) => number;
 export type IsEqual<T> = (e: T, o: T) => boolean;
 
+export const toInt = (n: number) => ~~n;
+
 /**
  * Heap
  * @type {Class}
@@ -192,7 +194,7 @@ export class Heap<T> implements Iterable<T> {
             Python style
    */
   /**
-   * Converts an array into an array-heap
+   * Converts an array into an array-heap, in place
    * @param  {Array}    arr      Array to be modified
    * @param  {Function} compare  Optional compare function
    * @return {Heap}              For convenience, it returns a Heap instance
@@ -251,8 +253,8 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Return the `n` most valuable elements
-   * @param  {Array}    heapArr  Array, should be a heap
+   * Return the `n` most valuable elements of a heap-like Array
+   * @param  {Array}    heapArr  Array, should be an array-heap
    * @param  {number}   n        Max number of elements
    * @param  {Function} compare  Optional compare function
    * @return {any}               Elements
@@ -264,8 +266,8 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Return the `n` least valuable elements
-   * @param  {Array}    heapArr  Array, should be a heap
+   * Return the `n` least valuable elements of a heap-like Array
+   * @param  {Array}    heapArr  Array, should be an array-heap
    * @param  {number}   n        Max number of elements
    * @param  {Function} compare  Optional compare function
    * @return {any}               Elements
@@ -273,6 +275,34 @@ export class Heap<T> implements Iterable<T> {
   static heapbottom<N>(heapArr: Array<N>, n: number = 1, compare?: Comparator<N>) {
     const heap = new Heap(compare);
     heap.heapArray = heapArr;
+    return heap.bottom(n);
+  }
+
+  /**
+   * Return the `n` most valuable elements of an iterable
+   * @param  {number}   n        Max number of elements
+   * @param  {Iterable} Iterable Iterable list of elements
+   * @param  {Function} compare  Optional compare function
+   * @return {any}               Elements
+   */
+  static nlargest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>) {
+    const heap = new Heap(compare);
+    heap.heapArray = [...iterable];
+    heap.init();
+    return heap.top(n);
+  }
+
+  /**
+   * Return the `n` least valuable elements of an iterable
+   * @param  {number}   n        Max number of elements
+   * @param  {Iterable} Iterable Iterable list of elements
+   * @param  {Function} compare  Optional compare function
+   * @return {any}               Elements
+   */
+  static nsmallest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>) {
+    const heap = new Heap(compare);
+    heap.heapArray = [...iterable];
+    heap.init();
     return heap.bottom(n);
   }
 
@@ -323,10 +353,10 @@ export class Heap<T> implements Iterable<T> {
       return [this.heapArray[0]];
     } else if (n >= this.heapArray.length) {
       // The whole heap
-      return this.heapArray.slice(0);
+      return [...this.heapArray];
     } else {
       // Some elements
-      const result = this._bottomN_push(n);
+      const result = this._bottomN_push(~~n);
       return result;
     }
   }
@@ -383,7 +413,7 @@ export class Heap<T> implements Iterable<T> {
    */
   init(array?: Array<T>): void {
     if (array) {
-      this.heapArray = array.slice(0);
+      this.heapArray = [...array];
     }
     for (let i = Math.floor(this.heapArray.length); i >= 0; --i) {
       this._sortNodeDown(i);
@@ -431,7 +461,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Number}
    */
   set limit(_l: number) {
-    this._limit = _l;
+    this._limit = ~~_l;
     this._applyLimit();
   }
 
@@ -549,10 +579,10 @@ export class Heap<T> implements Iterable<T> {
       return [this.heapArray[0]];
     } else if (n >= this.heapArray.length) {
       // The whole peek
-      return this.heapArray.slice(0);
+      return [...this.heapArray];
     } else {
       // Some elements
-      const result = this._topN_push(n);
+      const result = this._topN_push(~~n);
       return result;
     }
   }
@@ -562,7 +592,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Array}
    */
   toArray(): Array<T> {
-    return this.heapArray.slice(0);
+    return [...this.heapArray];
   }
 
   /**
@@ -643,7 +673,8 @@ export class Heap<T> implements Iterable<T> {
     // Use an inverted heap
     const bottomHeap = new Heap(this.compare);
     bottomHeap.limit = n;
-    bottomHeap.init(this.heapArray.slice(-n));
+    bottomHeap.heapArray = this.heapArray.slice(-n);
+    bottomHeap.init();
     const startAt = this.heapArray.length - 1 - n;
     const parentStartAt = Heap.getParentIndexOf(startAt);
     const indices = [];
@@ -766,7 +797,8 @@ export class Heap<T> implements Iterable<T> {
     const { heapArray } = this;
     const topHeap = new Heap(this._invertedCompare);
     topHeap.limit = n;
-    topHeap.init(heapArray.slice(0, n));
+    topHeap.heapArray = heapArray.slice(0, n);
+    topHeap.init();
     const branch = Heap.getParentIndexOf(n - 1) + 1;
     const indices = [];
     for (let i = branch; i < n; ++i) {
