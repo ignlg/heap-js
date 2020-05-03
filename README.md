@@ -38,7 +38,13 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
-### 2.0.x
+### 2.1
+
+- Adds `Heap.nlargest` as heapq.
+- Adds `Heap.nsmallest` as heapq.
+- Sanitizes `top` / `bottom` input to force an integer.
+
+### 2.0
 
 The main breaking change is that now _`top(N)` does NOT sort the output_. It should not be part of the spec for a priority queue, the output should be the top N elements. It will be _partially ordered_ with the peek at index `0` by definition, that is all.
 
@@ -49,7 +55,7 @@ The main breaking change is that now _`top(N)` does NOT sort the output_. It sho
 - Auxiliary experimental topN algorithms.
 - (wip) Benchmarks.
 
-### 1.5.x
+### 1.5
 
 - Adds `Iterator` interface and `iterator()` method.
 
