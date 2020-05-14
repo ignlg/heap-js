@@ -14,6 +14,8 @@ Easy to use, known interfaces, tested, and well documented JavaScript binary hea
 
 Instances are `integer min heap` by default.
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ignlg/heap-js)
+
 ## Is it faster than sorting an array?
 
 It depends on your usage, but for some scenarios it is much faster:
