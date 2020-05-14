@@ -475,7 +475,7 @@ var Heap = /** @class */ (function () {
         get: function () {
             return this.heapArray.length;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Heap.prototype, "limit", {
@@ -494,7 +494,7 @@ var Heap = /** @class */ (function () {
             this._limit = ~~_l;
             this._applyLimit();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**

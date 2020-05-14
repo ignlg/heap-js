@@ -481,7 +481,7 @@
             get: function () {
                 return this.heapArray.length;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(Heap.prototype, "limit", {
@@ -500,7 +500,7 @@
                 this._limit = ~~_l;
                 this._applyLimit();
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         /**
