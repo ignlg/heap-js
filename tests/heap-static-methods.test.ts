@@ -38,7 +38,7 @@ describe('Heap class', function () {
       const heap = new Heap();
       heap.init(someValues);
       const printed = Heap.print(heap);
-      const values = someValues.slice(0);
+      const values = [...someValues];
       while (values.length) {
         expect(printed).toContain(values.pop());
       }
@@ -46,33 +46,33 @@ describe('Heap class', function () {
   });
   describe('#heapify', function () {
     it('should return a heap from an array', function () {
-      const heapArr = someValues.slice(0);
+      const heapArr = [...someValues];
       Heap.heapify(heapArr);
       expect(Array.isArray(heapArr)).toBe(true);
       expect(heapArr.length).toEqual(someValues.length);
 
       const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
+      checkHeap.heapArray = [...heapArr];
       expect(checkHeap.check()).not.toBeDefined();
     });
   });
   describe('#heappush', function () {
     it('should push an element to the array as a heap', function () {
-      const heapArr = someValues.slice(0);
+      const heapArr = [...someValues];
       Heap.heapify(heapArr);
       Heap.heappush(heapArr, 30000);
       expect(Array.isArray(heapArr)).toBe(true);
       expect(heapArr.length).toEqual(someValues.length + 1);
 
       const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
+      checkHeap.heapArray = [...heapArr];
       expect(checkHeap.check()).not.toBeDefined();
       expect(checkHeap.contains(30000)).toBe(true);
     });
   });
   describe('#heappop', function () {
     it('should pop the peek of the array as a heap', function () {
-      const heapArr = someValues.slice(0);
+      const heapArr = [...someValues];
       Heap.heapify(heapArr);
       const peek = Heap.heappop(heapArr) as number;
       expect(Array.isArray(heapArr)).toBe(true);
@@ -80,13 +80,13 @@ describe('Heap class', function () {
       expect(Math.min(peek, ...heapArr)).toEqual(peek);
 
       const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
+      checkHeap.heapArray = [...heapArr];
       expect(checkHeap.check()).not.toBeDefined();
     });
   });
   describe('#heappushpop', function () {
     it('should push and pop as a heap', function () {
-      const heapArr = someValues.slice(0);
+      const heapArr = [...someValues];
       Heap.heapify(heapArr);
 
       let peek = Heap.heappushpop(heapArr, -1);
@@ -103,13 +103,13 @@ describe('Heap class', function () {
       expect(peek).toBeLessThan(500);
 
       const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
+      checkHeap.heapArray = [...heapArr];
       expect(checkHeap.check()).not.toBeDefined();
     });
   });
   describe('#heapreplace', function () {
     it('should pop and push as a heap', function () {
-      const heapArr = someValues.slice(0);
+      const heapArr = [...someValues];
       Heap.heapify(heapArr);
 
       let _in = -1;
@@ -135,7 +135,7 @@ describe('Heap class', function () {
       expect(heapArr[0]).toBeLessThanOrEqual(Math.min(...heapArr));
 
       const checkHeap = new Heap<number>();
-      checkHeap.heapArray = heapArr.slice(0);
+      checkHeap.heapArray = [...heapArr];
       expect(checkHeap.check()).not.toBeDefined();
     });
   });
@@ -174,6 +174,37 @@ describe('Heap class', function () {
       }
 
       expect(Heap.heapbottom(arr)).toEqual(Heap.heapbottom(arr, 1));
+    });
+  });
+  describe('#nlargest', function () {
+    it('should return the n most valuable elements', function () {
+      const arr = [1, 12, 3, 41, 51, 16, 7];
+      const sortedArr = [...arr];
+      sortedArr.sort(Heap.minComparatorNumber);
+      // One
+      expect(Heap.nlargest(1, arr)).toEqual(sortedArr.slice(0, 1));
+      // Half
+      const half = Heap.nlargest(Math.floor(arr.length / 2), arr);
+      half.sort(Heap.minComparatorNumber);
+      expect(half).toEqual(sortedArr.slice(0, arr.length / 2));
+      // Full
+      const full = Heap.nlargest(arr.length, arr);
+      full.sort(Heap.minComparatorNumber);
+      expect(full).toEqual(sortedArr);
+    });
+  });
+  describe('#nsmallest', function () {
+    it('should return the n least valuable elements', function () {
+      const arr = [1, 12, 3, 41, 51, 16, 7];
+      const sortedArr = [...arr];
+      sortedArr.sort(Heap.minComparatorNumber);
+      expect(Heap.nsmallest(1, arr)).toEqual([Math.max(...arr)]);
+      const half = Heap.nsmallest(arr.length / 2, arr);
+      half.sort(Heap.minComparatorNumber);
+      expect(half).toEqual(sortedArr.slice(arr.length / 2 + 1));
+      const full = Heap.nlargest(arr.length, arr);
+      full.sort(Heap.minComparatorNumber);
+      expect(full).toEqual(sortedArr);
     });
   });
 });

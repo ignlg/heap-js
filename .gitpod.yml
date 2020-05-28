@@ -1,0 +1,8 @@
+tasks:
+  - init: |
+      touch /tmp/.npm-lock
+      yarn install
+      rm /tmp/.npm-lock
+    command: yarn run start
+  - init: sleep 1 && while [ -f /tmp/.npm-lock ]; do sleep 1; done
+    command: yarn run test:watch

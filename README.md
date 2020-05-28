@@ -14,6 +14,8 @@ Easy to use, known interfaces, tested, and well documented JavaScript binary hea
 
 Instances are `integer min heap` by default.
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ignlg/heap-js)
+
 ## Is it faster than sorting an array?
 
 It depends on your usage, but for some scenarios it is much faster:
@@ -38,7 +40,14 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
-### 2.0.x
+### 2.1
+
+- Adds `Heap.nlargest` as heapq.
+- Adds `Heap.nsmallest` as heapq.
+- Sanitizes `top` / `bottom` input to force an integer.
+- Linted with Eslint.
+
+### 2.0
 
 The main breaking change is that now _`top(N)` does NOT sort the output_. It should not be part of the spec for a priority queue, the output should be the top N elements. It will be _partially ordered_ with the peek at index `0` by definition, that is all.
 
@@ -49,7 +58,7 @@ The main breaking change is that now _`top(N)` does NOT sort the output_. It sho
 - Auxiliary experimental topN algorithms.
 - (wip) Benchmarks.
 
-### 1.5.x
+### 1.5
 
 - Adds `Iterator` interface and `iterator()` method.
 
@@ -166,6 +175,8 @@ To do:
 - `Heap.heappush(heapArray, item, comparator?)` that appends elements to the array-heap
 - `Heap.heappushpop(heapArray, item, comparator?)` faster than `heappush` & `heappop`
 - `Heap.heapreplace(heapArray, item, comparator?)` faster than `heappop` & `heappush`
+- `Heap.nlargest(n, iterable, comparator?)` that gets the `n` most valuable elements of an iterable
+- `Heap.nsmallest(n, iterable, comparator?)` that gets the `n` least valuable elements of an iterable
 
 Extras:
 
@@ -175,8 +186,6 @@ Extras:
 To do:
 
 - `merge(...iterables, comparator?)`
-- `nlargest(n, iterable, comparator?)`
-- `nsmallest(n, iterable, comparator?)`
 
 ## Documentation
 
