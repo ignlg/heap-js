@@ -45,6 +45,7 @@ heap vs array: push + top(50) of 100
 - Adds `Heap.nlargest` as heapq.
 - Adds `Heap.nsmallest` as heapq.
 - Sanitizes `top` / `bottom` input to force an integer.
+- Linted with Eslint.
 
 ### 2.0
 
