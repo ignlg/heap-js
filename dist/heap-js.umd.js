@@ -408,7 +408,7 @@
          */
         Heap.prototype.check = function () {
             var _this = this;
-            return this.heapArray.find(function (el, j, arr) { return !!_this.getChildrenOf(j).find(function (ch) { return _this.compare(el, ch) > 0; }); });
+            return this.heapArray.find(function (el, j) { return !!_this.getChildrenOf(j).find(function (ch) { return _this.compare(el, ch) > 0; }); });
         };
         /**
          * Remove all of the elements from this heap.

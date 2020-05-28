@@ -129,7 +129,7 @@ export declare class Heap<T> implements Iterable<T> {
      * @param  {Function} compare  Optional compare function
      * @return {any}               Elements
      */
-    static heaptop<N>(heapArr: Array<N>, n?: number, compare?: Comparator<N>): N[];
+    static heaptop<N>(heapArr: Array<N>, n?: number, compare?: Comparator<N>): Array<N>;
     /**
      * Return the `n` least valuable elements of a heap-like Array
      * @param  {Array}    heapArr  Array, should be an array-heap
@@ -137,7 +137,7 @@ export declare class Heap<T> implements Iterable<T> {
      * @param  {Function} compare  Optional compare function
      * @return {any}               Elements
      */
-    static heapbottom<N>(heapArr: Array<N>, n?: number, compare?: Comparator<N>): N[];
+    static heapbottom<N>(heapArr: Array<N>, n?: number, compare?: Comparator<N>): Array<N>;
     /**
      * Return the `n` most valuable elements of an iterable
      * @param  {number}   n        Max number of elements
@@ -145,7 +145,7 @@ export declare class Heap<T> implements Iterable<T> {
      * @param  {Function} compare  Optional compare function
      * @return {any}               Elements
      */
-    static nlargest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>): N[];
+    static nlargest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>): Array<N>;
     /**
      * Return the `n` least valuable elements of an iterable
      * @param  {number}   n        Max number of elements
@@ -153,7 +153,7 @@ export declare class Heap<T> implements Iterable<T> {
      * @param  {Function} compare  Optional compare function
      * @return {any}               Elements
      */
-    static nsmallest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>): N[];
+    static nsmallest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>): Array<N>;
     /**
      * Adds an element to the heap. Aliases: `offer`.
      * Same as: push(element)
@@ -214,7 +214,7 @@ export declare class Heap<T> implements Iterable<T> {
     /**
      * Get the leafs of the tree (no children nodes)
      */
-    leafs(): T[];
+    leafs(): Array<T>;
     /**
      * Length of the heap.
      * @return {Number}
@@ -309,11 +309,11 @@ export declare class Heap<T> implements Iterable<T> {
     /**
      * Iterator interface
      */
-    [Symbol.iterator](): Generator<T, void, unknown>;
+    [Symbol.iterator](): Iterator<T>;
     /**
      * Returns an iterator. To comply with Java interface.
      */
-    iterator(): this;
+    iterator(): Iterable<T>;
     /**
      * Limit heap size if needed
      */
