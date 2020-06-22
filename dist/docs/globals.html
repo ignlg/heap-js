@@ -2793,7 +2793,7 @@ heap vs <span class="hljs-built_in">array</span>: push + top(<span class="hljs-n
 				<h2>Examples</h2>
 			</a>
 			<pre><code class="language-js"><span class="hljs-comment">// Basic usage example</span>
-<span class="hljs-keyword">import</span> Heap <span class="hljs-keyword">from</span> <span class="hljs-string">'heap-js'</span>;
+<span class="hljs-keyword">import</span> Heap <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;heap-js&#x27;</span>;
 
 <span class="hljs-keyword">const</span> minHeap = <span class="hljs-keyword">new</span> Heap();
 <span class="hljs-keyword">const</span> maxHeap = <span class="hljs-keyword">new</span> Heap(Heap.maxComparator);
@@ -2807,10 +2807,10 @@ minHeap.push(<span class="hljs-number">2</span>);
 <span class="hljs-comment">// Iterator</span>
 maxHeap.init([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">12</span>, <span class="hljs-number">8</span>]);
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> value <span class="hljs-keyword">of</span> maxHeap) {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Next top value is'</span>, value);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Next top value is&#x27;</span>, value);
 }</code></pre>
 			<pre><code class="language-js"><span class="hljs-comment">// Priority Queue usage example</span>
-<span class="hljs-keyword">const</span> { Heap } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'heap-js'</span>);
+<span class="hljs-keyword">const</span> { Heap } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;heap-js&#x27;</span>);
 
 <span class="hljs-keyword">const</span> tasks = db.collection.find().toArray();
 <span class="hljs-keyword">const</span> customPriorityComparator = <span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a.priority - b.priority;
@@ -2823,7 +2823,7 @@ priorityQueue.init(tasks);
   <span class="hljs-comment">// Do something</span>
 }</code></pre>
 			<pre><code class="language-js"><span class="hljs-comment">// Python-like static methods example</span>
-<span class="hljs-keyword">import</span> { Heap } <span class="hljs-keyword">from</span> <span class="hljs-string">'heap-js'</span>;
+<span class="hljs-keyword">import</span> { Heap } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;heap-js&#x27;</span>;
 <span class="hljs-keyword">const</span> numbers = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>];
 
 Heap.heapify(numbers);
