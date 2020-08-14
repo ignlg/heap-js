@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
-    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/benchmark": "^1.0.33",
     "@types/jest": "^26.0.8",
     "@types/node": "^14.0.27",
