@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (global = global || self, factory(global.heap = {}));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.heap = {}));
 }(this, (function (exports) { 'use strict';
 
     var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
