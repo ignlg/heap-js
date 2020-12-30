@@ -189,7 +189,7 @@ To do:
 
 ## Documentation
 
-Extensive documentation included at `./dist/docs`. It'll be published to `gh-pages` in a next release.
+https://ignlg.github.io/heap-js/
 
 ## Contributing
 
