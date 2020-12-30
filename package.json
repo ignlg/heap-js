@@ -28,7 +28,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "build": "tsc --project tsconfig.build.json && rollup -c && rimraf compiled && typedoc --out dist/docs --theme minimal src/Heap.ts",
+    "build": "tsc --project tsconfig.build.json && rollup -c && rimraf compiled && typedoc",
     "lint": "eslint --fix 'src/**/*.ts'",
     "prebuild": "rimraf dist",
     "precommit": "lint-staged",
