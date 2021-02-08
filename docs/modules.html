@@ -1624,6 +1624,12 @@ pre code {
   background-color: transparent;
 }
 
+blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 4px solid gray;
+}
+
 .tsd-typography {
   line-height: 1.333em;
 }
@@ -2765,8 +2771,8 @@ img {
 			<pre><code class="language-js"><span style="color: #008000">// Basic usage example</span>
 <span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">Heap</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;heap-js&#039;</span><span style="color: #000000">;</span>
 
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">minHeap</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Heap</span><span style="color: #000000">();</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">maxHeap</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Heap</span><span style="color: #000000">(</span><span style="color: #001080">Heap</span><span style="color: #000000">.</span><span style="color: #001080">maxComparator</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">minHeap</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Heap</span><span style="color: #000000">();</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">maxHeap</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Heap</span><span style="color: #000000">(</span><span style="color: #001080">Heap</span><span style="color: #000000">.</span><span style="color: #001080">maxComparator</span><span style="color: #000000">);</span>
 
 <span style="color: #001080">minHeap</span><span style="color: #000000">.</span><span style="color: #795E26">init</span><span style="color: #000000">([</span><span style="color: #098658">5</span><span style="color: #000000">, </span><span style="color: #098658">18</span><span style="color: #000000">, </span><span style="color: #098658">1</span><span style="color: #000000">]);</span>
 <span style="color: #001080">minHeap</span><span style="color: #000000">.</span><span style="color: #795E26">push</span><span style="color: #000000">(</span><span style="color: #098658">2</span><span style="color: #000000">);</span>
@@ -2786,7 +2792,7 @@ img {
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tasks</span><span style="color: #000000"> = </span><span style="color: #001080">db</span><span style="color: #000000">.</span><span style="color: #001080">collection</span><span style="color: #000000">.</span><span style="color: #795E26">find</span><span style="color: #000000">().</span><span style="color: #795E26">toArray</span><span style="color: #000000">();</span>
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">customPriorityComparator</span><span style="color: #000000"> = (</span><span style="color: #001080">a</span><span style="color: #000000">, </span><span style="color: #001080">b</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">a</span><span style="color: #000000">.</span><span style="color: #001080">priority</span><span style="color: #000000"> - </span><span style="color: #001080">b</span><span style="color: #000000">.</span><span style="color: #001080">priority</span><span style="color: #000000">;</span>
 
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">priorityQueue</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Heap</span><span style="color: #000000">(</span><span style="color: #001080">customPriorityComparator</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">priorityQueue</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Heap</span><span style="color: #000000">(</span><span style="color: #001080">customPriorityComparator</span><span style="color: #000000">);</span>
 <span style="color: #001080">priorityQueue</span><span style="color: #000000">.</span><span style="color: #795E26">init</span><span style="color: #000000">(</span><span style="color: #001080">tasks</span><span style="color: #000000">);</span>
 
 <span style="color: #008000">// priorityQueue === priorityQueue.iterator()</span>
@@ -2814,7 +2820,7 @@ img {
 			<a href="#constructor" id="constructor" style="color: inherit; text-decoration: none;">
 				<h2>Constructor</h2>
 			</a>
-			<pre><code class="language-js"><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Heap</span><span style="color: #000000">([</span><span style="color: #001080">comparator</span><span style="color: #000000">]);</span>
+			<pre><code class="language-js"><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Heap</span><span style="color: #000000">([</span><span style="color: #001080">comparator</span><span style="color: #000000">]);</span>
 </code></pre>
 			<p>Basic comparators already included:</p>
 			<ul>
@@ -2959,7 +2965,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Comparator&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/afe516b/src/Heap.ts#L1">Heap.ts:1</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L1">Heap.ts:1</a></li>
 					</ul>
 				</aside>
 				<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2999,7 +3005,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Is<wbr>Equal&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, o<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/afe516b/src/Heap.ts#L2">Heap.ts:2</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L2">Heap.ts:2</a></li>
 					</ul>
 				</aside>
 				<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3046,7 +3052,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/afe516b/src/Heap.ts#L4">Heap.ts:4</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L4">Heap.ts:4</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
