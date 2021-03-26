@@ -6,7 +6,29 @@
 	<title>Heap | heap-js</title>
 	<meta name="description" content="Documentation for heap-js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
+	<style type="text/css">:root {
+  --color-background: #fdfdfd;
+  --color-text: #222;
+  --color-text-aside: #707070;
+  --color-link: #4da6ff;
+  --color-menu-divider: #eee;
+  --color-menu-divider-focus: #000;
+  --color-menu-label: #707070;
+  --color-panel: #fff;
+  --color-panel-divider: #eee;
+  --color-comment-tag: #707070;
+  --color-comment-tag-text: #fff;
+  --color-code-background: rgba(0, 0, 0, 0.04);
+  --color-ts: #9600ff;
+  --color-ts-interface: #647f1b;
+  --color-ts-enum: #937210;
+  --color-ts-class: #0672de;
+  --color-ts-private: #707070;
+  --color-toolbar: #fff;
+  --color-toolbar-text: #333;
+}
+
+/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
 /* ==========================================================================
  * * HTML5 display definitions
  * * ========================================================================== */
@@ -1593,14 +1615,14 @@ ul.tsd-descriptions > li > :last-child > :last-child > :last-child,
   }
 }
 body {
-  background: #fdfdfd;
+  background: var(--color-background);
   font-family: "Segoe UI", sans-serif;
   font-size: 16px;
-  color: #222;
+  color: var(--color-text);
 }
 
 a {
-  color: #4da6ff;
+  color: var(--color-link);
   text-decoration: none;
 }
 a:hover {
@@ -1612,7 +1634,7 @@ code, pre {
   padding: 0.2em;
   margin: 0;
   font-size: 14px;
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--color-code-background);
 }
 
 pre {
@@ -1678,7 +1700,7 @@ blockquote {
     padding: 20px 20px 0 0;
     max-width: 450px;
     visibility: hidden;
-    background-color: #fff;
+    background-color: var(--color-panel);
     transform: translate(100%, 0);
   }
   html.default .col-menu > *:last-child {
@@ -1738,7 +1760,7 @@ html.default.has-menu .col-content {
 .tsd-page-title {
   padding: 70px 0 20px 0;
   margin: 0 0 40px 0;
-  background: #fff;
+  background: var(--color-panel);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
 }
 .tsd-page-title h1 {
@@ -1748,10 +1770,10 @@ html.default.has-menu .col-content {
 .tsd-breadcrumb {
   margin: 0;
   padding: 0;
-  color: #707070;
+  color: var(--color-text-aside);
 }
 .tsd-breadcrumb a {
-  color: #707070;
+  color: var(--color-text-aside);
   text-decoration: none;
 }
 .tsd-breadcrumb a:hover {
@@ -1824,8 +1846,8 @@ dl.tsd-comment-tags dt {
   padding: 1px 5px;
   margin: 0 10px 0 0;
   border-radius: 4px;
-  border: 1px solid #707070;
-  color: #707070;
+  border: 1px solid var(--color-comment-tag);
+  color: var(--color-comment-tag);
   font-size: 0.8em;
   font-weight: normal;
 }
@@ -1895,7 +1917,7 @@ dl.tsd-comment-tags p {
     top: 40px;
     right: 20px;
     height: auto;
-    background-color: #fff;
+    background-color: var(--color-panel);
     visibility: hidden;
     transform: translate(50%, 0);
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
@@ -1917,11 +1939,11 @@ dl.tsd-comment-tags p {
 }
 
 footer {
-  border-top: 1px solid #eee;
-  background-color: #fff;
+  border-top: 1px solid var(--color-panel-divider);
+  background-color: var(--color-panel);
 }
 footer.with-border-bottom {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-panel-divider);
 }
 footer .tsd-legend-group {
   font-size: 0;
@@ -1959,7 +1981,7 @@ footer .tsd-legend {
 .tsd-index-panel h3 {
   margin: 0 -20px 10px -20px;
   padding: 0 20px 10px 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-panel-divider);
 }
 .tsd-index-panel ul.tsd-index-list {
   -webkit-column-count: 3;
@@ -2003,39 +2025,39 @@ footer .tsd-legend {
 }
 .tsd-index-panel a,
 .tsd-index-panel .tsd-parent-kind-module a {
-  color: #9600ff;
+  color: var(--color-ts);
 }
 .tsd-index-panel .tsd-parent-kind-interface a {
-  color: #647F1B;
+  color: var(--color-ts-interface);
 }
 .tsd-index-panel .tsd-parent-kind-enum a {
-  color: #937210;
+  color: var(--color-ts-enum);
 }
 .tsd-index-panel .tsd-parent-kind-class a {
-  color: #0672DE;
+  color: var(--color-ts-class);
 }
 .tsd-index-panel .tsd-kind-module a {
-  color: #9600ff;
+  color: var(--color-ts);
 }
 .tsd-index-panel .tsd-kind-interface a {
-  color: #647F1B;
+  color: var(--color-ts-interface);
 }
 .tsd-index-panel .tsd-kind-enum a {
-  color: #937210;
+  color: var(--color-ts-enum);
 }
 .tsd-index-panel .tsd-kind-class a {
-  color: #0672DE;
+  color: var(--color-ts-class);
 }
 .tsd-index-panel .tsd-is-private a {
-  color: #707070;
+  color: var(--color-ts-private);
 }
 
 .tsd-flag {
   display: inline-block;
   padding: 1px 5px;
   border-radius: 4px;
-  color: #fff;
-  background-color: #707070;
+  color: var(--color-comment-tag-text);
+  background-color: var(--color-comment-tag);
   text-indent: 0;
   font-size: 14px;
   font-weight: normal;
@@ -2055,19 +2077,19 @@ footer .tsd-legend {
   border-bottom: none;
 }
 .tsd-member a[data-tsd-kind] {
-  color: #9600ff;
+  color: var(--color-ts);
 }
 .tsd-member a[data-tsd-kind=Interface] {
-  color: #647F1B;
+  color: var(--color-ts-interface);
 }
 .tsd-member a[data-tsd-kind=Enum] {
-  color: #937210;
+  color: var(--color-ts-enum);
 }
 .tsd-member a[data-tsd-kind=Class] {
-  color: #0672DE;
+  color: var(--color-ts-class);
 }
 .tsd-member a[data-tsd-kind=Private] {
-  color: #707070;
+  color: var(--color-ts-private);
 }
 
 .tsd-navigation {
@@ -2078,7 +2100,7 @@ footer .tsd-legend {
   padding-top: 2px;
   padding-bottom: 2px;
   border-left: 2px solid transparent;
-  color: #222;
+  color: var(--color-text);
   text-decoration: none;
   transition: border-left-color 0.1s;
 }
@@ -2121,10 +2143,10 @@ footer .tsd-legend {
   padding-left: 105px;
 }
 .tsd-navigation.primary > ul {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-panel-divider);
 }
 .tsd-navigation.primary li {
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-panel-divider);
 }
 .tsd-navigation.primary li.current > a {
   font-weight: bold;
@@ -2132,7 +2154,7 @@ footer .tsd-legend {
 .tsd-navigation.primary li.label span {
   display: block;
   padding: 20px 0 6px 5px;
-  color: #707070;
+  color: var(--color-menu-label);
 }
 .tsd-navigation.primary li.globals + li > span, .tsd-navigation.primary li.globals + li > a {
   padding-top: 20px;
@@ -2172,16 +2194,16 @@ footer .tsd-legend {
   padding-left: 125px;
 }
 .tsd-navigation.secondary ul.current a {
-  border-left-color: #eee;
+  border-left-color: var(--color-panel-divider);
 }
 .tsd-navigation.secondary li.focus > a,
 .tsd-navigation.secondary ul.current li.focus > a {
-  border-left-color: #000;
+  border-left-color: var(--color-menu-divider-focus);
 }
 .tsd-navigation.secondary li.current {
   margin-top: 20px;
   margin-bottom: 20px;
-  border-left-color: #eee;
+  border-left-color: var(--color-panel-divider);
 }
 .tsd-navigation.secondary li.current > a {
   font-weight: bold;
@@ -2196,7 +2218,7 @@ footer .tsd-legend {
 .tsd-panel {
   margin: 20px 0;
   padding: 20px;
-  background-color: #fff;
+  background-color: var(--color-panel);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 .tsd-panel:empty {
@@ -2205,7 +2227,7 @@ footer .tsd-legend {
 .tsd-panel > h1, .tsd-panel > h2, .tsd-panel > h3 {
   margin: 1.5em -20px 10px -20px;
   padding: 0 20px 10px 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-panel-divider);
 }
 .tsd-panel > h1.tsd-before-signature, .tsd-panel > h2.tsd-before-signature, .tsd-panel > h3.tsd-before-signature {
   margin-bottom: 0;
@@ -2267,7 +2289,7 @@ footer .tsd-legend {
   outline: 0;
   border: 0;
   background: transparent;
-  color: #222;
+  color: var(--color-text);
 }
 #tsd-search .field label {
   position: absolute;
@@ -2290,17 +2312,17 @@ footer .tsd-legend {
 }
 #tsd-search .results li {
   padding: 0 10px;
-  background-color: #fdfdfd;
+  background-color: var(--color-background);
 }
 #tsd-search .results li:nth-child(even) {
-  background-color: #fff;
+  background-color: var(--color-panel);
 }
 #tsd-search .results li.state {
   display: none;
 }
 #tsd-search .results li.current,
 #tsd-search .results li:hover {
-  background-color: #eee;
+  background-color: var(--color-panel-divider);
 }
 #tsd-search .results a {
   display: block;
@@ -2309,11 +2331,11 @@ footer .tsd-legend {
   top: 10px;
 }
 #tsd-search .results span.parent {
-  color: #707070;
+  color: var(--color-text-aside);
   font-weight: normal;
 }
 #tsd-search.has-focus {
-  background-color: #eee;
+  background-color: var(--color-panel-divider);
 }
 #tsd-search.has-focus .field input {
   top: 0;
@@ -2336,7 +2358,7 @@ footer .tsd-legend {
 .tsd-signature {
   margin: 0 0 1em 0;
   padding: 10px;
-  border: 1px solid #eee;
+  border: 1px solid var(--color-panel-divider);
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
   font-size: 14px;
   overflow-x: auto;
@@ -2361,7 +2383,7 @@ footer .tsd-legend {
 }
 
 .tsd-signature-symbol {
-  color: #707070;
+  color: var(--color-text-aside);
   font-weight: normal;
 }
 
@@ -2373,7 +2395,7 @@ footer .tsd-legend {
 .tsd-signatures {
   padding: 0;
   margin: 0 0 1em 0;
-  border: 1px solid #eee;
+  border: 1px solid var(--color-panel-divider);
 }
 .tsd-signatures .tsd-signature {
   margin: 0;
@@ -2384,7 +2406,7 @@ footer .tsd-legend {
   border-top-width: 0;
 }
 .tsd-signatures .tsd-signature.current {
-  background-color: #eee;
+  background-color: var(--color-panel-divider);
 }
 .tsd-signatures.active > .tsd-signature {
   cursor: pointer;
@@ -2458,11 +2480,11 @@ ul.tsd-type-parameters .tsd-comment {
 
 .tsd-sources {
   font-size: 14px;
-  color: #707070;
+  color: var(--color-text-aside);
   margin: 0 0 1em 0;
 }
 .tsd-sources a {
-  color: #707070;
+  color: var(--color-text-aside);
   text-decoration: underline;
 }
 .tsd-sources ul, .tsd-sources p {
@@ -2480,13 +2502,13 @@ ul.tsd-type-parameters .tsd-comment {
   left: 0;
   width: 100%;
   height: 40px;
-  color: #333;
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  color: var(--color-toolbar-text);
+  background: var(--color-toolbar);
+  border-bottom: 1px solid var(--color-panel-divider);
   transition: transform 0.3s linear;
 }
 .tsd-page-toolbar a {
-  color: #333;
+  color: var(--color-toolbar-text);
   text-decoration: none;
 }
 .tsd-page-toolbar a.title {
@@ -2546,7 +2568,7 @@ ul.tsd-type-parameters .tsd-comment {
 }
 .tsd-widget.active {
   opacity: 1;
-  background-color: #eee;
+  background-color: var(--color-panel-divider);
 }
 .tsd-widget.no-caption {
   width: 40px;
@@ -2615,16 +2637,16 @@ input[type=checkbox]:checked + .tsd-widget:before {
 }
 .tsd-select .tsd-select-list li {
   padding: 0 20px 0 0;
-  background-color: #fdfdfd;
+  background-color: var(--color-background);
 }
 .tsd-select .tsd-select-list li:before {
   background-position: 40px 0;
 }
 .tsd-select .tsd-select-list li:nth-child(even) {
-  background-color: #fff;
+  background-color: var(--color-panel);
 }
 .tsd-select .tsd-select-list li:hover {
-  background-color: #eee;
+  background-color: var(--color-panel-divider);
 }
 .tsd-select .tsd-select-list li.selected:before {
   background-position: -200px 0;
@@ -3027,7 +3049,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L27">Heap.ts:27</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L27">Heap.ts:27</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3063,7 +3085,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">_limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L12">Heap.ts:12</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L12">Heap.ts:12</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3080,7 +3102,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L22">Heap.ts:22</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L22">Heap.ts:22</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3117,7 +3139,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">heap<wbr>Array<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L11">Heap.ts:11</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L11">Heap.ts:11</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3127,7 +3149,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">offer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L17">Heap.ts:17</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L17">Heap.ts:17</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3173,7 +3195,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">poll<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L27">Heap.ts:27</a></li>
+						<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L27">Heap.ts:27</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3216,7 +3238,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L447">Heap.ts:447</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L447">Heap.ts:447</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3239,7 +3261,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L455">Heap.ts:455</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L455">Heap.ts:455</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3252,7 +3274,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L463">Heap.ts:463</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L463">Heap.ts:463</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3282,8 +3304,9 @@ img {
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
+							<p>Implementation of Iterable.__@iterator</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L639">Heap.ts:639</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L639">Heap.ts:639</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3305,7 +3328,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L655">Heap.ts:655</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L655">Heap.ts:655</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3327,7 +3350,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L672">Heap.ts:672</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L672">Heap.ts:672</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3359,7 +3382,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L701">Heap.ts:701</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L701">Heap.ts:701</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3390,7 +3413,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L710">Heap.ts:710</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L710">Heap.ts:710</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3427,7 +3450,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L718">Heap.ts:718</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L718">Heap.ts:718</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3458,7 +3481,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L746">Heap.ts:746</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L746">Heap.ts:746</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3489,7 +3512,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L841">Heap.ts:841</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L841">Heap.ts:841</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3519,7 +3542,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L794">Heap.ts:794</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L794">Heap.ts:794</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3552,7 +3575,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L828">Heap.ts:828</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L828">Heap.ts:828</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3585,7 +3608,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L766">Heap.ts:766</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L766">Heap.ts:766</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3618,7 +3641,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L861">Heap.ts:861</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L861">Heap.ts:861</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3648,7 +3671,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L319">Heap.ts:319</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L319">Heap.ts:319</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3681,7 +3704,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L331">Heap.ts:331</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L331">Heap.ts:331</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3714,7 +3737,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L347">Heap.ts:347</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L347">Heap.ts:347</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3746,7 +3769,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L368">Heap.ts:368</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L368">Heap.ts:368</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3769,7 +3792,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L377">Heap.ts:377</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L377">Heap.ts:377</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3791,7 +3814,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L385">Heap.ts:385</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L385">Heap.ts:385</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3813,7 +3836,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L396">Heap.ts:396</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L396">Heap.ts:396</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3835,7 +3858,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L406">Heap.ts:406</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L406">Heap.ts:406</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3872,7 +3895,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L611">Heap.ts:611</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L611">Heap.ts:611</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3904,7 +3927,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L620">Heap.ts:620</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L620">Heap.ts:620</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3936,7 +3959,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L631">Heap.ts:631</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L631">Heap.ts:631</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3968,7 +3991,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L414">Heap.ts:414</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L414">Heap.ts:414</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3999,7 +4022,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L428">Heap.ts:428</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L428">Heap.ts:428</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4022,7 +4045,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L648">Heap.ts:648</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L648">Heap.ts:648</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4044,7 +4067,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L435">Heap.ts:435</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L435">Heap.ts:435</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4066,7 +4089,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L473">Heap.ts:473</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L473">Heap.ts:473</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4090,7 +4113,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L481">Heap.ts:481</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L481">Heap.ts:481</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4113,7 +4136,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L494">Heap.ts:494</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L494">Heap.ts:494</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4145,7 +4168,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L509">Heap.ts:509</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L509">Heap.ts:509</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4177,7 +4200,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L523">Heap.ts:523</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L523">Heap.ts:523</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4215,7 +4238,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L552">Heap.ts:552</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L552">Heap.ts:552</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4247,7 +4270,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L563">Heap.ts:563</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L563">Heap.ts:563</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4269,7 +4292,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L594">Heap.ts:594</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L594">Heap.ts:594</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4291,7 +4314,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L602">Heap.ts:602</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L602">Heap.ts:602</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4313,7 +4336,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L573">Heap.ts:573</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L573">Heap.ts:573</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4345,7 +4368,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L132">Heap.ts:132</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L132">Heap.ts:132</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4389,7 +4412,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L44">Heap.ts:44</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L44">Heap.ts:44</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4421,7 +4444,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L53">Heap.ts:53</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L53">Heap.ts:53</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4453,7 +4476,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L66">Heap.ts:66</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L66">Heap.ts:66</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4485,7 +4508,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L275">Heap.ts:275</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L275">Heap.ts:275</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4535,7 +4558,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L202">Heap.ts:202</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L202">Heap.ts:202</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4579,7 +4602,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L214">Heap.ts:214</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L214">Heap.ts:214</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4623,7 +4646,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L225">Heap.ts:225</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L225">Heap.ts:225</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4672,7 +4695,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L237">Heap.ts:237</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L237">Heap.ts:237</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4722,7 +4745,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L249">Heap.ts:249</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L249">Heap.ts:249</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4772,7 +4795,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L262">Heap.ts:262</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L262">Heap.ts:262</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4822,7 +4845,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L96">Heap.ts:96</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L96">Heap.ts:96</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4866,7 +4889,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L122">Heap.ts:122</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L122">Heap.ts:122</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4904,7 +4927,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L80">Heap.ts:80</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L80">Heap.ts:80</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4948,7 +4971,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L112">Heap.ts:112</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L112">Heap.ts:112</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4986,7 +5009,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L288">Heap.ts:288</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L288">Heap.ts:288</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -5033,7 +5056,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L302">Heap.ts:302</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L302">Heap.ts:302</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -5080,7 +5103,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/c738494/src/Heap.ts#L141">Heap.ts:141</a></li>
+								<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/80d14a7/src/Heap.ts#L141">Heap.ts:141</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -5267,7 +5290,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Viewport\": () => /* binding */ Viewport\n/* harmony export */ });\n/* harmony import */ var _EventTarget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EventTarget */ \"./default/assets/js/src/typedoc/EventTarget.ts\");\n/* harmony import */ var _utils_trottle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/trottle */ \"./default/assets/js/src/typedoc/utils/trottle.ts\");\nvar __extends = (undefined && undefined.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    };\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\n\n\n/**\n * A global service that monitors the window size and scroll position.\n */\nvar Viewport = /** @class */ (function (_super) {\n    __extends(Viewport, _super);\n    /**\n     * Create new Viewport instance.\n     */\n    function Viewport() {\n        var _this = _super.call(this) || this;\n        /**\n         * The current scroll position.\n         */\n        _this.scrollTop = 0;\n        /**\n         * The previous scrollTop.\n         */\n        _this.lastY = 0;\n        /**\n         * The width of the window.\n         */\n        _this.width = 0;\n        /**\n         * The height of the window.\n         */\n        _this.height = 0;\n        /**\n         * Boolean indicating whether the toolbar is shown.\n         */\n        _this.showToolbar = true;\n        _this.toolbar = (document.querySelector(\".tsd-page-toolbar\"));\n        _this.secondaryNav = (document.querySelector(\".tsd-navigation.secondary\"));\n        window.addEventListener(\"scroll\", (0,_utils_trottle__WEBPACK_IMPORTED_MODULE_1__.throttle)(function () { return _this.onScroll(); }, 10));\n        window.addEventListener(\"resize\", (0,_utils_trottle__WEBPACK_IMPORTED_MODULE_1__.throttle)(function () { return _this.onResize(); }, 10));\n        _this.onResize();\n        _this.onScroll();\n        return _this;\n    }\n    /**\n     * Trigger a resize event.\n     */\n    Viewport.prototype.triggerResize = function () {\n        var event = new CustomEvent(\"resize\", {\n            detail: {\n                width: this.width,\n                height: this.height,\n            },\n        });\n        this.dispatchEvent(event);\n    };\n    /**\n     * Triggered when the size of the window has changed.\n     */\n    Viewport.prototype.onResize = function () {\n        this.width = window.innerWidth || 0;\n        this.height = window.innerHeight || 0;\n        var event = new CustomEvent(\"resize\", {\n            detail: {\n                width: this.width,\n                height: this.height,\n            },\n        });\n        this.dispatchEvent(event);\n    };\n    /**\n     * Triggered when the user scrolled the viewport.\n     */\n    Viewport.prototype.onScroll = function () {\n        this.scrollTop = window.scrollY || 0;\n        var event = new CustomEvent(\"scroll\", {\n            detail: {\n                scrollTop: this.scrollTop,\n            },\n        });\n        this.dispatchEvent(event);\n        this.hideShowToolbar();\n    };\n    /**\n     * Handle hiding/showing of the toolbar.\n     */\n    Viewport.prototype.hideShowToolbar = function () {\n        var isShown = this.showToolbar;\n        this.showToolbar = this.lastY >= this.scrollTop || this.scrollTop === 0;\n        if (isShown !== this.showToolbar) {\n            this.toolbar.classList.toggle(\"tsd-page-toolbar--hide\");\n            this.secondaryNav.classList.toggle(\"tsd-navigation--toolbar-hide\");\n        }\n        this.lastY = this.scrollTop;\n    };\n    Viewport.instance = new Viewport();\n    return Viewport;\n}(_EventTarget__WEBPACK_IMPORTED_MODULE_0__.EventTarget));\n\n\n\n//# sourceURL=webpack:///./default/assets/js/src/typedoc/services/Viewport.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Viewport\": () => /* binding */ Viewport\n/* harmony export */ });\n/* harmony import */ var _EventTarget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../EventTarget */ \"./default/assets/js/src/typedoc/EventTarget.ts\");\n/* harmony import */ var _utils_trottle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/trottle */ \"./default/assets/js/src/typedoc/utils/trottle.ts\");\nvar __extends = (undefined && undefined.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    };\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\n\n\n/**\n * A global service that monitors the window size and scroll position.\n */\nvar Viewport = /** @class */ (function (_super) {\n    __extends(Viewport, _super);\n    /**\n     * Create new Viewport instance.\n     */\n    function Viewport() {\n        var _this = _super.call(this) || this;\n        /**\n         * The current scroll position.\n         */\n        _this.scrollTop = 0;\n        /**\n         * The previous scrollTop.\n         */\n        _this.lastY = 0;\n        /**\n         * The width of the window.\n         */\n        _this.width = 0;\n        /**\n         * The height of the window.\n         */\n        _this.height = 0;\n        /**\n         * Boolean indicating whether the toolbar is shown.\n         */\n        _this.showToolbar = true;\n        _this.toolbar = (document.querySelector(\".tsd-page-toolbar\"));\n        _this.secondaryNav = (document.querySelector(\".tsd-navigation.secondary\"));\n        window.addEventListener(\"scroll\", (0,_utils_trottle__WEBPACK_IMPORTED_MODULE_1__.throttle)(function () { return _this.onScroll(); }, 10));\n        window.addEventListener(\"resize\", (0,_utils_trottle__WEBPACK_IMPORTED_MODULE_1__.throttle)(function () { return _this.onResize(); }, 10));\n        _this.onResize();\n        _this.onScroll();\n        return _this;\n    }\n    /**\n     * Trigger a resize event.\n     */\n    Viewport.prototype.triggerResize = function () {\n        var event = new CustomEvent(\"resize\", {\n            detail: {\n                width: this.width,\n                height: this.height,\n            },\n        });\n        this.dispatchEvent(event);\n    };\n    /**\n     * Triggered when the size of the window has changed.\n     */\n    Viewport.prototype.onResize = function () {\n        this.width = window.innerWidth || 0;\n        this.height = window.innerHeight || 0;\n        var event = new CustomEvent(\"resize\", {\n            detail: {\n                width: this.width,\n                height: this.height,\n            },\n        });\n        this.dispatchEvent(event);\n    };\n    /**\n     * Triggered when the user scrolled the viewport.\n     */\n    Viewport.prototype.onScroll = function () {\n        this.scrollTop = window.scrollY || 0;\n        var event = new CustomEvent(\"scroll\", {\n            detail: {\n                scrollTop: this.scrollTop,\n            },\n        });\n        this.dispatchEvent(event);\n        this.hideShowToolbar();\n    };\n    /**\n     * Handle hiding/showing of the toolbar.\n     */\n    Viewport.prototype.hideShowToolbar = function () {\n        var isShown = this.showToolbar;\n        this.showToolbar = this.lastY >= this.scrollTop || this.scrollTop <= 0;\n        if (isShown !== this.showToolbar) {\n            this.toolbar.classList.toggle(\"tsd-page-toolbar--hide\");\n            this.secondaryNav.classList.toggle(\"tsd-navigation--toolbar-hide\");\n        }\n        this.lastY = this.scrollTop;\n    };\n    Viewport.instance = new Viewport();\n    return Viewport;\n}(_EventTarget__WEBPACK_IMPORTED_MODULE_0__.EventTarget));\n\n\n\n//# sourceURL=webpack:///./default/assets/js/src/typedoc/services/Viewport.ts?");
 
 /***/ }),
 

@@ -41,9 +41,10 @@ var __read = (undefined && undefined.__read) || function (o, n) {
     }
     return ar;
 };
-var __spread = (undefined && undefined.__spread) || function () {
-    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
-    return ar;
+var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
 };
 var toInt = function (n) { return ~~n; };
 /**
@@ -323,7 +324,7 @@ var Heap = /** @class */ (function () {
      */
     Heap.nlargest = function (n, iterable, compare) {
         var heap = new Heap(compare);
-        heap.heapArray = __spread(iterable);
+        heap.heapArray = __spreadArray([], __read(iterable));
         heap.init();
         return heap.top(n);
     };
@@ -336,7 +337,7 @@ var Heap = /** @class */ (function () {
      */
     Heap.nsmallest = function (n, iterable, compare) {
         var heap = new Heap(compare);
-        heap.heapArray = __spread(iterable);
+        heap.heapArray = __spreadArray([], __read(iterable));
         heap.init();
         return heap.bottom(n);
     };
@@ -363,7 +364,7 @@ var Heap = /** @class */ (function () {
     Heap.prototype.addAll = function (elements) {
         var _a;
         var i = this.length;
-        (_a = this.heapArray).push.apply(_a, __spread(elements));
+        (_a = this.heapArray).push.apply(_a, __spreadArray([], __read(elements)));
         for (var l = this.length; i < l; ++i) {
             this._sortNodeUp(i);
         }
@@ -388,7 +389,7 @@ var Heap = /** @class */ (function () {
         }
         else if (n >= this.heapArray.length) {
             // The whole heap
-            return __spread(this.heapArray);
+            return __spreadArray([], __read(this.heapArray));
         }
         else {
             // Some elements
@@ -443,7 +444,7 @@ var Heap = /** @class */ (function () {
      */
     Heap.prototype.init = function (array) {
         if (array) {
-            this.heapArray = __spread(array);
+            this.heapArray = __spreadArray([], __read(array));
         }
         for (var i = Math.floor(this.heapArray.length); i >= 0; --i) {
             this._sortNodeDown(i);
@@ -618,7 +619,7 @@ var Heap = /** @class */ (function () {
         }
         else if (n >= this.heapArray.length) {
             // The whole peek
-            return __spread(this.heapArray);
+            return __spreadArray([], __read(this.heapArray));
         }
         else {
             // Some elements
@@ -631,7 +632,7 @@ var Heap = /** @class */ (function () {
      * @return {Array}
      */
     Heap.prototype.toArray = function () {
-        return __spread(this.heapArray);
+        return __spreadArray([], __read(this.heapArray));
     };
     /**
      * String output, call to Array.prototype.toString()
@@ -804,11 +805,11 @@ var Heap = /** @class */ (function () {
             if (i < arr.length) {
                 if (topHeap.length < n) {
                     topHeap.push(arr[i]);
-                    indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i)));
+                    indices.push.apply(indices, __spreadArray([], __read(Heap.getChildrenIndexOf(i))));
                 }
                 else if (this.compare(arr[i], topHeap.peek()) < 0) {
                     topHeap.replace(arr[i]);
-                    indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i)));
+                    indices.push.apply(indices, __spreadArray([], __read(Heap.getChildrenIndexOf(i))));
                 }
             }
         }
@@ -831,7 +832,7 @@ var Heap = /** @class */ (function () {
         var branch = Heap.getParentIndexOf(n - 1) + 1;
         var indices = [];
         for (var i = branch; i < n; ++i) {
-            indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i).filter(function (l) { return l < heapArray.length; })));
+            indices.push.apply(indices, __spreadArray([], __read(Heap.getChildrenIndexOf(i).filter(function (l) { return l < heapArray.length; }))));
         }
         if ((n - 1) % 2) {
             indices.push(n);
@@ -841,7 +842,7 @@ var Heap = /** @class */ (function () {
             if (i < heapArray.length) {
                 if (this.compare(heapArray[i], topHeap.peek()) < 0) {
                     topHeap.replace(heapArray[i]);
-                    indices.push.apply(indices, __spread(Heap.getChildrenIndexOf(i)));
+                    indices.push.apply(indices, __spreadArray([], __read(Heap.getChildrenIndexOf(i))));
                 }
             }
         }
