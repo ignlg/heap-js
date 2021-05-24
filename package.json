@@ -79,7 +79,7 @@
     "benchmark": "^2.1.4",
     "coveralls": "^3.1.0",
     "cross-env": "^7.0.3",
-    "eslint": "7.24.0",
+    "eslint": "7.27.0",
     "eslint-config-prettier": "^8.2.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-standard": "5.0.0",
