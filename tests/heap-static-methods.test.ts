@@ -40,7 +40,7 @@ describe('Heap class', function () {
       const printed = Heap.print(heap);
       const values = [...someValues];
       while (values.length) {
-        expect(printed).toContain(values.pop());
+        expect(printed).toContain(String(values.pop()));
       }
     });
   });
