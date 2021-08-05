@@ -898,5 +898,4 @@ var Heap = /** @class */ (function () {
     return Heap;
 }());
 
-export default Heap;
-export { Heap, toInt };
+export { Heap, Heap as default, toInt };

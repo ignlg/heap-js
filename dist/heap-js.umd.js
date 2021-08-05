@@ -905,7 +905,7 @@
     }());
 
     exports.Heap = Heap;
-    exports.default = Heap;
+    exports['default'] = Heap;
     exports.toInt = toInt;
 
     Object.defineProperty(exports, '__esModule', { value: true });
