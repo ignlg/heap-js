@@ -1,5 +1,5 @@
-import Heap from '../src/Heap';
-import { customMax, customMin, customValues, someValues } from './test-helpers';
+import Heap from '../../src/Heap';
+import { customMax, customMin, customValues, someValues } from '../test-helpers';
 
 describe('Heap instances', function () {
   const heaps = [
