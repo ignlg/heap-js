@@ -20,6 +20,6 @@
   "typedocOptions": {
     "entryPoints": ["src/Heap.ts"],
     "out": "docs",
-    "theme": "minimal"
+    "theme": "default"
   }
 }
