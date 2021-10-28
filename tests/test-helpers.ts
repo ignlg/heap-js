@@ -20,3 +20,10 @@ export const customMax = (...values: any[]) => {
   }
   return max;
 };
+
+export const equalUnsortedArrays = (array: any[], values: any[]) => {
+  expect(array.length).toBe(values.length);
+  for (const value of values) {
+    expect(array).toContain(value);
+  }
+};
