@@ -1,23 +1,32 @@
+import Heap from '../../src/Heap';
 import HeapAsync from '../../src/HeapAsync';
 import { someValues } from '../test-helpers';
 
-describe('Heap private', function () {
+describe('HeapAsync private', function () {
   const heaps = [
     {
       type: 'min heap (default)',
       factory: () => new HeapAsync<any>(),
+      syncSort: Heap.minComparator,
+      invertedSyncSort: Heap.maxComparator,
     },
     {
       type: 'max heap',
       factory: () => new HeapAsync<any>(HeapAsync.maxComparator),
+      syncSort: Heap.maxComparator,
+      invertedSyncSort: Heap.minComparator,
     },
     {
       type: 'min number heap',
       factory: () => new HeapAsync<number>(HeapAsync.minComparatorNumber),
+      syncSort: Heap.minComparatorNumber,
+      invertedSyncSort: Heap.maxComparatorNumber,
     },
     {
       type: 'max number heap',
       factory: () => new HeapAsync<number>(HeapAsync.maxComparatorNumber),
+      syncSort: Heap.maxComparatorNumber,
+      invertedSyncSort: Heap.minComparatorNumber,
     },
   ];
 
@@ -44,7 +53,7 @@ describe('Heap private', function () {
       describe('#_sortNodeUp(i)', function () {
         it('should move the element up the hierarchy', async function () {
           const arr = [3, 2, 1];
-          // TODO: reverse order
+          arr.sort(heapInstance.invertedSyncSort);
           heap.heapArray = arr.slice(0);
           // move it
           await heap._sortNodeUp(2);
@@ -60,7 +69,7 @@ describe('Heap private', function () {
       describe('#_sortNodeDown(i)', function () {
         it('should move the element down the hierarchy', async function () {
           const arr = [3, 2, 1];
-          // TODO: reverse order
+          arr.sort(heapInstance.invertedSyncSort);
           heap.heapArray = arr.slice(0);
           // move it
           await heap._sortNodeDown(0);
@@ -77,8 +86,10 @@ describe('Heap private', function () {
         it('should return the top N (<= length) elements of the heap', async function () {
           await heap.init(someValues);
           const top = heap.toArray().slice(0);
+          top.sort(heapInstance.syncSort);
           for (const slice of [1, 6, 12, someValues.length]) {
             const topN = await heap._topN_push(slice);
+            topN.sort(heapInstance.syncSort);
             expect(topN).toEqual(top.slice(0, slice));
           }
         });
@@ -88,7 +99,9 @@ describe('Heap private', function () {
           it(`should return the top N (<= length) elements of the heap (N == ${slice})`, async function () {
             await heap.init(someValues);
             const top = heap.toArray().slice(0);
+            top.sort(heapInstance.syncSort);
             const topN = await heap._topN_fill(slice);
+            topN.sort(heapInstance.syncSort);
             expect(topN).toEqual(top.slice(0, slice));
           });
         }
@@ -98,6 +111,7 @@ describe('Heap private', function () {
           it(`should return the top N (<= length) elements of the heap (N == ${slice})`, async function () {
             await heap.init(someValues);
             const top = heap.toArray().slice(0);
+            top.sort(heapInstance.syncSort);
             expect(await heap._topN_heap(slice)).toEqual(top.slice(0, slice));
           });
         }
@@ -107,7 +121,9 @@ describe('Heap private', function () {
           it(`should return the bottom N (<= length) elements of the heap (N == ${slice})`, async function () {
             await heap.init(someValues);
             const bottom = heap.toArray().slice(0);
+            bottom.sort(heapInstance.invertedSyncSort);
             const bottomN = await heap._bottomN_push(slice);
+            bottomN.sort(heapInstance.invertedSyncSort);
             expect(bottomN).toEqual(bottom.slice(0, slice));
           });
         }
@@ -116,6 +132,7 @@ describe('Heap private', function () {
         it('should return the top element of the list', async function () {
           await heap.init(someValues);
           const top = heap.toArray().slice(0);
+          top.sort(heapInstance.syncSort);
           expect(await heap._topOf(top[0])).toEqual(top[0]);
           expect(await heap._topOf(...someValues)).toEqual(top[0]);
         });

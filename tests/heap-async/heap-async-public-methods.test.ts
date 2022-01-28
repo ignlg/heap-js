@@ -1,7 +1,7 @@
 import HeapAsync from '../../src/HeapAsync';
 import { customMax, customMin, customValues, equalUnsortedArrays, someValues } from '../test-helpers';
 
-describe('Heap instances', function () {
+describe('HeapAsync instances', function () {
   const heaps = [
     {
       type: 'min heap (default)',

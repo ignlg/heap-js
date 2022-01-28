@@ -1,7 +1,7 @@
 import HeapAsync from '../../src/HeapAsync';
 import { equalUnsortedArrays, someValues } from '../test-helpers';
 
-describe('Heap class', function () {
+describe('HeapAsync class', function () {
   describe('#getParentIndexOf()', function () {
     it('should return parent for every children', function () {
       let p;
@@ -141,9 +141,9 @@ describe('Heap class', function () {
   });
   describe('#heaptop', function () {
     it('should return the most valuable elements', async function () {
-      const arr = [1, 12, 3, 41, 51, 16, 7];
+      const arr = [12, 1, 3, 41, 51, 16, 7];
       HeapAsync.heapify(arr);
-      expect(HeapAsync.heaptop(arr, 1)).toEqual([Math.min(...arr)]);
+      expect(await HeapAsync.heaptop(arr, 1)).toEqual([Math.min(...arr)]);
       {
         const top = await HeapAsync.heaptop(arr, 3);
         equalUnsortedArrays(top, [1, 3, 7]);
@@ -152,14 +152,14 @@ describe('Heap class', function () {
         const top = await HeapAsync.heaptop(arr, 4);
         equalUnsortedArrays(top, [1, 3, 7, 12]);
       }
-      expect(HeapAsync.heaptop(arr)).toEqual(HeapAsync.heaptop(arr, 1));
+      expect(await HeapAsync.heaptop(arr)).toEqual(await HeapAsync.heaptop(arr, 1));
     });
   });
   describe('#heapbottom', function () {
     it('should return the least valuable elements', async function () {
       const arr = [1, 12, 3, 41, 51, 16, 7];
       HeapAsync.heapify(arr);
-      expect(HeapAsync.heapbottom(arr, 1)).toEqual([Math.max(...arr)]);
+      expect(await HeapAsync.heapbottom(arr, 1)).toEqual([Math.max(...arr)]);
       {
         const top = await HeapAsync.heapbottom(arr, 3);
         equalUnsortedArrays(top, [51, 41, 16]);
@@ -168,7 +168,6 @@ describe('Heap class', function () {
         const top = await HeapAsync.heapbottom(arr, 4);
         equalUnsortedArrays(top, [51, 41, 16, 12]);
       }
-
       expect(await HeapAsync.heapbottom(arr)).toEqual(await HeapAsync.heapbottom(arr, 1));
     });
   });
