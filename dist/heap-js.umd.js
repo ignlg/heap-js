@@ -67,8 +67,8 @@
          * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
          */
         function Heap(compare) {
-            var _this = this;
             if (compare === void 0) { compare = Heap.minComparator; }
+            var _this = this;
             this.compare = compare;
             this.heapArray = [];
             this._limit = 0;
