@@ -706,7 +706,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     while (indices.length) {
       const i = indices.shift() as number;
       if ((await this.compare(arr[i], bottomHeap.peek() as T)) > 0) {
-        bottomHeap.replace(arr[i]);
+        await bottomHeap.replace(arr[i]);
         if (i % 2) {
           indices.push(HeapAsync.getParentIndexOf(i));
         }
@@ -797,10 +797,10 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
       const i = indices.shift() as number;
       if (i < arr.length) {
         if (topHeap.length < n) {
-          topHeap.push(arr[i]);
+          await topHeap.push(arr[i]);
           indices.push(...HeapAsync.getChildrenIndexOf(i));
         } else if ((await this.compare(arr[i], topHeap.peek() as T)) < 0) {
-          topHeap.replace(arr[i]);
+          await topHeap.replace(arr[i]);
           indices.push(...HeapAsync.getChildrenIndexOf(i));
         }
       }
@@ -834,7 +834,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
       const i = indices.shift() as number;
       if (i < heapArray.length) {
         if ((await this.compare(heapArray[i], topHeap.peek() as T)) < 0) {
-          topHeap.replace(heapArray[i]);
+          await topHeap.replace(heapArray[i]);
           indices.push(...HeapAsync.getChildrenIndexOf(i));
         }
       }

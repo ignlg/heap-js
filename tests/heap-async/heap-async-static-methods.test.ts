@@ -142,7 +142,7 @@ describe('HeapAsync class', function () {
   describe('#heaptop', function () {
     it('should return the most valuable elements', async function () {
       const arr = [12, 1, 3, 41, 51, 16, 7];
-      HeapAsync.heapify(arr);
+      await HeapAsync.heapify(arr);
       expect(await HeapAsync.heaptop(arr, 1)).toEqual([Math.min(...arr)]);
       {
         const top = await HeapAsync.heaptop(arr, 3);
@@ -158,7 +158,7 @@ describe('HeapAsync class', function () {
   describe('#heapbottom', function () {
     it('should return the least valuable elements', async function () {
       const arr = [1, 12, 3, 41, 51, 16, 7];
-      HeapAsync.heapify(arr);
+      await HeapAsync.heapify(arr);
       expect(await HeapAsync.heapbottom(arr, 1)).toEqual([Math.max(...arr)]);
       {
         const top = await HeapAsync.heapbottom(arr, 3);

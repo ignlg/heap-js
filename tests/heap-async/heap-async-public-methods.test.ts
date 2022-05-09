@@ -40,7 +40,7 @@ describe('HeapAsync instances', function () {
     },
   ];
 
-  heaps.forEach((heapInstance) => {
+  for (const heapInstance of heaps) {
     const { type, factory, values, min, max } = heapInstance;
     let heap = factory();
     describe(type, function () {
@@ -147,7 +147,7 @@ describe('HeapAsync instances', function () {
       });
 
       describe('#getChildrenOf(index)', function () {
-        it('should return the parent element', async function () {
+        it('should return children elements', async function () {
           await heap.init(values);
           expect(heap.getChildrenOf(heap.length - 1)).toEqual([]);
           expect(heap.getChildrenOf(5)).toEqual(HeapAsync.getChildrenIndexOf(5).map(heap.get.bind(heap)));
@@ -443,5 +443,5 @@ describe('HeapAsync instances', function () {
         });
       });
     });
-  });
+  }
 });

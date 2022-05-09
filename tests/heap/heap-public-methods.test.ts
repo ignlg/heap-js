@@ -149,7 +149,7 @@ describe('Heap instances', function () {
       });
 
       describe('#getChildrenOf(index)', function () {
-        it('should return the parent element', function () {
+        it('should return children elements', function () {
           heap.init(values);
           expect(heap.getChildrenOf(heap.length - 1)).toEqual([]);
           expect(heap.getChildrenOf(5)).toEqual(Heap.getChildrenIndexOf(5).map(heap.get.bind(heap)));
