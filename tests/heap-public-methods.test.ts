@@ -425,27 +425,36 @@ describe('Heap instances', function () {
       });
 
       describe('is Iterable', function () {
-        it('should be iterable via for...of', function () {
+        it('should be iterable via for...of, consuming the heap', function () {
           heap.init(values.concat(values));
           const top = heap.toArray().slice(0);
           top.sort(heap.comparator());
-          const result = [];
+          const resultFirstRound = [];
           for (const value of heap) {
-            result.push(value);
+            resultFirstRound.push(value);
           }
-          expect(result).toEqual(top);
+          const resultSecondRound = [];
+          for (const value of heap) {
+            resultSecondRound.push(value);
+          }
+          expect(resultFirstRound).toEqual(top);
+          expect(resultSecondRound).toEqual([]);
         });
       });
       describe('#iterator()', function () {
-        it('returns an iterable', function () {
+        it('returns an iterable that does not consume the heap', function () {
           heap.init(values.concat(values));
           const top = heap.toArray().slice(0);
-          top.sort(heap.comparator());
-          const result = [];
+          const resultFirstRound = [];
           for (const value of heap.iterator()) {
-            result.push(value);
+            resultFirstRound.push(value);
           }
-          expect(result).toEqual(top);
+          const resultSecondRound = [];
+          for (const value of heap.iterator()) {
+            resultSecondRound.push(value);
+          }
+          expect(resultFirstRound).toEqual(top);
+          expect(resultSecondRound).toEqual(top);
         });
       });
     });

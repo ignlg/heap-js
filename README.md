@@ -40,6 +40,14 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 2.2
+
+- Fixes `.iterator()` method to follow [Java's PriorityQueue implementation:
+  ](https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html)
+  > The Iterator provided in method [iterator()](<https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html#iterator()>) is not guaranteed to traverse the elements of the priority queue in any particular order.
+
+Notice that _using the heap directly as an iteraror will consume the heap,_ as Python's `heapq` implementation does.
+
 ### 2.1
 
 - Adds `Heap.nlargest` as heapq.
@@ -77,7 +85,7 @@ console.log(minHeap.peek()); //> 1
 console.log(minHeap.pop()); //> 1
 console.log(minHeap.peek()); //> 2
 
-// Iterator
+// Iterator, that will consume the heap
 maxHeap.init([3, 4, 1, 12, 8]);
 for (const value of maxHeap) {
   console.log('Next top value is', value);
@@ -94,7 +102,13 @@ const customPriorityComparator = (a, b) => a.priority - b.priority;
 const priorityQueue = new Heap(customPriorityComparator);
 priorityQueue.init(tasks);
 
-// priorityQueue === priorityQueue.iterator()
+// Iterator, the Java way, that will not consume the heap but does not guarantee
+// to traverse the elements of the heap in any particular order. Barely useful.
+for (const taks of priorityQueue.iterator()) {
+  // Do something
+}
+
+// Iterator, the JavaScript and Python way, that will consume the heap
 for (const task of priorityQueue) {
   // Do something
 }
@@ -133,6 +147,7 @@ Basic comparators already included:
 
 ## Implements JavaScript style methods
 
+- `for (const value of heap)` directly usable as an Iterator, consumes the heap
 - `length` of the heap
 - `limit` amount of elements in the heap
 - `pop()` the top element
@@ -152,7 +167,7 @@ Basic comparators already included:
 - `contains(element, fn?)`
 - _`element()` alias of `peek()`_
 - `isEmpty()`
-- `iterator()` returns `this` because it is iterable
+- `iterator()` returns the same as `toArray()` because it is iterable and follows Java's implementation
 - _`offer(element)` alias of `add(element)`_
 - `peek()`
 - _`poll()` alias of `pop()`_

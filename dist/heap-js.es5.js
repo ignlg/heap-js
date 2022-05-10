@@ -693,7 +693,7 @@ var Heap = /** @class */ (function () {
      * Returns an iterator. To comply with Java interface.
      */
     Heap.prototype.iterator = function () {
-        return this;
+        return this.toArray();
     };
     /**
      * Limit heap size if needed

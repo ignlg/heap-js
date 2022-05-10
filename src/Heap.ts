@@ -646,7 +646,7 @@ export class Heap<T> implements Iterable<T> {
    * Returns an iterator. To comply with Java interface.
    */
   iterator(): Iterable<T> {
-    return this;
+    return this.toArray();
   }
 
   /**
