@@ -21,7 +21,7 @@ describe('Heap private', function () {
     },
   ];
 
-  heaps.forEach((heapInstance) => {
+  describe.each(heaps)('heap types', (heapInstance) => {
     const { type, factory } = heapInstance;
     let heap: Heap<number>;
     describe(type, function () {

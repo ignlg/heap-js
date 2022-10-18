@@ -40,7 +40,7 @@ describe('Heap instances', function () {
     },
   ];
 
-  heaps.forEach((heapInstance) => {
+  describe.each(heaps)('heap types', (heapInstance) => {
     const { type, factory, values, min, max } = heapInstance;
     let heap = factory();
     describe(type, function () {

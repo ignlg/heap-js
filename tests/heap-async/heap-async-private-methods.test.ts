@@ -30,7 +30,7 @@ describe('HeapAsync private', function () {
     },
   ];
 
-  heaps.forEach((heapInstance) => {
+  describe.each(heaps)('heap types', (heapInstance) => {
     const { type, factory } = heapInstance;
     let heap: HeapAsync<number>;
     describe(type, function () {
@@ -83,74 +83,78 @@ describe('HeapAsync private', function () {
       });
 
       describe('#_topN(N)', function () {
-        it('should return the top N (<= length) elements of the heap', async function () {
-          await heap.init(someValues);
-          const top = heap.toArray().slice(0);
-          top.sort(heapInstance.syncSort);
-          for (const slice of [1, 6, 12, someValues.length]) {
+        it.each([1, 6, 12, someValues.length])(
+          'should return the top N (<= length) elements of the heap',
+          async function (slice) {
+            await heap.init(someValues);
+            const top = heap.toArray().slice(0);
+            top.sort(heapInstance.syncSort);
             const topN = await heap._topN_push(slice);
             topN.sort(heapInstance.syncSort);
             expect(topN).toEqual(top.slice(0, slice));
           }
-        });
+        );
       });
       describe('#_topLeafN(N)', function () {
-        for (const slice of [1, 6, 12, someValues.length]) {
-          it(`should return the top N (<= length) elements of the heap (N == ${slice})`, async function () {
+        it.each([1, 6, 12, someValues.length])(
+          `should return the top N (<= length) elements of the heap`,
+          async function (slice) {
             await heap.init(someValues);
             const top = heap.toArray().slice(0);
             top.sort(heapInstance.syncSort);
             const topN = await heap._topN_fill(slice);
             topN.sort(heapInstance.syncSort);
             expect(topN).toEqual(top.slice(0, slice));
-          });
-        }
+          }
+        );
       });
       describe('#_topHeapN(N)', function () {
-        for (const slice of [1, 6, 12, someValues.length]) {
-          it(`should return the top N (<= length) elements of the heap (N == ${slice})`, async function () {
+        it.each([1, 6, 12, someValues.length])(
+          `should return the top N (<= length) elements of the heap`,
+          async function (slice) {
             await heap.init(someValues);
             const top = heap.toArray().slice(0);
             top.sort(heapInstance.syncSort);
-            expect(await heap._topN_heap(slice)).toEqual(top.slice(0, slice));
-          });
-        }
+            await expect(heap._topN_heap(slice)).resolves.toEqual(top.slice(0, slice));
+          }
+        );
       });
       describe('#_bottomN(N)', function () {
-        for (const slice of [1, 6, 12, someValues.length]) {
-          it(`should return the bottom N (<= length) elements of the heap (N == ${slice})`, async function () {
+        it.each([1, 6, 12, someValues.length])(
+          `should return the bottom N (<= length) elements of the heap`,
+          async function (slice) {
             await heap.init(someValues);
             const bottom = heap.toArray().slice(0);
             bottom.sort(heapInstance.invertedSyncSort);
             const bottomN = await heap._bottomN_push(slice);
             bottomN.sort(heapInstance.invertedSyncSort);
             expect(bottomN).toEqual(bottom.slice(0, slice));
-          });
-        }
+          }
+        );
       });
       describe('#_topOf(...list)', function () {
         it('should return the top element of the list', async function () {
           await heap.init(someValues);
           const top = heap.toArray().slice(0);
           top.sort(heapInstance.syncSort);
-          expect(await heap._topOf(top[0])).toEqual(top[0]);
-          expect(await heap._topOf(...someValues)).toEqual(top[0]);
+          await expect(heap._topOf(top[0])).resolves.toEqual(top[0]);
+          await expect(heap._topOf(...someValues)).resolves.toEqual(top[0]);
         });
       });
       describe('#_topIdxOf(array)', function () {
         it('should return -1 on empty array', async function () {
-          expect(await heap._topIdxOf([])).toEqual(-1);
+          await expect(heap._topIdxOf([])).resolves.toEqual(-1);
         });
         it('should return the index of the top element of the list', async function () {
           await heap.init(someValues);
           const top = heap.toArray().slice(0);
-          expect(await heap._topIdxOf(top.slice(0, 1))).toEqual(0);
-          expect(await heap._topIdxOf(top)).toEqual(0);
+          await expect(heap._topIdxOf(top.slice(0, 1))).resolves.toEqual(0);
+          await expect(heap._topIdxOf(top)).resolves.toEqual(0);
           top.push(top.shift() as number);
-          expect(await heap._topIdxOf(top)).toEqual(top.length - 1);
+          await expect(heap._topIdxOf(top)).resolves.toEqual(top.length - 1);
           const mid = Math.floor(top.length / 2);
           top.splice(mid, 0, top.pop() as number);
-          expect(await heap._topIdxOf(top)).toEqual(mid);
+          await expect(heap._topIdxOf(top)).resolves.toEqual(mid);
         });
       });
     });

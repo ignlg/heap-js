@@ -40,7 +40,7 @@ describe('HeapAsync instances', function () {
     },
   ];
 
-  for (const heapInstance of heaps) {
+  describe.each(heaps)('heap types', (heapInstance) => {
     const { type, factory, values, min, max } = heapInstance;
     let heap = factory();
     describe(type, function () {
@@ -50,18 +50,18 @@ describe('HeapAsync instances', function () {
 
       describe('#bottom(N)', function () {
         it('should return an empty array for an empty heap', async function () {
-          expect(await heap.bottom()).toEqual([]);
-          expect(await heap.bottom(10)).toEqual([]);
+          await expect(heap.bottom()).resolves.toEqual([]);
+          await expect(heap.bottom(10)).resolves.toEqual([]);
         });
         it('should return an empty array for invalid N', async function () {
           await heap.init(values);
-          expect(await heap.bottom(0)).toEqual([]);
-          expect(await heap.bottom(-10)).toEqual([]);
+          await expect(heap.bottom(0)).resolves.toEqual([]);
+          await expect(heap.bottom(-10)).resolves.toEqual([]);
         });
         it('should return the peek for an one-element heap', async function () {
           await heap.push(1);
-          expect(await heap.bottom()).toEqual([1]);
-          expect(await heap.bottom(10)).toEqual([1]);
+          await expect(heap.bottom()).resolves.toEqual([1]);
+          await expect(heap.bottom(10)).resolves.toEqual([1]);
         });
         it('should return the lowest value N (<= length) elements of the heap', async function () {
           await heap.init(values.concat(values));
@@ -73,7 +73,7 @@ describe('HeapAsync instances', function () {
         });
         it('should return the lowest element of the heap if no N', async function () {
           await heap.init(values.concat(values));
-          expect(await heap.bottom()).toEqual(await heap.bottom(1));
+          await expect(heap.bottom()).resolves.toEqual(await heap.bottom(1));
         });
       });
 
@@ -119,22 +119,22 @@ describe('HeapAsync instances', function () {
       describe('#contains(element)', function () {
         it('should find an element in the heap', async function () {
           await heap.init(values);
-          expect(await heap.contains(values[5])).toBe(true);
+          await expect(heap.contains(values[5])).resolves.toBe(true);
         });
         it('should not find an element not in the heap', async function () {
           await heap.init(values);
-          expect(await heap.contains(5000)).toBe(false);
+          await expect(heap.contains(5000)).resolves.toBe(false);
         });
       });
 
       describe('#contains(element, fn)', function () {
         it('should find an element in the heap', async function () {
           await heap.init(values);
-          expect(await heap.contains(values[5], async (el, o) => el > o)).toBe(true);
+          await expect(heap.contains(values[5], async (el, o) => el > o)).resolves.toBe(true);
         });
         it('should not find an element not in the heap', async function () {
           await heap.init(values);
-          expect(await heap.contains(1, async (el, o) => el < o)).toBe(false);
+          await expect(heap.contains(1, async (el, o) => el < o)).resolves.toBe(false);
         });
       });
 
@@ -173,7 +173,7 @@ describe('HeapAsync instances', function () {
           heap.heapArray = values.slice(0);
           await heap.init();
           expect(heap.length).toEqual(values.length);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
       });
 
@@ -226,7 +226,7 @@ describe('HeapAsync instances', function () {
           const otherValues = values.slice(0, Math.floor(values.length / 2));
           await heap.push(...otherValues);
           expect(heap.length).toEqual(5);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
       });
 
@@ -242,20 +242,20 @@ describe('HeapAsync instances', function () {
 
       describe('#pop() / poll', function () {
         it('should return undefined if heap is empty', async function () {
-          expect(await heap.pop()).toBeUndefined();
+          await expect(heap.pop()).resolves.toBeUndefined();
         });
         it('should extract the peek if length is 1', async function () {
           await heap.init([999]);
-          expect(await heap.pop()).toBe(999);
+          await expect(heap.pop()).resolves.toBe(999);
           expect(heap.length).toBe(0);
         });
         it('should extract the element at the top, and keep the heap sorted', async function () {
           await heap.init(values);
           const peek = heap.peek();
           const len = heap.length;
-          expect(await heap.pop()).toEqual(peek);
+          await expect(heap.pop()).resolves.toEqual(peek);
           expect(heap.length).toEqual(len - 1);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
       });
 
@@ -266,7 +266,7 @@ describe('HeapAsync instances', function () {
             await heap.push(value);
           }
           expect(heap.length).toEqual(len + values.length);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
         it('should add many elements to the heap, sorted', async function () {
           await heap.init(values);
@@ -274,12 +274,12 @@ describe('HeapAsync instances', function () {
           const otherValues = values.slice(0, Math.floor(values.length / 2));
           await heap.push(...otherValues);
           expect(heap.length).toEqual(len + otherValues.length);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
         it('should ignore empty calls', async function () {
           await heap.push(...values);
           const len = heap.length;
-          expect(await heap.push()).toBe(false);
+          await expect(heap.push()).resolves.toBe(false);
           expect(heap.length).toEqual(len);
         });
       });
@@ -296,9 +296,9 @@ describe('HeapAsync instances', function () {
           const peek = heap.peek();
           const len = heap.length;
           // Add it
-          expect(await heap.pushpop(next)).toEqual(peek);
+          await expect(heap.pushpop(next)).resolves.toEqual(peek);
           expect(heap.length).toEqual(len);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
         it('should push an above-peek and pop the peek, and keep the heap sorted', async function () {
           // Get the peek
@@ -309,60 +309,62 @@ describe('HeapAsync instances', function () {
           await heap.init(heapArray);
           const len = heap.length;
           // Add it
-          expect(await heap.pushpop(next)).toEqual(next);
+          await expect(heap.pushpop(next)).resolves.toEqual(next);
           expect(heap.length).toEqual(len);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
       });
 
       describe('#remove()', function () {
         it('should skip an empty heap', async function () {
-          expect(await heap.remove()).toBe(false);
+          await expect(heap.remove()).resolves.toBe(false);
         });
         it('should skip if no element matches', async function () {
           await heap.init(values);
           const len = heap.length;
-          expect(await heap.remove(50000)).toBe(false);
+          await expect(heap.remove(50000)).resolves.toBe(false);
           expect(heap.length).toBe(len);
         });
         it('should remove the peek if it matches and length is 1', async function () {
           await heap.init([999]);
-          expect(await heap.remove(999)).toBe(true);
+          await expect(heap.remove(999)).resolves.toBe(true);
           expect(heap.length).toBe(0);
         });
         it('should remove the leaf if it matches the end', async function () {
           await heap.init(values);
           const len = heap.length;
           const bottom = heap.heapArray[heap.length - 1];
-          expect(await heap.remove(bottom)).toBe(true);
+          await expect(heap.remove(bottom)).resolves.toBe(true);
           expect(heap.heapArray[heap.length - 1]).not.toBe(bottom);
           expect(heap.length).toBe(len - 1);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
         it('should remove the element from the heap, and keep the heap sorted', async function () {
           await heap.init(values);
           const len = heap.length;
-          expect(await heap.remove(values[3])).toBe(true);
-          expect(await heap.remove(values[4])).toBe(true);
+          await expect(heap.remove(values[3])).resolves.toBe(true);
+          await expect(heap.remove(values[4])).resolves.toBe(true);
           expect(heap.length).toBe(len - 2);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
         it('whithout element, should remove the peek', async function () {
           await heap.init(values);
           const peek = heap.peek();
           const len = heap.length;
-          expect(await heap.remove()).toBe(true);
+          await expect(heap.remove()).resolves.toBe(true);
           expect(heap.peek()).not.toBe(peek);
           expect(heap.length).toBe(len - 1);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
         it('with comparison function, should remove custom match element', async function () {
           await heap.init(values);
           const len = heap.length;
           // Custom function that matches latest value, ignoring 999
-          expect(await heap.remove(999, async (el, o) => el === values[values.length - 1])).toBe(true);
+          await expect(heap.remove(999, async (el, o) => el === values[values.length - 1])).resolves.toBe(
+            true
+          );
           expect(heap.length).toBe(len - 1);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
       });
 
@@ -371,22 +373,22 @@ describe('HeapAsync instances', function () {
           await heap.init(values);
           const len = heap.length;
           const peek = heap.peek();
-          expect(await heap.replace(3000)).toEqual(peek);
+          await expect(heap.replace(3000)).resolves.toEqual(peek);
           expect(heap.length).toEqual(len);
-          expect(await heap.contains(3000)).toBe(true);
-          expect(await heap.check()).not.toBeDefined();
+          await expect(heap.contains(3000)).resolves.toBe(true);
+          await expect(heap.check()).resolves.not.toBeDefined();
         });
       });
 
       describe('#top(N)', function () {
         it('should return an empty array for an empty heap', async function () {
-          expect(await heap.top()).toEqual([]);
-          expect(await heap.top(10)).toEqual([]);
+          await expect(heap.top()).resolves.toEqual([]);
+          await expect(heap.top(10)).resolves.toEqual([]);
         });
         it('should return an empty array for invalid N', async function () {
           await heap.init(values);
-          expect(await heap.top(0)).toEqual([]);
-          expect(await heap.top(-10)).toEqual([]);
+          await expect(heap.top(0)).resolves.toEqual([]);
+          await expect(heap.top(-10)).resolves.toEqual([]);
         });
         it('should return the top N (<= length) elements of the heap', async function () {
           await heap.init(values.concat(values));
@@ -398,7 +400,7 @@ describe('HeapAsync instances', function () {
         });
         it('should return the top element of the heap if no N', async function () {
           await heap.init(values.concat(values));
-          expect(await heap.top()).toEqual(await heap.top(1));
+          await expect(heap.top()).resolves.toEqual(await heap.top(1));
         });
       });
 
@@ -443,5 +445,5 @@ describe('HeapAsync instances', function () {
         });
       });
     });
-  }
+  });
 });

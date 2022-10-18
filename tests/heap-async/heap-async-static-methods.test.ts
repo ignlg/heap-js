@@ -53,7 +53,7 @@ describe('HeapAsync class', function () {
 
       const checkHeap = new HeapAsync<number>();
       checkHeap.heapArray = [...heapArr];
-      expect(await checkHeap.check()).not.toBeDefined();
+      await expect(checkHeap.check()).resolves.not.toBeDefined();
     });
   });
   describe('#heappush', function () {
@@ -66,8 +66,8 @@ describe('HeapAsync class', function () {
 
       const checkHeap = new HeapAsync<number>();
       checkHeap.heapArray = [...heapArr];
-      expect(await checkHeap.check()).not.toBeDefined();
-      expect(await checkHeap.contains(30000)).toBe(true);
+      await expect(checkHeap.check()).resolves.not.toBeDefined();
+      await expect(checkHeap.contains(30000)).resolves.toBe(true);
     });
   });
   describe('#heappop', function () {
@@ -81,7 +81,7 @@ describe('HeapAsync class', function () {
 
       const checkHeap = new HeapAsync<number>();
       checkHeap.heapArray = [...heapArr];
-      expect(await checkHeap.check()).not.toBeDefined();
+      await expect(checkHeap.check()).resolves.not.toBeDefined();
     });
   });
   describe('#heappushpop', function () {
@@ -104,7 +104,7 @@ describe('HeapAsync class', function () {
 
       const checkHeap = new HeapAsync<number>();
       checkHeap.heapArray = [...heapArr];
-      expect(await checkHeap.check()).not.toBeDefined();
+      await expect(checkHeap.check()).resolves.not.toBeDefined();
     });
   });
   describe('#heapreplace', function () {
@@ -136,14 +136,14 @@ describe('HeapAsync class', function () {
 
       const checkHeap = new HeapAsync<number>();
       checkHeap.heapArray = [...heapArr];
-      expect(await checkHeap.check()).not.toBeDefined();
+      await expect(checkHeap.check()).resolves.not.toBeDefined();
     });
   });
   describe('#heaptop', function () {
     it('should return the most valuable elements', async function () {
       const arr = [12, 1, 3, 41, 51, 16, 7];
       await HeapAsync.heapify(arr);
-      expect(await HeapAsync.heaptop(arr, 1)).toEqual([Math.min(...arr)]);
+      await expect(HeapAsync.heaptop(arr, 1)).resolves.toEqual([Math.min(...arr)]);
       {
         const top = await HeapAsync.heaptop(arr, 3);
         equalUnsortedArrays(top, [1, 3, 7]);
@@ -152,14 +152,14 @@ describe('HeapAsync class', function () {
         const top = await HeapAsync.heaptop(arr, 4);
         equalUnsortedArrays(top, [1, 3, 7, 12]);
       }
-      expect(await HeapAsync.heaptop(arr)).toEqual(await HeapAsync.heaptop(arr, 1));
+      await expect(HeapAsync.heaptop(arr)).resolves.toEqual(await HeapAsync.heaptop(arr, 1));
     });
   });
   describe('#heapbottom', function () {
     it('should return the least valuable elements', async function () {
       const arr = [1, 12, 3, 41, 51, 16, 7];
       await HeapAsync.heapify(arr);
-      expect(await HeapAsync.heapbottom(arr, 1)).toEqual([Math.max(...arr)]);
+      await expect(HeapAsync.heapbottom(arr, 1)).resolves.toEqual([Math.max(...arr)]);
       {
         const top = await HeapAsync.heapbottom(arr, 3);
         equalUnsortedArrays(top, [51, 41, 16]);
@@ -168,14 +168,14 @@ describe('HeapAsync class', function () {
         const top = await HeapAsync.heapbottom(arr, 4);
         equalUnsortedArrays(top, [51, 41, 16, 12]);
       }
-      expect(await HeapAsync.heapbottom(arr)).toEqual(await HeapAsync.heapbottom(arr, 1));
+      await expect(HeapAsync.heapbottom(arr)).resolves.toEqual(await HeapAsync.heapbottom(arr, 1));
     });
   });
   describe('#nlargest', function () {
     it('should return the n most valuable elements', async function () {
       const arr = [1, 12, 3, 41, 51, 16, 7];
       // One
-      expect(await HeapAsync.nlargest(1, arr)).toEqual([1]);
+      await expect(HeapAsync.nlargest(1, arr)).resolves.toEqual([1]);
       // Half
       const half = await HeapAsync.nlargest(Math.floor(arr.length / 2), arr);
       equalUnsortedArrays(half, [51, 41, 16]);
@@ -187,7 +187,7 @@ describe('HeapAsync class', function () {
   describe('#nsmallest', function () {
     it('should return the n least valuable elements', async function () {
       const arr = [1, 12, 3, 41, 51, 16, 7];
-      expect(await HeapAsync.nsmallest(1, arr)).toEqual([1]);
+      await expect(HeapAsync.nsmallest(1, arr)).resolves.toEqual([1]);
       const half = await HeapAsync.nsmallest(arr.length / 2, arr);
       equalUnsortedArrays(half, [1, 3, 7]);
       const full = await HeapAsync.nlargest(arr.length, arr);
