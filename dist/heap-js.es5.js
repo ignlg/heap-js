@@ -997,18 +997,20 @@ var HeapAsync = /** @class */ (function () {
                         arr = this.heapArray;
                         _a.label = 2;
                     case 2:
-                        if (!indices.length) return [3 /*break*/, 4];
+                        if (!indices.length) return [3 /*break*/, 6];
                         i = indices.shift();
                         return [4 /*yield*/, this.compare(arr[i], bottomHeap.peek())];
                     case 3:
-                        if ((_a.sent()) > 0) {
-                            bottomHeap.replace(arr[i]);
-                            if (i % 2) {
-                                indices.push(HeapAsync.getParentIndexOf(i));
-                            }
+                        if (!((_a.sent()) > 0)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, bottomHeap.replace(arr[i])];
+                    case 4:
+                        _a.sent();
+                        if (i % 2) {
+                            indices.push(HeapAsync.getParentIndexOf(i));
                         }
-                        return [3 /*break*/, 2];
-                    case 4: return [2 /*return*/, bottomHeap.toArray()];
+                        _a.label = 5;
+                    case 5: return [3 /*break*/, 2];
+                    case 6: return [2 /*return*/, bottomHeap.toArray()];
                 }
             });
         });
@@ -1146,22 +1148,25 @@ var HeapAsync = /** @class */ (function () {
                         arr = this.heapArray;
                         _a.label = 1;
                     case 1:
-                        if (!indices.length) return [3 /*break*/, 5];
+                        if (!indices.length) return [3 /*break*/, 7];
                         i = indices.shift();
-                        if (!(i < arr.length)) return [3 /*break*/, 4];
-                        if (!(topHeap.length < n)) return [3 /*break*/, 2];
-                        topHeap.push(arr[i]);
+                        if (!(i < arr.length)) return [3 /*break*/, 6];
+                        if (!(topHeap.length < n)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, topHeap.push(arr[i])];
+                    case 2:
+                        _a.sent();
                         indices.push.apply(indices, __spreadArray$1([], __read$1(HeapAsync.getChildrenIndexOf(i)), false));
-                        return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, this.compare(arr[i], topHeap.peek())];
-                    case 3:
-                        if ((_a.sent()) < 0) {
-                            topHeap.replace(arr[i]);
-                            indices.push.apply(indices, __spreadArray$1([], __read$1(HeapAsync.getChildrenIndexOf(i)), false));
-                        }
-                        _a.label = 4;
-                    case 4: return [3 /*break*/, 1];
-                    case 5: return [2 /*return*/, topHeap.toArray()];
+                        return [3 /*break*/, 6];
+                    case 3: return [4 /*yield*/, this.compare(arr[i], topHeap.peek())];
+                    case 4:
+                        if (!((_a.sent()) < 0)) return [3 /*break*/, 6];
+                        return [4 /*yield*/, topHeap.replace(arr[i])];
+                    case 5:
+                        _a.sent();
+                        indices.push.apply(indices, __spreadArray$1([], __read$1(HeapAsync.getChildrenIndexOf(i)), false));
+                        _a.label = 6;
+                    case 6: return [3 /*break*/, 1];
+                    case 7: return [2 /*return*/, topHeap.toArray()];
                 }
             });
         });
@@ -1196,18 +1201,19 @@ var HeapAsync = /** @class */ (function () {
                         }
                         _a.label = 2;
                     case 2:
-                        if (!indices.length) return [3 /*break*/, 5];
+                        if (!indices.length) return [3 /*break*/, 6];
                         i = indices.shift();
-                        if (!(i < heapArray.length)) return [3 /*break*/, 4];
+                        if (!(i < heapArray.length)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.compare(heapArray[i], topHeap.peek())];
                     case 3:
-                        if ((_a.sent()) < 0) {
-                            topHeap.replace(heapArray[i]);
-                            indices.push.apply(indices, __spreadArray$1([], __read$1(HeapAsync.getChildrenIndexOf(i)), false));
-                        }
-                        _a.label = 4;
-                    case 4: return [3 /*break*/, 2];
-                    case 5: return [2 /*return*/, topHeap.toArray()];
+                        if (!((_a.sent()) < 0)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, topHeap.replace(heapArray[i])];
+                    case 4:
+                        _a.sent();
+                        indices.push.apply(indices, __spreadArray$1([], __read$1(HeapAsync.getChildrenIndexOf(i)), false));
+                        _a.label = 5;
+                    case 5: return [3 /*break*/, 2];
+                    case 6: return [2 /*return*/, topHeap.toArray()];
                 }
             });
         });
