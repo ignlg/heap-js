@@ -1,16 +1,13 @@
 # ![Heap.js](assets/heap-js.png) Heap.js
 
 [![npm version](https://img.shields.io/npm/v/heap-js.svg?style=flat)](https://www.npmjs.com/package/heap-js)
-[![Build Status](https://travis-ci.org/ignlg/heap-js.svg?branch=master)](https://travis-ci.org/ignlg/heap-js)
 [![Coverage Status](https://img.shields.io/coveralls/ignlg/heap-js/master.svg?style=flat)](https://coveralls.io/github/ignlg/heap-js?branch=master)
-[![Dependencies](https://david-dm.org/ignlg/heap-js.png?theme=shields.io)](https://david-dm.org/ignlg/heap-js)
-[![devDependency Status](https://david-dm.org/ignlg/heap-js/dev-status.svg)](https://david-dm.org/ignlg/heap-js#info=devDependencies)
 
 **Efficient Binary heap (priority queue, binary tree) data structure for JavaScript / TypeScript.**
 
 Includes JavaScript methods, Python's _heapq module_ methods, and Java's _PriorityQueue_ methods.
 
-Easy to use, known interfaces, tested, and well documented JavaScript binary heap library.
+Easy to use, known interfaces, tested, and well-documented JavaScript binary heap library.
 
 Instances are `integer min heap` by default.
 
@@ -18,24 +15,24 @@ Instances are `integer min heap` by default.
 
 ## Is it faster than sorting an array?
 
-It depends on your usage, but for some scenarios it is much faster:
+It depends on your usage, but for some scenarios, it is much faster:
 
 ```
 heap vs array: push + pop/unshift 50
-	heap  x 72,130 ops/sec ±0.50% (93 runs sampled)
-	array x 121 ops/sec ±78.09% (5 runs sampled)
+ heap  x 72,130 ops/sec ±0.50% (93 runs sampled)
+ array x 121 ops/sec ±78.09% (5 runs sampled)
 
 heap vs array: push + peek 20
-	heap  x 622,332 ops/sec ±27.93% (63 runs sampled)
-	array x 207 ops/sec ±78.18% (5 runs sampled)
+ heap  x 622,332 ops/sec ±27.93% (63 runs sampled)
+ array x 207 ops/sec ±78.18% (5 runs sampled)
 
 heap vs array: push + top(1) of 100
-	heap  x 124,835 ops/sec ±40.37% (61 runs sampled)
-	array x 123 ops/sec ±78.49% (5 runs sampled)
+ heap  x 124,835 ops/sec ±40.37% (61 runs sampled)
+ array x 123 ops/sec ±78.49% (5 runs sampled)
 
 heap vs array: push + top(50) of 100
-	heap  x 59,210 ops/sec ±17.66% (82 runs sampled)
-	array x 125 ops/sec ±78.79% (5 runs sampled)
+ heap  x 59,210 ops/sec ±17.66% (82 runs sampled)
+ array x 125 ops/sec ±78.79% (5 runs sampled)
 ```
 
 ## Changelog
@@ -149,7 +146,7 @@ Basic comparators already included:
 
 - `for (const value of heap)` directly usable as an Iterator, consumes the heap
 - `length` of the heap
-- `limit` amount of elements in the heap
+- `limit` the amount of elements in the heap
 - `pop()` the top element
 - `push(...elements)` one or more elements to the heap
 - `pushpop(element)` faster than `push` & `pop`
@@ -157,10 +154,10 @@ Basic comparators already included:
 - `top(number?)` most valuable elements from the heap
 - `bottom(number?)` least valuable elements from the heap
 
-## Implements Java's `PriorityQueue` interface:
+## Implements Java's `PriorityQueue` interface
 
 - `add(element)` to the heap
-- `addAll([elment, element, ... ])` to the heap, faster than loop `add`
+- `addAll([element, element, ... ])` to the heap, faster than loop `add`
 - `clear()`
 - `clone()`
 - `comparator()`
@@ -183,7 +180,7 @@ To do:
 - `equals`
 - `retainAll`
 
-## Implements static Python's `heapq` interface:
+## Implements static Python's `heapq` interface
 
 - `Heap.heapify(array, comparator?)` that converts an array to an array-heap
 - `Heap.heappop(heapArray, comparator?)` that takes the peek of the array-heap
@@ -204,11 +201,11 @@ To do:
 
 ## Documentation
 
-https://ignlg.github.io/heap-js/
+<https://ignlg.github.io/heap-js/>
 
 ## Contributing
 
-Development of **Heap.js** happens in the open on GitHub, and I am grateful to the community for contributing bugfixes and improvements.
+Development of **Heap.js** happens in the open on GitHub, and I am grateful to the community for contributing bug fixes and improvements.
 
 ### Dev setup
 
