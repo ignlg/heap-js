@@ -115,7 +115,7 @@ describe('HeapAsync private', function () {
             await heap.init(someValues);
             const top = heap.toArray().slice(0);
             top.sort(heapInstance.syncSort);
-            await expect(heap._topN_heap(slice)).resolves.toEqual(top.slice(0, slice));
+            expect(await heap._topN_heap(slice)).toEqual(top.slice(0, slice));
           }
         );
       });
@@ -137,24 +137,24 @@ describe('HeapAsync private', function () {
           await heap.init(someValues);
           const top = heap.toArray().slice(0);
           top.sort(heapInstance.syncSort);
-          await expect(heap._topOf(top[0])).resolves.toEqual(top[0]);
-          await expect(heap._topOf(...someValues)).resolves.toEqual(top[0]);
+          expect(await heap._topOf(top[0])).toEqual(top[0]);
+          expect(await heap._topOf(...someValues)).toEqual(top[0]);
         });
       });
       describe('#_topIdxOf(array)', function () {
         it('should return -1 on empty array', async function () {
-          await expect(heap._topIdxOf([])).resolves.toEqual(-1);
+          expect(await heap._topIdxOf([])).toEqual(-1);
         });
         it('should return the index of the top element of the list', async function () {
           await heap.init(someValues);
           const top = heap.toArray().slice(0);
-          await expect(heap._topIdxOf(top.slice(0, 1))).resolves.toEqual(0);
-          await expect(heap._topIdxOf(top)).resolves.toEqual(0);
+          expect(await heap._topIdxOf(top.slice(0, 1))).toEqual(0);
+          expect(await heap._topIdxOf(top)).toEqual(0);
           top.push(top.shift() as number);
-          await expect(heap._topIdxOf(top)).resolves.toEqual(top.length - 1);
+          expect(await heap._topIdxOf(top)).toEqual(top.length - 1);
           const mid = Math.floor(top.length / 2);
           top.splice(mid, 0, top.pop() as number);
-          await expect(heap._topIdxOf(top)).resolves.toEqual(mid);
+          expect(await heap._topIdxOf(top)).toEqual(mid);
         });
       });
     });

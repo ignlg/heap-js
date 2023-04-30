@@ -1,23 +1,23 @@
-import { customMax, customMin } from './test-helpers';
+import { customBottom, customTop } from './test-helpers';
 
 describe('Test helpers', function () {
-  describe('#customMax()', function () {
-    it('should return the max element', function () {
+  describe('#customBottom()', function () {
+    it('should return the bottom element', function () {
       const values = [
         [0, 1],
         [3, 2],
         [1, 10],
       ];
-      expect(customMax(...values)).toBe(values[2]);
+      expect(customBottom(...values)).toBe(values[2]);
     });
   });
-  describe('#customMin()', function () {
-    it('should return the min element', function () {});
+  describe('#customTop()', function () {
+    it('should return the top element', function () {});
     const values = [
       [0, 1],
       [3, 2],
       [1, 0],
     ];
-    expect(customMin(...values)).toBe(values[2]);
+    expect(customTop(...values)).toBe(values[2]);
   });
 });
