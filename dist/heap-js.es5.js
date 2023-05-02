@@ -13,7 +13,7 @@ var __generator$1 = (undefined && undefined.__generator) || function (thisArg, b
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -792,46 +792,50 @@ var HeapAsync = /** @class */ (function () {
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(this.length > 0)) return [3 /*break*/, 11];
-                        if (!(o === undefined)) return [3 /*break*/, 1];
-                        this.pop();
-                        return [2 /*return*/, true];
+                        if (!(this.length > 0)) return [3 /*break*/, 13];
+                        if (!(o === undefined)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.pop()];
                     case 1:
+                        _a.sent();
+                        return [2 /*return*/, true];
+                    case 2:
                         idx = -1;
                         i = 0;
-                        _a.label = 2;
-                    case 2:
-                        if (!(i < this.heapArray.length)) return [3 /*break*/, 5];
-                        return [4 /*yield*/, fn(this.heapArray[i], o)];
+                        _a.label = 3;
                     case 3:
+                        if (!(i < this.heapArray.length)) return [3 /*break*/, 6];
+                        return [4 /*yield*/, fn(this.heapArray[i], o)];
+                    case 4:
                         if (_a.sent()) {
                             idx = i;
-                            return [3 /*break*/, 5];
+                            return [3 /*break*/, 6];
                         }
-                        _a.label = 4;
-                    case 4:
-                        ++i;
-                        return [3 /*break*/, 2];
+                        _a.label = 5;
                     case 5:
-                        if (!(idx >= 0)) return [3 /*break*/, 11];
-                        if (!(idx === 0)) return [3 /*break*/, 6];
-                        this.pop();
-                        return [3 /*break*/, 10];
+                        ++i;
+                        return [3 /*break*/, 3];
                     case 6:
-                        if (!(idx === this.length - 1)) return [3 /*break*/, 7];
-                        this.heapArray.pop();
-                        return [3 /*break*/, 10];
+                        if (!(idx >= 0)) return [3 /*break*/, 13];
+                        if (!(idx === 0)) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.pop()];
                     case 7:
+                        _a.sent();
+                        return [3 /*break*/, 12];
+                    case 8:
+                        if (!(idx === this.length - 1)) return [3 /*break*/, 9];
+                        this.heapArray.pop();
+                        return [3 /*break*/, 12];
+                    case 9:
                         this.heapArray.splice(idx, 1, this.heapArray.pop());
                         return [4 /*yield*/, this._sortNodeUp(idx)];
-                    case 8:
+                    case 10:
                         _a.sent();
                         return [4 /*yield*/, this._sortNodeDown(idx)];
-                    case 9:
+                    case 11:
                         _a.sent();
-                        _a.label = 10;
-                    case 10: return [2 /*return*/, true];
-                    case 11: return [2 /*return*/, false];
+                        _a.label = 12;
+                    case 12: return [2 /*return*/, true];
+                    case 13: return [2 /*return*/, false];
                 }
             });
         });
@@ -1317,7 +1321,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {

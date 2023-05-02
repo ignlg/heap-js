@@ -1,6 +1,6 @@
 export * from './HeapAsync';
-export declare type Comparator<T> = (a: T, b: T) => number;
-export declare type IsEqual<T> = (e: T, o: T) => boolean;
+export type Comparator<T> = (a: T, b: T) => number;
+export type IsEqual<T> = (e: T, o: T) => boolean;
 export declare const toInt: (n: number) => number;
 /**
  * Heap

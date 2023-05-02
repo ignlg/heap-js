@@ -1,5 +1,5 @@
-export declare type AsyncComparator<T> = (a: T, b: T) => Promise<number>;
-export declare type AsyncIsEqual<T> = (e: T, o: T) => Promise<boolean>;
+export type AsyncComparator<T> = (a: T, b: T) => Promise<number>;
+export type AsyncIsEqual<T> = (e: T, o: T) => Promise<boolean>;
 /**
  * Heap
  * @type {Class}
