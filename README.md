@@ -201,7 +201,8 @@ const tasks = db.collection.find().toArray();
 const customPriorityComparator = (a, b) => a.priority - b.priority;
 
 const priorityQueue = new Heap(customPriorityComparator);
-priorityQueue.init(tasks); // Initialize the priority queue with the tasks
+// Initialize the priority queue with the tasks
+priorityQueue.init(tasks);
 
 // Iterator, the Java way, that will not consume the heap BUT does not guarantee to traverse the elements of the heap in any particular order. Barely useful.
 for (const task of priorityQueue.iterator()) {
@@ -215,10 +216,12 @@ for (const task of priorityQueue.iterator()) {
 import { Heap } from 'heap-js';
 const numbers = [2, 3, 7, 5];
 
-Heap.heapify(numbers); // Changes the array elements order into a heap in-place
+// Changes the array elements order into a heap in-place
+Heap.heapify(numbers);
 console.log(numbers); //> [ 2, 3, 5, 7 ]
 
-Heap.heappush(numbers, 1); // Pushes a new value to the heap
+// Pushes a new value to the heap
+Heap.heappush(numbers, 1);
 console.log(numbers); //> [ 1, 2, 5, 7, 3 ]
 ```
 
