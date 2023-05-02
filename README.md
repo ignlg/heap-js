@@ -5,6 +5,8 @@
 
 **Efficient Binary heap (priority queue, binary tree) data structure for JavaScript / TypeScript.**
 
+**Now with support for async comparators with the new `HeapAsync` class!**
+
 Includes JavaScript methods, Python's _heapq module_ methods, and Java's _PriorityQueue_ methods.
 
 Easy to use, known interfaces, tested, and well-documented JavaScript binary heap library.
@@ -35,7 +37,15 @@ heap vs array: push + top(50) of 100
  array x 125 ops/sec ±78.79% (5 runs sampled)
 ```
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=ignlg/heap-js&type=Date)](https://star-history.com/#ignlg/heap-js&Date)
+
 ## Changelog
+
+### 2.3
+
+- Adds the `HeapAsync` class, with async methods and supporting async comparators. It is a drop-in replacement for `Heap` class with Promises.
 
 ### 2.2
 
@@ -43,12 +53,12 @@ heap vs array: push + top(50) of 100
   ](https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html)
   > The Iterator provided in method [iterator()](<https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html#iterator()>) is not guaranteed to traverse the elements of the priority queue in any particular order.
 
-Notice that _using the heap directly as an iteraror will consume the heap,_ as Python's `heapq` implementation does.
+Notice that _using the heap directly as an iterator will consume the heap,_ as Python's `heapq` implementation does.
 
 ### 2.1
 
-- Adds `Heap.nlargest` as heapq.
-- Adds `Heap.nsmallest` as heapq.
+- Adds `Heap.nlargest` as `heapq`.
+- Adds `Heap.nsmallest` as `heapq`.
 - Sanitizes `top` / `bottom` input to force an integer.
 - Linted with Eslint.
 
@@ -60,66 +70,155 @@ The main breaking change is that now _`top(N)` does NOT sort the output_. It sho
 - Fixes custom heap issue [#31](https://github.com/ignlg/heap-js/issues/31).
 - Performance improvements.
 - More tests, including those for custom heaps.
-- Auxiliary experimental topN algorithms.
-- (wip) Benchmarks.
+- Auxiliary experimental `top(N)` algorithms.
+- (WIP) Benchmarks.
 
 ### 1.5
 
-- Adds `Iterator` interface and `iterator()` method.
+- Adds the `Iterator` interface and `iterator()` method.
 
 ## Examples
 
+### Basic usage
+
+#### Min Heap
+
+A heap where the smallest element is always at the top. It is the default heap.
+
 ```js
-// Basic usage example
-import Heap from 'heap-js';
+import { Heap } from 'heap-js';
 
+// Min Heap by default
 const minHeap = new Heap();
-const maxHeap = new Heap(Heap.maxComparator);
 
+// Initialize the heap with an array
 minHeap.init([5, 18, 1]);
+// Push a new value
 minHeap.push(2);
+
 console.log(minHeap.peek()); //> 1
 console.log(minHeap.pop()); //> 1
 console.log(minHeap.peek()); //> 2
+```
 
-// Iterator, that will consume the heap
+#### Max Heap
+
+A heap where the largest element is always at the top.
+
+```js
+import { Heap } from 'heap-js';
+
+// Max Heap
+const maxHeap = new Heap(Heap.maxComparator);
+
+// Initialize the heap with an array
 maxHeap.init([3, 4, 1, 12, 8]);
-for (const value of maxHeap) {
-  console.log('Next top value is', value);
+// Push a new value
+maxHeap.push(2);
+
+console.log(maxHeap.peek()); //> 12
+console.log(maxHeap.pop()); //> 12
+console.log(maxHeap.peek()); //> 8
+```
+
+#### Custom Heap
+
+A heap where the most important element is always at the top, but the elements are objects with a `priority` property.
+
+```js
+import { Heap } from 'heap-js';
+
+const customPriorityComparator = (a, b) => a.priority - b.priority;
+// Custom Heap
+const customHeap = new Heap(customPriorityComparator);
+
+// Initialize the heap with an array
+customHeap.init([{ priority: 5 }, { priority: 18 }, { priority: 1 }]);
+// Push a new value
+customHeap.push({ priority: 2 });
+
+console.log(customHeap.peek()); //> { priority: 1 }
+console.log(customHeap.pop()); //> { priority: 1 }
+console.log(customHeap.peek()); //> { priority: 2 }
+```
+
+#### Min HeapAsync
+
+A heap where the most important element is always at the top, the elements are objects with a `priority` property, and the comparator function is asynchronous. Implements the same interface as `Heap`, but almost all methods return a `Promise`.
+
+```js
+import { HeapAsync } from 'heap-js';
+
+const customPriorityComparator = (a, b) => Promise.resolve(a.priority - b.priority);
+// Custom HeapAsync
+const customHeap = new HeapAsync(customPriorityComparator);
+
+// Initialize the heap with an array
+await customHeap.init([{ priority: 5 }, { priority: 18 }, { priority: 1 }]);
+// Push a new value
+await customHeap.push({ priority: 2 });
+
+console.log(customHeap.peek()); //> { priority: 1 }
+console.log(await customHeap.pop()); //> { priority: 1 }
+console.log(await customHeap.peek()); //> { priority: 2 }
+```
+
+### Priority Queue usage
+
+#### JavaScript / Python-style iterator (recommended)
+
+Iterates over the heap consuming it, and guarantees to traverse the elements of the heap in the order of priority. Useful.
+
+```js
+const { Heap } = require('heap-js');
+
+// Get all tasks from the database
+const tasks = db.collection.find().toArray();
+// The most important task has the lowest priority value
+const customPriorityComparator = (a, b) => a.priority - b.priority;
+
+// Create the priority queue
+const priorityQueue = new Heap(customPriorityComparator);
+// Initialize the priority queue with the tasks
+priorityQueue.init(tasks);
+
+// Iterator that will consume the heap while traversing it in the order of priority
+for (const task of priorityQueue) {
+  console.log(task);
 }
 ```
 
+#### Java-style iterator (not recommended)
+
+Iterates over the heap without consuming it, but does not guarantee to traverse the elements of the heap in any particular order. Barely useful.
+
 ```js
-// Priority Queue usage example
 const { Heap } = require('heap-js');
 
+// Get all tasks from the database
 const tasks = db.collection.find().toArray();
+// The most important task has the lowest priority value
 const customPriorityComparator = (a, b) => a.priority - b.priority;
 
 const priorityQueue = new Heap(customPriorityComparator);
-priorityQueue.init(tasks);
+priorityQueue.init(tasks); // Initialize the priority queue with the tasks
 
-// Iterator, the Java way, that will not consume the heap but does not guarantee
-// to traverse the elements of the heap in any particular order. Barely useful.
-for (const taks of priorityQueue.iterator()) {
-  // Do something
-}
-
-// Iterator, the JavaScript and Python way, that will consume the heap
-for (const task of priorityQueue) {
-  // Do something
+// Iterator, the Java way, that will not consume the heap BUT does not guarantee to traverse the elements of the heap in any particular order. Barely useful.
+for (const task of priorityQueue.iterator()) {
+  console.log(task);
 }
 ```
 
+### Python-like static methods
+
 ```js
-// Python-like static methods example
 import { Heap } from 'heap-js';
 const numbers = [2, 3, 7, 5];
 
-Heap.heapify(numbers);
+Heap.heapify(numbers); // Changes the array elements order into a heap in-place
 console.log(numbers); //> [ 2, 3, 5, 7 ]
 
-Heap.heappush(numbers, 1);
+Heap.heappush(numbers, 1); // Pushes a new value to the heap
 console.log(numbers); //> [ 1, 2, 5, 7, 3 ]
 ```
 
@@ -133,38 +232,48 @@ npm install --save heap-js # if you use npm
 
 ## Constructor
 
+### Heap
+
 ```js
 new Heap([comparator]);
 ```
 
-Basic comparators already included:
+### HeapAsync
 
-- `Heap.minComparator` Integer min heap _(default)_
-- `Heap.maxComparator` Integer max heap
+```js
+new HeapAsync([asyncComparator]);
+```
 
-## Implements JavaScript style methods
+## Comparators already included
 
-- `for (const value of heap)` directly usable as an Iterator, consumes the heap
-- `length` of the heap
-- `limit` the amount of elements in the heap
-- `pop()` the top element
-- `push(...elements)` one or more elements to the heap
-- `pushpop(element)` faster than `push` & `pop`
-- `replace(element)` faster than `pop` & `push`
-- `top(number?)` most valuable elements from the heap
-- `bottom(number?)` least valuable elements from the heap
+- `Heap.minComparator`: Uses less-than operator to compare elements. It is the default comparator.
+- `Heap.maxComparator`: Uses greater-than operator to compare elements.
+- `Heap.minComparatorNumber`: Uses subtraction `a - b` to compare elements.
+- `Heap.maxComparatorNumber`: Uses subtraction `b - a` to compare elements.
+
+## Implements JavaScript-style methods
+
+- `for (const value of heap)` directly usable as an Iterator, **consumes the heap.**
+- `length` of the heap.
+- `limit` the number of elements in the heap.
+- `pop()` the top element.
+- `push(...elements)` one or more elements to the heap.
+- `pushpop(element)` faster than `push` & `pop`.
+- `replace(element)` faster than `pop` & `push`.
+- `top(number?)` most valuable elements from the heap.
+- `bottom(number?)` least valuable elements from the heap.
 
 ## Implements Java's `PriorityQueue` interface
 
-- `add(element)` to the heap
-- `addAll([element, element, ... ])` to the heap, faster than loop `add`
+- `add(element)` to the heap.
+- `addAll([element, element, ... ])` to the heap, faster than loop `add`.
 - `clear()`
 - `clone()`
 - `comparator()`
 - `contains(element, fn?)`
 - _`element()` alias of `peek()`_
 - `isEmpty()`
-- `iterator()` returns the same as `toArray()` because it is iterable and follows Java's implementation
+- `iterator()` returns the same as `toArray()` because it is iterable and follows Java's implementation. Barely useful. Use `for (const value of heap)` instead.
 - _`offer(element)` alias of `add(element)`_
 - `peek()`
 - _`poll()` alias of `pop()`_
@@ -182,13 +291,13 @@ To do:
 
 ## Implements static Python's `heapq` interface
 
-- `Heap.heapify(array, comparator?)` that converts an array to an array-heap
-- `Heap.heappop(heapArray, comparator?)` that takes the peek of the array-heap
-- `Heap.heappush(heapArray, item, comparator?)` that appends elements to the array-heap
-- `Heap.heappushpop(heapArray, item, comparator?)` faster than `heappush` & `heappop`
-- `Heap.heapreplace(heapArray, item, comparator?)` faster than `heappop` & `heappush`
-- `Heap.nlargest(n, iterable, comparator?)` that gets the `n` most valuable elements of an iterable
-- `Heap.nsmallest(n, iterable, comparator?)` that gets the `n` least valuable elements of an iterable
+- `Heap.heapify(array, comparator?)` that converts an array to an array-heap.
+- `Heap.heappop(heapArray, comparator?)` that takes the peek of the array-heap.
+- `Heap.heappush(heapArray, item, comparator?)` that appends elements to the array-heap.
+- `Heap.heappushpop(heapArray, item, comparator?)` faster than `heappush` & `heappop`.
+- `Heap.heapreplace(heapArray, item, comparator?)` faster than `heappop` & `heappush`.
+- `Heap.nlargest(n, iterable, comparator?)` that gets the `n` most valuable elements of an iterable.
+- `Heap.nsmallest(n, iterable, comparator?)` that gets the `n` least valuable elements of an iterable.
 
 Extras:
 
