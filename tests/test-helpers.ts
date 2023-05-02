@@ -24,6 +24,6 @@ export const customBottom = (...values: any[]) => {
 export const equalUnsortedArrays = (array: any[], values: any[]) => {
   expect(array.length).toBe(values.length);
   for (const value of values) {
-    expect(array).toContain(value);
+    expect(array).toContainEqual(value);
   }
 };

@@ -376,7 +376,6 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
       const children = this.getChildrenOf(j);
       for (const ch of children) {
         if ((await this.compare(el, ch)) > 0) {
-          console.error('Heap is not sorted at index', j, 'with value', el, 'and child', ch);
           return el;
         }
       }
