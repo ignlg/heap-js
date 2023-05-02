@@ -1,5 +1,5 @@
-import Heap from '../src/Heap';
-import { customMax, customMin, customValues, someValues } from './test-helpers';
+import Heap from '../../src/Heap';
+import { customBottom, customTop, customValues, someValues } from '../test-helpers';
 
 describe('Heap instances', function () {
   const heaps = [
@@ -7,41 +7,41 @@ describe('Heap instances', function () {
       type: 'min heap (default)',
       factory: () => new Heap<any>(),
       values: someValues,
-      min: Math.min,
-      max: Math.max,
+      top: Math.min,
+      bottom: Math.max,
     },
     {
       type: 'max heap',
       factory: () => new Heap<any>(Heap.maxComparator),
       values: someValues,
-      min: Math.min,
-      max: Math.max,
+      top: Math.max,
+      bottom: Math.min,
     },
     {
       type: 'min number heap',
       factory: () => new Heap<any>(Heap.minComparatorNumber),
       values: someValues,
-      min: Math.min,
-      max: Math.max,
+      top: Math.min,
+      bottom: Math.max,
     },
     {
       type: 'max number heap',
       factory: () => new Heap<any>(Heap.maxComparatorNumber),
       values: someValues,
-      min: Math.min,
-      max: Math.max,
+      top: Math.max,
+      bottom: Math.min,
     },
     {
       type: 'custom array heap',
       factory: () => new Heap<any>((a, b) => a[1] - b[1]),
       values: customValues,
-      min: customMin,
-      max: customMax,
+      top: customTop,
+      bottom: customBottom,
     },
   ];
 
-  heaps.forEach((heapInstance) => {
-    const { type, factory, values, min, max } = heapInstance;
+  describe.each(heaps)('heap types', (heapInstance) => {
+    const { type, factory, values, top, bottom } = heapInstance;
     let heap = factory();
     describe(type, function () {
       beforeEach(function () {
@@ -149,7 +149,7 @@ describe('Heap instances', function () {
       });
 
       describe('#getChildrenOf(index)', function () {
-        it('should return the parent element', function () {
+        it('should return children elements', function () {
           heap.init(values);
           expect(heap.getChildrenOf(heap.length - 1)).toEqual([]);
           expect(heap.getChildrenOf(5)).toEqual(Heap.getChildrenIndexOf(5).map(heap.get.bind(heap)));
@@ -234,8 +234,8 @@ describe('Heap instances', function () {
 
       describe('#peek()', function () {
         it('should return the top element of the heap', function () {
-          const minValue = min(...values);
-          const maxValue = max(...values);
+          const minValue = top(...values);
+          const maxValue = bottom(...values);
           const peek = heap.compare(minValue, maxValue) < 0 ? minValue : maxValue;
           heap.init(values);
           expect(heap.peek()).toEqual(peek);

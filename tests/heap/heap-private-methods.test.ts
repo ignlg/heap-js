@@ -1,5 +1,5 @@
-import Heap from '../src/Heap';
-import { someValues } from './test-helpers';
+import Heap from '../../src/Heap';
+import { someValues } from '../test-helpers';
 
 describe('Heap private', function () {
   const heaps = [
@@ -21,7 +21,7 @@ describe('Heap private', function () {
     },
   ];
 
-  heaps.forEach((heapInstance) => {
+  describe.each(heaps)('heap types', (heapInstance) => {
     const { type, factory } = heapInstance;
     let heap: Heap<number>;
     describe(type, function () {

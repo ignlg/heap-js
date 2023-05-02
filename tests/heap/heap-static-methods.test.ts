@@ -1,5 +1,5 @@
-import Heap from '../src/Heap';
-import { someValues } from './test-helpers';
+import Heap from '../../src/Heap';
+import { someValues } from '../test-helpers';
 
 describe('Heap class', function () {
   describe('#getParentIndexOf()', function () {

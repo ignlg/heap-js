@@ -1,15 +1,11 @@
-export * from './HeapAsync';
-
-export type Comparator<T> = (a: T, b: T) => number;
-export type IsEqual<T> = (e: T, o: T) => boolean;
-
-export const toInt = (n: number): number => ~~n;
+export type AsyncComparator<T> = (a: T, b: T) => Promise<number>;
+export type AsyncIsEqual<T> = (e: T, o: T) => Promise<boolean>;
 
 /**
  * Heap
  * @type {Class}
  */
-export class Heap<T> implements Iterable<T> {
+export class HeapAsync<T> implements Iterable<Promise<T>> {
   heapArray: Array<T> = [];
   _limit = 0;
 
@@ -32,7 +28,7 @@ export class Heap<T> implements Iterable<T> {
    * Heap instance constructor.
    * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
    */
-  constructor(public compare: Comparator<T> = Heap.minComparator) {}
+  constructor(public compare: AsyncComparator<T> = HeapAsync.minComparator) {}
 
   /*
             Static methods
@@ -79,7 +75,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {any} b     Second element
    * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
    */
-  static minComparator<N>(a: N, b: N): number {
+  static async minComparator<N>(a: N, b: N): Promise<number> {
     if (a > b) {
       return 1;
     } else if (a < b) {
@@ -95,7 +91,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {any} b     Second element
    * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
    */
-  static maxComparator<N>(a: N, b: N): number {
+  static async maxComparator<N>(a: N, b: N): Promise<number> {
     if (b > a) {
       return 1;
     } else if (b < a) {
@@ -111,7 +107,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} b     Second element
    * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
    */
-  static minComparatorNumber(a: number, b: number): number {
+  static async minComparatorNumber(a: number, b: number): Promise<number> {
     return a - b;
   }
 
@@ -121,7 +117,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} b     Second element
    * @return {Number}    0 if they're equal, positive if `a` goes up, negative if `b` goes up
    */
-  static maxComparatorNumber(a: number, b: number): number {
+  static async maxComparatorNumber(a: number, b: number): Promise<number> {
     return b - a;
   }
 
@@ -131,18 +127,18 @@ export class Heap<T> implements Iterable<T> {
    * @param  {any} b    Second element
    * @return {Boolean}  True if equal, false otherwise
    */
-  static defaultIsEqual<N>(a: N, b: N): boolean {
+  static async defaultIsEqual<N>(a: N, b: N): Promise<boolean> {
     return a === b;
   }
 
   /**
    * Prints a heap.
-   * @param  {Heap} heap Heap to be printed
+   * @param  {HeapAsync} heap Heap to be printed
    * @returns {String}
    */
-  static print<N>(heap: Heap<N>): string {
+  static print<N>(heap: HeapAsync<N>): string {
     function deep(i: number) {
-      const pi = Heap.getParentIndexOf(i);
+      const pi = HeapAsync.getParentIndexOf(i);
       return Math.floor(Math.log2(pi + 1));
     }
 
@@ -199,12 +195,12 @@ export class Heap<T> implements Iterable<T> {
    * Converts an array into an array-heap, in place
    * @param  {Array}    arr      Array to be modified
    * @param  {Function} compare  Optional compare function
-   * @return {Heap}              For convenience, it returns a Heap instance
+   * @return {HeapAsync}              For convenience, it returns a Heap instance
    */
-  static heapify<N>(arr: Array<N>, compare?: Comparator<N>): Heap<N> {
-    const heap = new Heap(compare);
+  static async heapify<N>(arr: Array<N>, compare?: AsyncComparator<N>): Promise<HeapAsync<N>> {
+    const heap = new HeapAsync(compare);
     heap.heapArray = arr;
-    heap.init();
+    await heap.init();
     return heap;
   }
   /**
@@ -213,8 +209,8 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} compare  Optional compare function
    * @return {any}               Returns the extracted peek
    */
-  static heappop<N>(heapArr: Array<N>, compare?: Comparator<N>): N | undefined {
-    const heap = new Heap(compare);
+  static heappop<N>(heapArr: Array<N>, compare?: AsyncComparator<N>): Promise<N | undefined> {
+    const heap = new HeapAsync(compare);
     heap.heapArray = heapArr;
     return heap.pop();
   }
@@ -224,10 +220,10 @@ export class Heap<T> implements Iterable<T> {
    * @param  {any}      item     Item to push
    * @param  {Function} compare  Optional compare function
    */
-  static heappush<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>): void {
-    const heap = new Heap(compare);
+  static async heappush<N>(heapArr: Array<N>, item: N, compare?: AsyncComparator<N>): Promise<void> {
+    const heap = new HeapAsync(compare);
     heap.heapArray = heapArr;
-    heap.push(item);
+    await heap.push(item);
   }
   /**
    * Push followed by pop, faster
@@ -236,8 +232,8 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} compare  Optional compare function
    * @return {any}               Returns the extracted peek
    */
-  static heappushpop<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>): N {
-    const heap = new Heap(compare);
+  static heappushpop<N>(heapArr: Array<N>, item: N, compare?: AsyncComparator<N>): Promise<N> {
+    const heap = new HeapAsync(compare);
     heap.heapArray = heapArr;
     return heap.pushpop(item);
   }
@@ -248,8 +244,8 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} compare  Optional compare function
    * @return {any}               Returns the extracted peek
    */
-  static heapreplace<N>(heapArr: Array<N>, item: N, compare?: Comparator<N>): N {
-    const heap = new Heap(compare);
+  static heapreplace<N>(heapArr: Array<N>, item: N, compare?: AsyncComparator<N>): Promise<N> {
+    const heap = new HeapAsync(compare);
     heap.heapArray = heapArr;
     return heap.replace(item);
   }
@@ -261,8 +257,8 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} compare  Optional compare function
    * @return {any}               Elements
    */
-  static heaptop<N>(heapArr: Array<N>, n = 1, compare?: Comparator<N>): Array<N> {
-    const heap = new Heap(compare);
+  static heaptop<N>(heapArr: Array<N>, n = 1, compare?: AsyncComparator<N>): Promise<Array<N>> {
+    const heap = new HeapAsync(compare);
     heap.heapArray = heapArr;
     return heap.top(n);
   }
@@ -274,8 +270,8 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} compare  Optional compare function
    * @return {any}               Elements
    */
-  static heapbottom<N>(heapArr: Array<N>, n = 1, compare?: Comparator<N>): Array<N> {
-    const heap = new Heap(compare);
+  static heapbottom<N>(heapArr: Array<N>, n = 1, compare?: AsyncComparator<N>): Promise<Array<N>> {
+    const heap = new HeapAsync(compare);
     heap.heapArray = heapArr;
     return heap.bottom(n);
   }
@@ -287,10 +283,14 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} compare  Optional compare function
    * @return {any}               Elements
    */
-  static nlargest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>): Array<N> {
-    const heap = new Heap(compare);
+  static async nlargest<N>(
+    n: number,
+    iterable: Iterable<N>,
+    compare?: AsyncComparator<N>
+  ): Promise<Array<N>> {
+    const heap = new HeapAsync(compare);
     heap.heapArray = [...iterable];
-    heap.init();
+    await heap.init();
     return heap.top(n);
   }
 
@@ -301,10 +301,14 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} compare  Optional compare function
    * @return {any}               Elements
    */
-  static nsmallest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>): Array<N> {
-    const heap = new Heap(compare);
+  static async nsmallest<N>(
+    n: number,
+    iterable: Iterable<N>,
+    compare?: AsyncComparator<N>
+  ): Promise<Array<N>> {
+    const heap = new HeapAsync(compare);
     heap.heapArray = [...iterable];
-    heap.init();
+    await heap.init();
     return heap.bottom(n);
   }
 
@@ -318,8 +322,8 @@ export class Heap<T> implements Iterable<T> {
    * @param {any} element Element to be added
    * @return {Boolean} true
    */
-  add(element: T): boolean {
-    this._sortNodeUp(this.heapArray.push(element) - 1);
+  async add(element: T): Promise<boolean> {
+    await this._sortNodeUp(this.heapArray.push(element) - 1);
     this._applyLimit();
     return true;
   }
@@ -330,11 +334,11 @@ export class Heap<T> implements Iterable<T> {
    * @param {Array} elements Elements to be added
    * @return {Boolean} true
    */
-  addAll(elements: Array<T>): boolean {
+  async addAll(elements: Array<T>): Promise<boolean> {
     let i = this.length;
     this.heapArray.push(...elements);
     for (const l = this.length; i < l; ++i) {
-      this._sortNodeUp(i);
+      await this._sortNodeUp(i);
     }
     this._applyLimit();
     return true;
@@ -346,7 +350,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
    */
-  bottom(n = 1): Array<T> {
+  async bottom(n = 1): Promise<Array<T>> {
     if (this.heapArray.length === 0 || n <= 0) {
       // Nothing to do
       return [];
@@ -366,10 +370,16 @@ export class Heap<T> implements Iterable<T> {
    * Check if the heap is sorted, useful for testing purposes.
    * @return {Undefined | Element}  Returns an element if something wrong is found, otherwise it's undefined
    */
-  check(): T | undefined {
-    return this.heapArray.find(
-      (el: T, j: number) => !!this.getChildrenOf(j).find((ch) => this.compare(el, ch) > 0)
-    );
+  async check(): Promise<T | undefined> {
+    for (let j = 0; j < this.heapArray.length; ++j) {
+      const el = this.heapArray[j];
+      const children = this.getChildrenOf(j);
+      for (const ch of children) {
+        if ((await this.compare(el, ch)) > 0) {
+          return el;
+        }
+      }
+    }
   }
 
   /**
@@ -381,10 +391,10 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Clone this heap
-   * @return {Heap}
+   * @return {HeapAsync}
    */
-  clone(): Heap<T> {
-    const cloned = new Heap<T>(this.comparator());
+  clone(): HeapAsync<T> {
+    const cloned = new HeapAsync<T>(this.comparator());
     cloned.heapArray = this.toArray();
     cloned._limit = this._limit;
     return cloned;
@@ -394,7 +404,7 @@ export class Heap<T> implements Iterable<T> {
    * Returns the comparison function.
    * @return {Function}
    */
-  comparator(): Comparator<T> {
+  comparator(): AsyncComparator<T> {
     return this.compare;
   }
 
@@ -404,20 +414,25 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} fn  Optional comparison function, receives (element, needle)
    * @return {Boolean}
    */
-  contains(o: T, fn: IsEqual<T> = Heap.defaultIsEqual): boolean {
-    return this.heapArray.findIndex((el) => fn(el, o)) >= 0;
+  async contains(o: T, fn: AsyncIsEqual<T> = HeapAsync.defaultIsEqual): Promise<boolean> {
+    for (const el of this.heapArray) {
+      if (await fn(el, o)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
    * Initialise a heap, sorting nodes
    * @param  {Array} array Optional initial state array
    */
-  init(array?: Array<T>): void {
+  async init(array?: Array<T>): Promise<void> {
     if (array) {
       this.heapArray = [...array];
     }
     for (let i = Math.floor(this.heapArray.length); i >= 0; --i) {
-      this._sortNodeDown(i);
+      await this._sortNodeDown(i);
     }
     this._applyLimit();
   }
@@ -437,7 +452,7 @@ export class Heap<T> implements Iterable<T> {
     if (this.heapArray.length === 0) {
       return [];
     }
-    const pi = Heap.getParentIndexOf(this.heapArray.length - 1);
+    const pi = HeapAsync.getParentIndexOf(this.heapArray.length - 1);
     return this.heapArray.slice(pi + 1);
   }
 
@@ -479,7 +494,7 @@ export class Heap<T> implements Iterable<T> {
    * Extract the top node (root). Aliases: `poll`.
    * @return {any} Extracted top node, undefined if empty
    */
-  pop(): T | undefined {
+  async pop(): Promise<T | undefined> {
     const last = this.heapArray.pop();
     if (this.length > 0 && last !== undefined) {
       return this.replace(last);
@@ -492,7 +507,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {...any} elements Elements to insert
    * @return {Boolean} True if elements are present
    */
-  push(...elements: Array<T>): boolean {
+  async push(...elements: Array<T>): Promise<boolean> {
     if (elements.length < 1) {
       return false;
     } else if (elements.length === 1) {
@@ -507,10 +522,10 @@ export class Heap<T> implements Iterable<T> {
    * @param  {any} element Element to insert
    * @return {any}  Extracted top node
    */
-  pushpop(element: T): T {
-    if (this.compare(this.heapArray[0], element) < 0) {
+  async pushpop(element: T): Promise<T> {
+    if ((await this.compare(this.heapArray[0], element)) < 0) {
       [element, this.heapArray[0]] = [this.heapArray[0], element];
-      this._sortNodeDown(0);
+      await this._sortNodeDown(0);
     }
     return element;
   }
@@ -521,22 +536,28 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} fn  Optional function to compare
    * @return {Boolean}      True if the heap was modified
    */
-  remove(o?: T, fn: IsEqual<T> = Heap.defaultIsEqual): boolean {
+  async remove(o?: T, fn: AsyncIsEqual<T> = HeapAsync.defaultIsEqual): Promise<boolean> {
     if (this.length > 0) {
       if (o === undefined) {
-        this.pop();
+        await this.pop();
         return true;
       } else {
-        const idx = this.heapArray.findIndex((el) => fn(el, o));
+        let idx = -1;
+        for (let i = 0; i < this.heapArray.length; ++i) {
+          if (await fn(this.heapArray[i], o)) {
+            idx = i;
+            break;
+          }
+        }
         if (idx >= 0) {
           if (idx === 0) {
-            this.pop();
+            await this.pop();
           } else if (idx === this.length - 1) {
             this.heapArray.pop();
           } else {
             this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
-            this._sortNodeUp(idx);
-            this._sortNodeDown(idx);
+            await this._sortNodeUp(idx);
+            await this._sortNodeDown(idx);
           }
           return true;
         }
@@ -550,10 +571,10 @@ export class Heap<T> implements Iterable<T> {
    * @param  {any} element  Element to replace peek
    * @return {any}         Old peek
    */
-  replace(element: T): T {
+  async replace(element: T): Promise<T> {
     const peek = this.heapArray[0];
     this.heapArray[0] = element;
-    this._sortNodeDown(0);
+    await this._sortNodeDown(0);
     return peek;
   }
 
@@ -571,7 +592,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} n  Number of elements.
    * @return {Array}    Array of length <= N.
    */
-  top(n = 1): Array<T> {
+  async top(n = 1): Promise<Array<T>> {
     if (this.heapArray.length === 0 || n <= 0) {
       // Nothing to do
       return [];
@@ -618,7 +639,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {Array(any)}  Children elements
    */
   getChildrenOf(idx: number): Array<T> {
-    return Heap.getChildrenIndexOf(idx)
+    return HeapAsync.getChildrenIndexOf(idx)
       .map((i) => this.heapArray[i])
       .filter((e) => e !== undefined);
   }
@@ -629,24 +650,24 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}     Parent element
    */
   getParentOf(idx: number): T | undefined {
-    const pi = Heap.getParentIndexOf(idx);
+    const pi = HeapAsync.getParentIndexOf(idx);
     return this.heapArray[pi];
   }
 
   /**
    * Iterator interface
    */
-  *[Symbol.iterator](): Iterator<T> {
+  *[Symbol.iterator](): Iterator<Promise<T>> {
     while (this.length) {
-      yield this.pop() as T;
+      yield this.pop() as Promise<T>;
     }
   }
 
   /**
    * Returns an iterator. To comply with Java interface.
    */
-  iterator(): Iterable<T> {
-    return this.toArray();
+  iterator(): Iterable<Promise<T>> {
+    return this;
   }
 
   /**
@@ -669,14 +690,14 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
    */
-  _bottomN_push(n: number): Array<T> {
+  async _bottomN_push(n: number): Promise<Array<T>> {
     // Use an inverted heap
-    const bottomHeap = new Heap(this.compare);
+    const bottomHeap = new HeapAsync(this.compare);
     bottomHeap.limit = n;
     bottomHeap.heapArray = this.heapArray.slice(-n);
-    bottomHeap.init();
+    await bottomHeap.init();
     const startAt = this.heapArray.length - 1 - n;
-    const parentStartAt = Heap.getParentIndexOf(startAt);
+    const parentStartAt = HeapAsync.getParentIndexOf(startAt);
     const indices = [];
     for (let i = startAt; i > parentStartAt; --i) {
       indices.push(i);
@@ -684,10 +705,10 @@ export class Heap<T> implements Iterable<T> {
     const arr = this.heapArray;
     while (indices.length) {
       const i = indices.shift() as number;
-      if (this.compare(arr[i], bottomHeap.peek() as T) > 0) {
-        bottomHeap.replace(arr[i]);
+      if ((await this.compare(arr[i], bottomHeap.peek() as T)) > 0) {
+        await bottomHeap.replace(arr[i]);
         if (i % 2) {
-          indices.push(Heap.getParentIndexOf(i));
+          indices.push(HeapAsync.getParentIndexOf(i));
         }
       }
     }
@@ -696,10 +717,10 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Returns the inverse to the comparison function.
-   * @return {Function}
+   * @return {Number}
    */
-  _invertedCompare = (a: T, b: T): number => {
-    return -1 * this.compare(a, b);
+  _invertedCompare = (a: T, b: T): Promise<number> => {
+    return this.compare(a, b).then((res) => -1 * res);
   };
 
   /**
@@ -715,22 +736,25 @@ export class Heap<T> implements Iterable<T> {
    * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
    * @param  {Number} i Index of the node
    */
-  _sortNodeDown(i: number): void {
+  async _sortNodeDown(i: number): Promise<void> {
     let moveIt = i < this.heapArray.length - 1;
     const self = this.heapArray[i];
 
-    const getPotentialParent = (best: number, j: number) => {
-      if (this.heapArray.length > j && this.compare(this.heapArray[j], this.heapArray[best]) < 0) {
+    const getPotentialParent = async (best: number, j: number) => {
+      if (this.heapArray.length > j && (await this.compare(this.heapArray[j], this.heapArray[best])) < 0) {
         best = j;
       }
       return best;
     };
 
     while (moveIt) {
-      const childrenIdx = Heap.getChildrenIndexOf(i);
-      const bestChildIndex = childrenIdx.reduce(getPotentialParent, childrenIdx[0]);
+      const childrenIdx = HeapAsync.getChildrenIndexOf(i);
+      let bestChildIndex = childrenIdx[0];
+      for (let j = 1; j < childrenIdx.length; ++j) {
+        bestChildIndex = await getPotentialParent(bestChildIndex, childrenIdx[j]);
+      }
       const bestChild = this.heapArray[bestChildIndex];
-      if (typeof bestChild !== 'undefined' && this.compare(self, bestChild) > 0) {
+      if (typeof bestChild !== 'undefined' && (await this.compare(self, bestChild)) > 0) {
         this._moveNode(i, bestChildIndex);
         i = bestChildIndex;
       } else {
@@ -743,11 +767,11 @@ export class Heap<T> implements Iterable<T> {
    * Move a node up the tree (to the root) to find a place where the heap is sorted.
    * @param  {Number} i Index of the node
    */
-  _sortNodeUp(i: number): void {
+  async _sortNodeUp(i: number): Promise<void> {
     let moveIt = i > 0;
     while (moveIt) {
-      const pi = Heap.getParentIndexOf(i);
-      if (pi >= 0 && this.compare(this.heapArray[pi], this.heapArray[i]) > 0) {
+      const pi = HeapAsync.getParentIndexOf(i);
+      if (pi >= 0 && (await this.compare(this.heapArray[pi], this.heapArray[i])) > 0) {
         this._moveNode(i, pi);
         i = pi;
       } else {
@@ -763,9 +787,9 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
    */
-  _topN_push(n: number): Array<T> {
+  async _topN_push(n: number): Promise<Array<T>> {
     // Use an inverted heap
-    const topHeap = new Heap(this._invertedCompare);
+    const topHeap = new HeapAsync(this._invertedCompare);
     topHeap.limit = n;
     const indices = [0];
     const arr = this.heapArray;
@@ -773,11 +797,11 @@ export class Heap<T> implements Iterable<T> {
       const i = indices.shift() as number;
       if (i < arr.length) {
         if (topHeap.length < n) {
-          topHeap.push(arr[i]);
-          indices.push(...Heap.getChildrenIndexOf(i));
-        } else if (this.compare(arr[i], topHeap.peek() as T) < 0) {
-          topHeap.replace(arr[i]);
-          indices.push(...Heap.getChildrenIndexOf(i));
+          await topHeap.push(arr[i]);
+          indices.push(...HeapAsync.getChildrenIndexOf(i));
+        } else if ((await this.compare(arr[i], topHeap.peek() as T)) < 0) {
+          await topHeap.replace(arr[i]);
+          indices.push(...HeapAsync.getChildrenIndexOf(i));
         }
       }
     }
@@ -791,17 +815,17 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
    */
-  _topN_fill(n: number): Array<T> {
+  async _topN_fill(n: number): Promise<Array<T>> {
     // Use an inverted heap
     const { heapArray } = this;
-    const topHeap = new Heap(this._invertedCompare);
+    const topHeap = new HeapAsync(this._invertedCompare);
     topHeap.limit = n;
     topHeap.heapArray = heapArray.slice(0, n);
-    topHeap.init();
-    const branch = Heap.getParentIndexOf(n - 1) + 1;
+    await topHeap.init();
+    const branch = HeapAsync.getParentIndexOf(n - 1) + 1;
     const indices = [];
     for (let i = branch; i < n; ++i) {
-      indices.push(...Heap.getChildrenIndexOf(i).filter((l) => l < heapArray.length));
+      indices.push(...HeapAsync.getChildrenIndexOf(i).filter((l) => l < heapArray.length));
     }
     if ((n - 1) % 2) {
       indices.push(n);
@@ -809,9 +833,9 @@ export class Heap<T> implements Iterable<T> {
     while (indices.length) {
       const i = indices.shift() as number;
       if (i < heapArray.length) {
-        if (this.compare(heapArray[i], topHeap.peek() as T) < 0) {
-          topHeap.replace(heapArray[i]);
-          indices.push(...Heap.getChildrenIndexOf(i));
+        if ((await this.compare(heapArray[i], topHeap.peek() as T)) < 0) {
+          await topHeap.replace(heapArray[i]);
+          indices.push(...HeapAsync.getChildrenIndexOf(i));
         }
       }
     }
@@ -825,11 +849,11 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} n  Number of elements.
    * @return {Array}     Array of length <= N.
    */
-  _topN_heap(n: number): Array<T> {
+  async _topN_heap(n: number): Promise<Array<T>> {
     const topHeap = this.clone();
     const result: Array<T> = [];
     for (let i = 0; i < n; ++i) {
-      result.push(topHeap.pop() as T);
+      result.push((await topHeap.pop()) as T);
     }
     return result;
   }
@@ -838,14 +862,14 @@ export class Heap<T> implements Iterable<T> {
    * Return index of the top element
    * @param list
    */
-  _topIdxOf(list: Array<T>): number {
+  async _topIdxOf(list: Array<T>): Promise<number> {
     if (!list.length) {
       return -1;
     }
     let idx = 0;
     let top = list[idx];
     for (let i = 1; i < list.length; ++i) {
-      const comp = this.compare(list[i], top);
+      const comp = await this.compare(list[i], top);
       if (comp < 0) {
         idx = i;
         top = list[i];
@@ -858,11 +882,11 @@ export class Heap<T> implements Iterable<T> {
    * Return the top element
    * @param list
    */
-  _topOf(...list: Array<T>): T | undefined {
-    const heap = new Heap(this.compare);
-    heap.init(list);
+  async _topOf(...list: Array<T>): Promise<T | undefined> {
+    const heap = new HeapAsync(this.compare);
+    await heap.init(list);
     return heap.peek();
   }
 }
 
-export default Heap;
+export default HeapAsync;
