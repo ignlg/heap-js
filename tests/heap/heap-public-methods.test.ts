@@ -164,6 +164,83 @@ describe('Heap instances', function () {
         });
       });
 
+      describe('#indexOf(element)', function () {
+        it('should return the index of the first occurrence of any element', function () {
+          heap.init(values);
+          let idx = 0;
+          while (idx < heap.length) {
+            const foundIdx = heap.indexOf(heap.heapArray[idx]);
+            expect(Heap.defaultIsEqual(heap.heapArray[foundIdx], heap.heapArray[idx])).toBe(true);
+            expect(foundIdx).toBeLessThanOrEqual(idx);
+            idx += 1;
+          }
+        });
+        it('should return -1 if the element is not in the heap', function () {
+          heap.init(values);
+          expect(heap.indexOf(99999)).toEqual(-1);
+        });
+        it('should return -1 if the heap is empty', function () {
+          heap.init([]);
+          expect(heap.indexOf(1)).toEqual(-1);
+        });
+        describe('with a custom equality function', function () {
+          it('should return the index of any element', function () {
+            heap.init(values);
+            let idx = 0;
+            while (idx < heap.length) {
+              const foundIdx = heap.indexOf(heap.heapArray[idx], (el, o) => el === o);
+              expect(Heap.defaultIsEqual(heap.heapArray[foundIdx], heap.heapArray[idx])).toBe(true);
+              idx += 1;
+              expect(foundIdx).toBeLessThanOrEqual(idx);
+            }
+          });
+          it('should return -1 if the element is not in the heap', function () {
+            heap.init(values);
+            expect(heap.indexOf(99999, (el, o) => el === o)).toEqual(-1);
+          });
+          it('should return -1 if the heap is empty', function () {
+            heap.init([]);
+            expect(heap.indexOf(1, (el, o) => el === o)).toEqual(-1);
+          });
+        });
+      });
+
+      describe('#indexOfEvery()', function () {
+        it('should return the index of every occurrence of any element', function () {
+          heap.init(values);
+          expect(heap.indexOfEvery(heap.heapArray[0])).toEqual([0]);
+          heap.push(...values);
+          const indexes = heap.indexOfEvery(heap.heapArray[0]);
+          expect(indexes.length).toEqual(2);
+          for (const index of indexes) {
+            expect(heap.heapArray[index]).toEqual(heap.heapArray[0]);
+          }
+        });
+        it('should return an empty array if the element is not in the heap', function () {
+          heap.init(values);
+          expect(heap.indexOfEvery(99999)).toEqual([]);
+        });
+        it('should return an empty array if the heap is empty', function () {
+          heap.init([]);
+          expect(heap.indexOfEvery(1)).toEqual([]);
+        });
+        describe('with a custom equality function', function () {
+          it('should return the index of every occurrence of any element', function () {
+            heap.init(values);
+            expect(heap.indexOfEvery(heap.heapArray[0], (el, o) => el === o)).toEqual([0]);
+            heap.push(...values);
+            const indexes = heap.indexOfEvery(heap.heapArray[0], (el, o) => el === o);
+            expect(indexes.length).toEqual(2);
+            for (const index of indexes) {
+              expect(heap.heapArray[index]).toEqual(heap.heapArray[0]);
+            }
+          });
+          it('should return an empty array if the element is not in the heap', function () {
+            heap.init(values);
+            expect(heap.indexOfEvery(99999, (el, o) => el === o)).toEqual([]);
+          });
+        });
+      });
       describe('#init()', function () {
         it('should initialize a new heap', function () {
           const otherValues = values.slice(0, Math.floor(values.length / 2));
@@ -429,11 +506,11 @@ describe('Heap instances', function () {
           heap.init(values.concat(values));
           const top = heap.toArray().slice(0);
           top.sort(heap.comparator());
-          const resultFirstRound = [];
+          const resultFirstRound: unknown[] = [];
           for (const value of heap) {
             resultFirstRound.push(value);
           }
-          const resultSecondRound = [];
+          const resultSecondRound: unknown[] = [];
           for (const value of heap) {
             resultSecondRound.push(value);
           }
@@ -445,11 +522,11 @@ describe('Heap instances', function () {
         it('returns an iterable that does not consume the heap', function () {
           heap.init(values.concat(values));
           const top = heap.toArray().slice(0);
-          const resultFirstRound = [];
+          const resultFirstRound: unknown[] = [];
           for (const value of heap.iterator()) {
             resultFirstRound.push(value);
           }
-          const resultSecondRound = [];
+          const resultSecondRound: unknown[] = [];
           for (const value of heap.iterator()) {
             resultSecondRound.push(value);
           }
