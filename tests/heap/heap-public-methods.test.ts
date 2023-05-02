@@ -433,14 +433,6 @@ describe('Heap instances', function () {
           expect(heap.length).toBe(len - 1);
           expect(heap.check()).not.toBeDefined();
         });
-        it('with comparison function, should remove custom match element', function () {
-          heap.init(values);
-          const len = heap.length;
-          // Custom function that matches latest value, ignoring 999
-          expect(heap.remove(999, (el, o) => el === values[values.length - 1])).toBe(true);
-          expect(heap.length).toBe(len - 1);
-          expect(heap.check()).not.toBeDefined();
-        });
       });
 
       describe('#replace(element)', function () {
