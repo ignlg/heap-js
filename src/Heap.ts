@@ -464,7 +464,7 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Get the indexes of the all the occurrences of the element in the heap (using the comparator).
+   * Get the indexes of the every occurrence of the element in the heap (using the comparator).
    * @param  {any}      element    Element to be found
    * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
    * @return {Array}               Array of indexes or empty array if not found
