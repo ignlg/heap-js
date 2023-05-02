@@ -376,6 +376,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
       const children = this.getChildrenOf(j);
       for (const ch of children) {
         if ((await this.compare(el, ch)) > 0) {
+          console.error('Heap is not sorted at index', j, 'with value', el, 'and child', ch);
           return el;
         }
       }
@@ -539,7 +540,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
   async remove(o?: T, fn: AsyncIsEqual<T> = HeapAsync.defaultIsEqual): Promise<boolean> {
     if (this.length > 0) {
       if (o === undefined) {
-        this.pop();
+        await this.pop();
         return true;
       } else {
         let idx = -1;
@@ -551,7 +552,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
         }
         if (idx >= 0) {
           if (idx === 0) {
-            this.pop();
+            await this.pop();
           } else if (idx === this.length - 1) {
             this.heapArray.pop();
           } else {

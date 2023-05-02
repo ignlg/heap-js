@@ -65,10 +65,11 @@ describe('HeapAsync instances', function () {
         });
         it('should return the lowest value N (<= length) elements of the heap', async function () {
           await heap.init(values.concat(values));
-          const bottom = heap.toArray().slice(0);
-          for (const slice of [1, 6, values.length, values.length + 100]) {
+          const bottomArr = heap.toArray().slice(0);
+          bottomArr.sort((a, b) => (bottom(a, b) === a ? -1 : 1));
+          for (const slice of [1, Math.floor(values.length / 2), values.length, values.length + 100]) {
             const b = await heap.bottom(slice);
-            equalUnsortedArrays(b, bottom.slice(0, slice));
+            equalUnsortedArrays(b, bottomArr.slice(0, slice));
           }
         });
         it('should return the lowest element of the heap if no N', async function () {
@@ -364,7 +365,7 @@ describe('HeapAsync instances', function () {
           expect(await heap.remove()).toBe(true);
           expect(heap.peek()).not.toBe(peek);
           expect(heap.length).toBe(len - 1);
-          expect(await heap.check()).not.toBeDefined();
+          expect(await heap.check()).toBeUndefined();
         });
         it('with comparison function, should remove custom match element', async function () {
           await heap.init(values);
@@ -400,10 +401,11 @@ describe('HeapAsync instances', function () {
         });
         it('should return the top N (<= length) elements of the heap', async function () {
           await heap.init(values.concat(values));
-          const top = heap.toArray().slice(0);
-          for (const slice of [1, 6, values.length, values.length + 100]) {
+          const topArr = heap.toArray().slice(0);
+          topArr.sort((a, b) => (top(a, b) === a ? -1 : 1));
+          for (const slice of [1, Math.floor(values.length / 2), values.length, values.length + 100]) {
             const topValues = await heap.top(slice);
-            equalUnsortedArrays(topValues, top.slice(0, slice));
+            equalUnsortedArrays(topValues, topArr.slice(0, slice));
           }
         });
         it('should return the top element of the heap if no N', async function () {
@@ -419,7 +421,7 @@ describe('HeapAsync instances', function () {
           expect(Array.isArray(arr)).toBe(true);
           expect(arr.length).toEqual(values.length);
           const clonedValues = values.slice(0);
-          expect(arr).toEqual(clonedValues);
+          equalUnsortedArrays(arr, clonedValues);
         });
       });
 
@@ -444,12 +446,13 @@ describe('HeapAsync instances', function () {
       describe('#iterator()', function () {
         it('returns an iterable', async function () {
           await heap.init(values.concat(values));
-          const top = heap.toArray().slice(0);
+          const topArr = heap.toArray().slice(0);
+          topArr.sort((a, b) => (top(a, b) === a ? -1 : 1));
           const result: unknown[] = [];
           for (const value of heap.iterator()) {
             result.push(await value);
           }
-          expect(result).toEqual(top);
+          expect(result).toEqual(topArr);
         });
       });
     });
