@@ -265,6 +265,8 @@ new HeapAsync([asyncComparator]);
 - `replace(element)` faster than `pop` & `push`.
 - `top(number?)` most valuable elements from the heap.
 - `bottom(number?)` least valuable elements from the heap.
+- `indexOf(element, fn?)` returns the internal index of the first occurrence of the element in the heap.
+- `indexOfEvery(element, fn?)` returns an array with the internal indexes of all occurrences of the element in the heap.
 
 ## Implements Java's `PriorityQueue` interface
 
