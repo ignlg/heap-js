@@ -43,6 +43,14 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 2.4
+
+- Adds the `indexOf` method to find the first index of an element in the heap.
+- Adds the `indexOfEvery` method to find all indexes of an element in the heap.
+- Changes the `remove` method to use the `indexOf` method.
+- Changes the `contains` method to use the `indexOf` method.
+- Improves documentation.
+
 ### 2.3
 
 - Adds the `HeapAsync` class, with async methods and supporting async comparators. It is a drop-in replacement for `Heap` class with Promises.
