@@ -43,6 +43,14 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 2.4
+
+- Adds the `indexOf` method to find the first index of an element in the heap.
+- Adds the `indexOfEvery` method to find all indexes of an element in the heap.
+- Changes the `remove` method to use the `indexOf` method.
+- Changes the `contains` method to use the `indexOf` method.
+- Improves documentation.
+
 ### 2.3
 
 - Adds the `HeapAsync` class, with async methods and supporting async comparators. It is a drop-in replacement for `Heap` class with Promises.
@@ -265,6 +273,8 @@ new HeapAsync([asyncComparator]);
 - `replace(element)` faster than `pop` & `push`.
 - `top(number?)` most valuable elements from the heap.
 - `bottom(number?)` least valuable elements from the heap.
+- `indexOf(element, fn?)` returns the internal index of the first occurrence of the element in the heap.
+- `indexOfEvery(element, fn?)` returns an array with the internal indexes of all occurrences of the element in the heap.
 
 ## Implements Java's `PriorityQueue` interface
 

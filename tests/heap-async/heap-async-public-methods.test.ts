@@ -207,7 +207,7 @@ describe('HeapAsync instances', function () {
         });
       });
 
-      describe('#lenght / size()', function () {
+      describe('#length / size()', function () {
         it('should return the heap length', async function () {
           expect(heap.length).toEqual(0);
           expect(heap.size()).toEqual(0);
@@ -358,7 +358,7 @@ describe('HeapAsync instances', function () {
           expect(heap.length).toBe(len - 2);
           expect(await heap.check()).not.toBeDefined();
         });
-        it('whithout element, should remove the peek', async function () {
+        it('without element, should remove the peek', async function () {
           await heap.init(values);
           const peek = heap.peek();
           const len = heap.length;

@@ -15,18 +15,27 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Alias of add
+   * @see add
    */
   offer = this.add;
 
   /**
    * Alias of peek
+   * @see peek
    */
   element = this.peek;
 
   /**
    * Alias of pop
+   * @see pop
    */
   poll = this.pop;
+
+  /**
+   * Alias of clear
+   * @see clear
+   */
+  removeAll = this.clear;
 
   /**
    * Heap instance constructor.
@@ -401,15 +410,15 @@ export class Heap<T> implements Iterable<T> {
   /**
    * Returns true if this queue contains the specified element.
    * @param  {any}      o   Element to be found
-   * @param  {Function} fn  Optional comparison function, receives (element, needle)
+   * @param  {Function} callbackFn  Optional comparison function, receives (element, needle)
    * @return {Boolean}
    */
-  contains(o: T, fn: IsEqual<T> = Heap.defaultIsEqual): boolean {
-    return this.heapArray.findIndex((el) => fn(el, o)) >= 0;
+  contains(o: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): boolean {
+    return this.indexOf(o, callbackFn) !== -1;
   }
 
   /**
-   * Initialise a heap, sorting nodes
+   * Initialize a heap, sorting nodes
    * @param  {Array} array Optional initial state array
    */
   init(array?: Array<T>): void {
@@ -431,7 +440,60 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
+   * Get the index of the first occurrence of the element in the heap (using the comparator).
+   * @param  {any}      element    Element to be found
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+   * @return {Number}              Index or -1 if not found
+   */
+  indexOf(element: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): number {
+    if (this.heapArray.length === 0) {
+      return -1;
+    }
+    const indexes: number[] = [];
+    let currentIndex = 0;
+    while (currentIndex < this.heapArray.length) {
+      const currentElement = this.heapArray[currentIndex];
+      if (callbackFn(currentElement, element)) {
+        return currentIndex;
+      } else if (this.compare(currentElement, element) <= 0) {
+        indexes.push(...Heap.getChildrenIndexOf(currentIndex));
+      }
+      currentIndex = indexes.shift() || this.heapArray.length;
+    }
+    return -1;
+  }
+
+  /**
+   * Get the indexes of the every occurrence of the element in the heap (using the comparator).
+   * @param  {any}      element    Element to be found
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+   * @return {Array}               Array of indexes or empty array if not found
+   */
+  indexOfEvery(element: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): number[] {
+    if (this.heapArray.length === 0) {
+      return [];
+    }
+    const indexes: number[] = [];
+    const foundIndexes: number[] = [];
+    let currentIndex = 0;
+    while (currentIndex < this.heapArray.length) {
+      const currentElement = this.heapArray[currentIndex];
+      if (callbackFn(currentElement, element)) {
+        foundIndexes.push(currentIndex);
+        indexes.push(...Heap.getChildrenIndexOf(currentIndex));
+      } else if (this.compare(currentElement, element) <= 0) {
+        indexes.push(...Heap.getChildrenIndexOf(currentIndex));
+      }
+      currentIndex = indexes.shift() || this.heapArray.length;
+    }
+    return foundIndexes;
+  }
+
+  /**
    * Get the leafs of the tree (no children nodes)
+   * @return {Array}
+   * @see getChildrenOf
+   * @see bottom
    */
   leafs(): Array<T> {
     if (this.heapArray.length === 0) {
@@ -444,6 +506,7 @@ export class Heap<T> implements Iterable<T> {
   /**
    * Length of the heap.
    * @return {Number}
+   * @see size
    */
   get length(): number {
     return this.heapArray.length;
@@ -470,6 +533,7 @@ export class Heap<T> implements Iterable<T> {
    * Top node. Aliases: `element`.
    * Same as: `top(1)[0]`
    * @return {any} Top node
+   * @see top
    */
   peek(): T | undefined {
     return this.heapArray[0];
@@ -516,18 +580,18 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Remove an element from the heap.
+   * Remove the first occurrence of an element from the heap.
    * @param  {any}   o      Element to be found
-   * @param  {Function} fn  Optional function to compare
+   * @param  {Function} callbackFn  Optional equality function, receives (element, needle)
    * @return {Boolean}      True if the heap was modified
    */
-  remove(o?: T, fn: IsEqual<T> = Heap.defaultIsEqual): boolean {
+  remove(o?: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): boolean {
     if (this.length > 0) {
       if (o === undefined) {
         this.pop();
         return true;
       } else {
-        const idx = this.heapArray.findIndex((el) => fn(el, o));
+        const idx = this.indexOf(o, callbackFn);
         if (idx >= 0) {
           if (idx === 0) {
             this.pop();

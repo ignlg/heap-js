@@ -32,7 +32,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="tsd-signature-type">Iterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L12">Heap.ts:12</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L12">Heap.ts:12</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -50,6 +50,7 @@
 <a href="Heap.html#heapArray" class="tsd-index-link tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>heap<wbr/>Array</span></a>
 <a href="Heap.html#offer" class="tsd-index-link tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>offer</span></a>
 <a href="Heap.html#poll" class="tsd-index-link tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>poll</span></a>
+<a href="Heap.html#removeAll" class="tsd-index-link tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>remove<wbr/>All</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Accessors</h3>
@@ -81,6 +82,8 @@
 <a href="Heap.html#get" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get</span></a>
 <a href="Heap.html#getChildrenOf" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Children<wbr/>Of</span></a>
 <a href="Heap.html#getParentOf" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Parent<wbr/>Of</span></a>
+<a href="Heap.html#indexOf" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>index<wbr/>Of</span></a>
+<a href="Heap.html#indexOfEvery" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>index<wbr/>Of<wbr/>Every</span></a>
 <a href="Heap.html#init" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>init</span></a>
 <a href="Heap.html#isEmpty" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>is<wbr/>Empty</span></a>
 <a href="Heap.html#iterator" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>iterator</span></a>
@@ -137,21 +140,21 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Heap.html" class="tsd-signature-type" data-tsd-kind="Class">Heap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L35">Heap.ts:35</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L44">Heap.ts:44</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="_limit" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_limit</span><a href="#_limit" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">_limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L14">Heap.ts:14</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L14">Heap.ts:14</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="compare" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>compare</span><a href="#compare" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">compare<span class="tsd-signature-symbol">:</span> <a href="../types/Comparator.html" class="tsd-signature-type" data-tsd-kind="Type alias">Comparator</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Heap.minComparator</span></div>
 <div class="tsd-comment tsd-typography"><p>Optional comparison function, defaults to Heap.minComparator<number></p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L35">Heap.ts:35</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L44">Heap.ts:44</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="element" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>element</span><a href="#element" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> = ...</span></div>
@@ -163,15 +166,17 @@
 <li class="tsd-signature" id="element.__type.__type-1"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Alias of peek</p>
+
+<h3>See</h3><p>peek</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L24">Heap.ts:24</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L26">Heap.ts:26</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="heapArray" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>heap<wbr/>Array</span><a href="#heapArray" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">heap<wbr/>Array<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L13">Heap.ts:13</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L13">Heap.ts:13</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="offer" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>offer</span><a href="#offer" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">offer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> = ...</span></div>
@@ -183,6 +188,8 @@
 <li class="tsd-signature" id="offer.__type-2.__type-3"><span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Alias of add</p>
+
+<h3>See</h3><p>add</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -191,7 +198,7 @@
 <h5>element: <span class="tsd-signature-type">T</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L19">Heap.ts:19</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L20">Heap.ts:20</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="poll" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>poll</span><a href="#poll" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">poll<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> = ...</span></div>
@@ -203,10 +210,29 @@
 <li class="tsd-signature" id="poll.__type-4.__type-5"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Alias of pop</p>
+
+<h3>See</h3><p>pop</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L29">Heap.ts:29</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L32">Heap.ts:32</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="removeAll" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>remove<wbr/>All</span><a href="#removeAll" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">remove<wbr/>All<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-type-declaration">
+<h4>Type declaration</h4>
+<ul class="tsd-parameters">
+<li class="tsd-parameter-signature">
+<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+<li class="tsd-signature" id="removeAll.__type-6.__type-7"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Alias of clear</p>
+
+<h3>See</h3><p>clear</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L38">Heap.ts:38</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="length" class="tsd-anchor"></a>
@@ -216,10 +242,12 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Length of the heap.</p>
 
-<h3>Returns</h3></div>
+<h3>Returns</h3>
+<h3>See</h3><p>size</p>
+</div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L448">Heap.ts:448</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L511">Heap.ts:511</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="limit" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>limit</span><a href="#limit" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
@@ -230,7 +258,7 @@
 <h3>Returns</h3></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L456">Heap.ts:456</a></li></ul></aside></li>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L519">Heap.ts:519</a></li></ul></aside></li>
 <li class="tsd-signature" id="limit.limit-2"><span class="tsd-signature-symbol">set</span> limit<span class="tsd-signature-symbol">(</span>_l<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Set length limit of the heap.</p>
@@ -243,7 +271,7 @@
 <h5>_l: <span class="tsd-signature-type">number</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L464">Heap.ts:464</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L527">Heap.ts:527</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_iterator_" class="tsd-anchor"></a>
@@ -256,7 +284,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Iterator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Implementation of Iterable.__@iterator@85</p>
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L639">Heap.ts:639</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L703">Heap.ts:703</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_applyLimit" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_apply<wbr/>Limit</span><a href="#_applyLimit" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -266,7 +294,7 @@
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L655">Heap.ts:655</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L719">Heap.ts:719</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_bottomN_push" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_bottom<wbr/>N_<wbr/>push</span><a href="#_bottomN_push" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -285,7 +313,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L672">Heap.ts:672</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L736">Heap.ts:736</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_invertedCompare" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_inverted<wbr/>Compare</span><a href="#_invertedCompare" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -303,7 +331,7 @@
 <h5>b: <span class="tsd-signature-type">T</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L701">Heap.ts:701</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L765">Heap.ts:765</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_moveNode" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_move<wbr/>Node</span><a href="#_moveNode" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -324,7 +352,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L710">Heap.ts:710</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L774">Heap.ts:774</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_sortNodeDown" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_sort<wbr/>Node<wbr/>Down</span><a href="#_sortNodeDown" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -341,7 +369,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L718">Heap.ts:718</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L782">Heap.ts:782</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_sortNodeUp" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_sort<wbr/>Node<wbr/>Up</span><a href="#_sortNodeUp" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -358,7 +386,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L746">Heap.ts:746</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L810">Heap.ts:810</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_topIdxOf" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_top<wbr/>Idx<wbr/>Of</span><a href="#_topIdxOf" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -373,7 +401,7 @@
 <h5>list: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L841">Heap.ts:841</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L905">Heap.ts:905</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_topN_fill" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_top<wbr/>N_<wbr/>fill</span><a href="#_topN_fill" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -393,7 +421,7 @@ Implementation: init + push.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L794">Heap.ts:794</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L858">Heap.ts:858</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_topN_heap" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_top<wbr/>N_<wbr/>heap</span><a href="#_topN_heap" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -413,7 +441,7 @@ Implementation: heap.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L828">Heap.ts:828</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L892">Heap.ts:892</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_topN_push" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_top<wbr/>N_<wbr/>push</span><a href="#_topN_push" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -433,7 +461,7 @@ Implementation: push.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L766">Heap.ts:766</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L830">Heap.ts:830</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="_topOf" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>_top<wbr/>Of</span><a href="#_topOf" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -448,7 +476,7 @@ Implementation: push.</p>
 <h5><code class="tsd-tag ts-flagRest">Rest</code> <span class="tsd-signature-symbol">...</span>list: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L861">Heap.ts:861</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L925">Heap.ts:925</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="add" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>add</span><a href="#add" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -468,7 +496,7 @@ Same as: push(element)</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L321">Heap.ts:321</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L330">Heap.ts:330</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="addAll" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>add<wbr/>All</span><a href="#addAll" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -488,7 +516,7 @@ Similar as: push(element, element, ...).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L333">Heap.ts:333</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L342">Heap.ts:342</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="bottom" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>bottom</span><a href="#bottom" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -507,7 +535,7 @@ Similar as: push(element, element, ...).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L349">Heap.ts:349</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L358">Heap.ts:358</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="check" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>check</span><a href="#check" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -519,7 +547,7 @@ Similar as: push(element, element, ...).</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L369">Heap.ts:369</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L378">Heap.ts:378</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="clear" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>clear</span><a href="#clear" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -529,7 +557,7 @@ Similar as: push(element, element, ...).</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L378">Heap.ts:378</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L387">Heap.ts:387</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="clone" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>clone</span><a href="#clone" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -540,7 +568,7 @@ Similar as: push(element, element, ...).</p>
 <h3>Returns</h3></div>
 <h4 class="tsd-returns-title">Returns <a href="Heap.html" class="tsd-signature-type" data-tsd-kind="Class">Heap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L386">Heap.ts:386</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L395">Heap.ts:395</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="comparator" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>comparator</span><a href="#comparator" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -551,11 +579,11 @@ Similar as: push(element, element, ...).</p>
 <h3>Returns</h3></div>
 <h4 class="tsd-returns-title">Returns <a href="../types/Comparator.html" class="tsd-signature-type" data-tsd-kind="Type alias">Comparator</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L397">Heap.ts:397</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L406">Heap.ts:406</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="contains" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>contains</span><a href="#contains" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="contains.contains-1">contains<span class="tsd-signature-symbol">(</span>o<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, fn<span class="tsd-signature-symbol">?: </span><a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#contains.contains-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="contains.contains-1">contains<span class="tsd-signature-symbol">(</span>o<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, callbackFn<span class="tsd-signature-symbol">?: </span><a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#contains.contains-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Returns true if this queue contains the specified element.</p>
 
@@ -568,12 +596,12 @@ Similar as: push(element, element, ...).</p>
 <div class="tsd-comment tsd-typography"><p>Element to be found</p>
 </div></li>
 <li>
-<h5>fn: <a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Heap.defaultIsEqual</span></h5>
+<h5>callbackFn: <a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Heap.defaultIsEqual</span></h5>
 <div class="tsd-comment tsd-typography"><p>Optional comparison function, receives (element, needle)</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L407">Heap.ts:407</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L416">Heap.ts:416</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="get" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get</span><a href="#get" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -592,7 +620,7 @@ Similar as: push(element, element, ...).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L611">Heap.ts:611</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L675">Heap.ts:675</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getChildrenOf" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Children<wbr/>Of</span><a href="#getChildrenOf" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -611,7 +639,7 @@ Similar as: push(element, element, ...).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L620">Heap.ts:620</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L684">Heap.ts:684</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getParentOf" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Parent<wbr/>Of</span><a href="#getParentOf" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -630,13 +658,59 @@ Similar as: push(element, element, ...).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L631">Heap.ts:631</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L695">Heap.ts:695</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="indexOf" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>index<wbr/>Of</span><a href="#indexOf" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="indexOf.indexOf-1">index<wbr/>Of<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, callbackFn<span class="tsd-signature-symbol">?: </span><a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><a href="#indexOf.indexOf-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Get the index of the first occurrence of the element in the heap (using the comparator).</p>
+
+<h3>Returns</h3><p>Index or -1 if not found</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>element: <span class="tsd-signature-type">T</span></h5>
+<div class="tsd-comment tsd-typography"><p>Element to be found</p>
+</div></li>
+<li>
+<h5>callbackFn: <a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Heap.defaultIsEqual</span></h5>
+<div class="tsd-comment tsd-typography"><p>Optional comparison function, receives (element, needle)</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L448">Heap.ts:448</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="indexOfEvery" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>index<wbr/>Of<wbr/>Every</span><a href="#indexOfEvery" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="indexOfEvery.indexOfEvery-1">index<wbr/>Of<wbr/>Every<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, callbackFn<span class="tsd-signature-symbol">?: </span><a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><a href="#indexOfEvery.indexOfEvery-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Get the indexes of the every occurrence of the element in the heap (using the comparator).</p>
+
+<h3>Returns</h3><p>Array of indexes or empty array if not found</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>element: <span class="tsd-signature-type">T</span></h5>
+<div class="tsd-comment tsd-typography"><p>Element to be found</p>
+</div></li>
+<li>
+<h5>callbackFn: <a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Heap.defaultIsEqual</span></h5>
+<div class="tsd-comment tsd-typography"><p>Optional comparison function, receives (element, needle)</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L472">Heap.ts:472</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="init" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>init</span><a href="#init" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="init.init-1">init<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#init.init-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Initialise a heap, sorting nodes</p>
+<div class="tsd-comment tsd-typography"><p>Initialize a heap, sorting nodes</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -647,7 +721,7 @@ Similar as: push(element, element, ...).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L415">Heap.ts:415</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L424">Heap.ts:424</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="isEmpty" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>is<wbr/>Empty</span><a href="#isEmpty" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -659,7 +733,7 @@ Similar as: push(element, element, ...).</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L429">Heap.ts:429</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L438">Heap.ts:438</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="iterator" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>iterator</span><a href="#iterator" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -669,17 +743,23 @@ Similar as: push(element, element, ...).</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Iterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L648">Heap.ts:648</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L712">Heap.ts:712</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="leafs" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>leafs</span><a href="#leafs" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="leafs.leafs-1">leafs<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><a href="#leafs.leafs-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Get the leafs of the tree (no children nodes)</p>
+
+<h3>Returns</h3>
+<h3>See</h3><ul>
+<li>getChildrenOf</li>
+<li>bottom</li>
+</ul>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L436">Heap.ts:436</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L498">Heap.ts:498</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="peek" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>peek</span><a href="#peek" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -689,10 +769,12 @@ Similar as: push(element, element, ...).</p>
 Same as: <code>top(1)[0]</code></p>
 
 <h3>Returns</h3><p>Top node</p>
+
+<h3>See</h3><p>top</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L474">Heap.ts:474</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L538">Heap.ts:538</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="pop" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>pop</span><a href="#pop" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -704,7 +786,7 @@ Same as: <code>top(1)[0]</code></p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L482">Heap.ts:482</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L546">Heap.ts:546</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="push" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>push</span><a href="#push" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -723,7 +805,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L495">Heap.ts:495</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L559">Heap.ts:559</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="pushpop" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>pushpop</span><a href="#pushpop" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -742,13 +824,13 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L510">Heap.ts:510</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L574">Heap.ts:574</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="remove" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove</span><a href="#remove" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="remove.remove-1">remove<span class="tsd-signature-symbol">(</span>o<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">T</span>, fn<span class="tsd-signature-symbol">?: </span><a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#remove.remove-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="remove.remove-1">remove<span class="tsd-signature-symbol">(</span>o<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">T</span>, callbackFn<span class="tsd-signature-symbol">?: </span><a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#remove.remove-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Remove an element from the heap.</p>
+<div class="tsd-comment tsd-typography"><p>Remove the first occurrence of an element from the heap.</p>
 
 <h3>Returns</h3><p>True if the heap was modified</p>
 </div>
@@ -760,12 +842,12 @@ Same as: <code>top(1)[0]</code></p>
 <div class="tsd-comment tsd-typography"><p>Element to be found</p>
 </div></li>
 <li>
-<h5>fn: <a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Heap.defaultIsEqual</span></h5>
-<div class="tsd-comment tsd-typography"><p>Optional function to compare</p>
+<h5>callbackFn: <a href="../types/IsEqual.html" class="tsd-signature-type" data-tsd-kind="Type alias">IsEqual</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Heap.defaultIsEqual</span></h5>
+<div class="tsd-comment tsd-typography"><p>Optional equality function, receives (element, needle)</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L524">Heap.ts:524</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L588">Heap.ts:588</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="replace" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>replace</span><a href="#replace" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -784,7 +866,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L553">Heap.ts:553</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L617">Heap.ts:617</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="size" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>size</span><a href="#size" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -795,7 +877,7 @@ Same as: <code>top(1)[0]</code></p>
 <h3>Returns</h3></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L564">Heap.ts:564</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L628">Heap.ts:628</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="toArray" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>to<wbr/>Array</span><a href="#toArray" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -806,7 +888,7 @@ Same as: <code>top(1)[0]</code></p>
 <h3>Returns</h3></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L594">Heap.ts:594</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L658">Heap.ts:658</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="toString" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>to<wbr/>String</span><a href="#toString" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -817,7 +899,7 @@ Same as: <code>top(1)[0]</code></p>
 <h3>Returns</h3></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L602">Heap.ts:602</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L666">Heap.ts:666</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="top" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>top</span><a href="#top" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -836,7 +918,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L574">Heap.ts:574</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L638">Heap.ts:638</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="defaultIsEqual" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>default<wbr/>Is<wbr/>Equal</span><a href="#defaultIsEqual" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -864,7 +946,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L134">Heap.ts:134</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L143">Heap.ts:143</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getChildrenIndexOf" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>get<wbr/>Children<wbr/>Index<wbr/>Of</span><a href="#getChildrenIndexOf" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -883,7 +965,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L46">Heap.ts:46</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L55">Heap.ts:55</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getParentIndexOf" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>get<wbr/>Parent<wbr/>Index<wbr/>Of</span><a href="#getParentIndexOf" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -902,7 +984,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L55">Heap.ts:55</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L64">Heap.ts:64</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getSiblingIndexOf" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>get<wbr/>Sibling<wbr/>Index<wbr/>Of</span><a href="#getSiblingIndexOf" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -921,7 +1003,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L68">Heap.ts:68</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L77">Heap.ts:77</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="heapbottom" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>heapbottom</span><a href="#heapbottom" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -953,7 +1035,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">N</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L277">Heap.ts:277</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L286">Heap.ts:286</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="heapify" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>heapify</span><a href="#heapify" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -981,7 +1063,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Heap.html" class="tsd-signature-type" data-tsd-kind="Class">Heap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">N</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L204">Heap.ts:204</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L213">Heap.ts:213</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="heappop" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>heappop</span><a href="#heappop" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1009,7 +1091,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">N</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L216">Heap.ts:216</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L225">Heap.ts:225</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="heappush" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>heappush</span><a href="#heappush" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1039,7 +1121,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L227">Heap.ts:227</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L236">Heap.ts:236</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="heappushpop" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>heappushpop</span><a href="#heappushpop" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1071,7 +1153,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">N</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L239">Heap.ts:239</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L248">Heap.ts:248</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="heapreplace" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>heapreplace</span><a href="#heapreplace" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1103,7 +1185,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">N</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L251">Heap.ts:251</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L260">Heap.ts:260</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="heaptop" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>heaptop</span><a href="#heaptop" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1135,7 +1217,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">N</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L264">Heap.ts:264</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L273">Heap.ts:273</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="maxComparator" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>max<wbr/>Comparator</span><a href="#maxComparator" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1163,7 +1245,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L98">Heap.ts:98</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L107">Heap.ts:107</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="maxComparatorNumber" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>max<wbr/>Comparator<wbr/>Number</span><a href="#maxComparatorNumber" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1186,7 +1268,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L124">Heap.ts:124</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L133">Heap.ts:133</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="minComparator" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>min<wbr/>Comparator</span><a href="#minComparator" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1214,7 +1296,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L82">Heap.ts:82</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L91">Heap.ts:91</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="minComparatorNumber" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>min<wbr/>Comparator<wbr/>Number</span><a href="#minComparatorNumber" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1237,7 +1319,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L114">Heap.ts:114</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L123">Heap.ts:123</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="nlargest" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>nlargest</span><a href="#nlargest" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1267,7 +1349,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">N</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L290">Heap.ts:290</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L299">Heap.ts:299</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="nsmallest" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>nsmallest</span><a href="#nsmallest" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1297,7 +1379,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">N</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L304">Heap.ts:304</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L313">Heap.ts:313</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="print" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>print</span><a href="#print" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1320,7 +1402,7 @@ Same as: <code>top(1)[0]</code></p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/3878bc7/src/Heap.ts#L143">Heap.ts:143</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/ignlg/heap-js/blob/32efd11/src/Heap.ts#L152">Heap.ts:152</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -1347,6 +1429,7 @@ Same as: <code>top(1)[0]</code></p>
 <li><a href="#heapArray" class="tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>heap<wbr/>Array</span></a></li>
 <li><a href="#offer" class="tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>offer</span></a></li>
 <li><a href="#poll" class="tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>poll</span></a></li>
+<li><a href="#removeAll" class="tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>remove<wbr/>All</span></a></li>
 <li><a href="#length" class="tsd-kind-accessor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>length</span></a></li>
 <li><a href="#limit" class="tsd-kind-accessor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>limit</span></a></li>
 <li><a href="#_iterator_" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>[iterator]</span></a></li>
@@ -1372,6 +1455,8 @@ Same as: <code>top(1)[0]</code></p>
 <li><a href="#get" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get</span></a></li>
 <li><a href="#getChildrenOf" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Children<wbr/>Of</span></a></li>
 <li><a href="#getParentOf" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Parent<wbr/>Of</span></a></li>
+<li><a href="#indexOf" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>index<wbr/>Of</span></a></li>
+<li><a href="#indexOfEvery" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>index<wbr/>Of<wbr/>Every</span></a></li>
 <li><a href="#init" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>init</span></a></li>
 <li><a href="#isEmpty" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>is<wbr/>Empty</span></a></li>
 <li><a href="#iterator" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>iterator</span></a></li>
