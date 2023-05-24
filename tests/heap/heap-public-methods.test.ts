@@ -285,7 +285,7 @@ describe('Heap instances', function () {
         });
       });
 
-      describe('#lenght / size()', function () {
+      describe('#length / size()', function () {
         it('should return the heap length', function () {
           expect(heap.length).toEqual(0);
           expect(heap.size()).toEqual(0);
@@ -424,7 +424,7 @@ describe('Heap instances', function () {
           expect(heap.length).toBe(len - 2);
           expect(heap.check()).not.toBeDefined();
         });
-        it('whithout element, should remove the peek', function () {
+        it('without element, should remove the peek', function () {
           heap.init(values);
           const peek = heap.peek();
           const len = heap.length;
