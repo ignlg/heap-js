@@ -12,16 +12,24 @@ export declare class Heap<T> implements Iterable<T> {
     _limit: number;
     /**
      * Alias of add
+     * @see add
      */
     offer: (element: T) => boolean;
     /**
      * Alias of peek
+     * @see peek
      */
     element: () => T | undefined;
     /**
      * Alias of pop
+     * @see pop
      */
     poll: () => T | undefined;
+    /**
+     * Alias of clear
+     * @see clear
+     */
+    removeAll: () => void;
     /**
      * Heap instance constructor.
      * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
@@ -198,12 +206,12 @@ export declare class Heap<T> implements Iterable<T> {
     /**
      * Returns true if this queue contains the specified element.
      * @param  {any}      o   Element to be found
-     * @param  {Function} fn  Optional comparison function, receives (element, needle)
+     * @param  {Function} callbackFn  Optional comparison function, receives (element, needle)
      * @return {Boolean}
      */
-    contains(o: T, fn?: IsEqual<T>): boolean;
+    contains(o: T, callbackFn?: IsEqual<T>): boolean;
     /**
-     * Initialise a heap, sorting nodes
+     * Initialize a heap, sorting nodes
      * @param  {Array} array Optional initial state array
      */
     init(array?: Array<T>): void;
@@ -213,12 +221,30 @@ export declare class Heap<T> implements Iterable<T> {
      */
     isEmpty(): boolean;
     /**
+     * Get the index of the first occurrence of the element in the heap (using the comparator).
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Number}              Index or -1 if not found
+     */
+    indexOf(element: T, callbackFn?: IsEqual<T>): number;
+    /**
+     * Get the indexes of the every occurrence of the element in the heap (using the comparator).
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Array}               Array of indexes or empty array if not found
+     */
+    indexOfEvery(element: T, callbackFn?: IsEqual<T>): number[];
+    /**
      * Get the leafs of the tree (no children nodes)
+     * @return {Array}
+     * @see getChildrenOf
+     * @see bottom
      */
     leafs(): Array<T>;
     /**
      * Length of the heap.
      * @return {Number}
+     * @see size
      */
     get length(): number;
     /**
@@ -235,6 +261,7 @@ export declare class Heap<T> implements Iterable<T> {
      * Top node. Aliases: `element`.
      * Same as: `top(1)[0]`
      * @return {any} Top node
+     * @see top
      */
     peek(): T | undefined;
     /**
@@ -255,12 +282,12 @@ export declare class Heap<T> implements Iterable<T> {
      */
     pushpop(element: T): T;
     /**
-     * Remove an element from the heap.
+     * Remove the first occurrence of an element from the heap.
      * @param  {any}   o      Element to be found
-     * @param  {Function} fn  Optional function to compare
+     * @param  {Function} callbackFn  Optional equality function, receives (element, needle)
      * @return {Boolean}      True if the heap was modified
      */
-    remove(o?: T, fn?: IsEqual<T>): boolean;
+    remove(o?: T, callbackFn?: IsEqual<T>): boolean;
     /**
      * Pop the current peek value, and add the new item.
      * @param  {any} element  Element to replace peek

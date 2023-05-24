@@ -1385,16 +1385,24 @@ var Heap = /** @class */ (function () {
         this._limit = 0;
         /**
          * Alias of add
+         * @see add
          */
         this.offer = this.add;
         /**
          * Alias of peek
+         * @see peek
          */
         this.element = this.peek;
         /**
          * Alias of pop
+         * @see pop
          */
         this.poll = this.pop;
+        /**
+         * Alias of clear
+         * @see clear
+         */
+        this.removeAll = this.clear;
         /**
          * Returns the inverse to the comparison function.
          * @return {Function}
@@ -1751,15 +1759,15 @@ var Heap = /** @class */ (function () {
     /**
      * Returns true if this queue contains the specified element.
      * @param  {any}      o   Element to be found
-     * @param  {Function} fn  Optional comparison function, receives (element, needle)
+     * @param  {Function} callbackFn  Optional comparison function, receives (element, needle)
      * @return {Boolean}
      */
-    Heap.prototype.contains = function (o, fn) {
-        if (fn === void 0) { fn = Heap.defaultIsEqual; }
-        return this.heapArray.findIndex(function (el) { return fn(el, o); }) >= 0;
+    Heap.prototype.contains = function (o, callbackFn) {
+        if (callbackFn === void 0) { callbackFn = Heap.defaultIsEqual; }
+        return this.indexOf(o, callbackFn) !== -1;
     };
     /**
-     * Initialise a heap, sorting nodes
+     * Initialize a heap, sorting nodes
      * @param  {Array} array Optional initial state array
      */
     Heap.prototype.init = function (array) {
@@ -1779,7 +1787,62 @@ var Heap = /** @class */ (function () {
         return this.length === 0;
     };
     /**
+     * Get the index of the first occurrence of the element in the heap (using the comparator).
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Number}              Index or -1 if not found
+     */
+    Heap.prototype.indexOf = function (element, callbackFn) {
+        if (callbackFn === void 0) { callbackFn = Heap.defaultIsEqual; }
+        if (this.heapArray.length === 0) {
+            return -1;
+        }
+        var indexes = [];
+        var currentIndex = 0;
+        while (currentIndex < this.heapArray.length) {
+            var currentElement = this.heapArray[currentIndex];
+            if (callbackFn(currentElement, element)) {
+                return currentIndex;
+            }
+            else if (this.compare(currentElement, element) <= 0) {
+                indexes.push.apply(indexes, __spreadArray([], __read(Heap.getChildrenIndexOf(currentIndex)), false));
+            }
+            currentIndex = indexes.shift() || this.heapArray.length;
+        }
+        return -1;
+    };
+    /**
+     * Get the indexes of the every occurrence of the element in the heap (using the comparator).
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Array}               Array of indexes or empty array if not found
+     */
+    Heap.prototype.indexOfEvery = function (element, callbackFn) {
+        if (callbackFn === void 0) { callbackFn = Heap.defaultIsEqual; }
+        if (this.heapArray.length === 0) {
+            return [];
+        }
+        var indexes = [];
+        var foundIndexes = [];
+        var currentIndex = 0;
+        while (currentIndex < this.heapArray.length) {
+            var currentElement = this.heapArray[currentIndex];
+            if (callbackFn(currentElement, element)) {
+                foundIndexes.push(currentIndex);
+                indexes.push.apply(indexes, __spreadArray([], __read(Heap.getChildrenIndexOf(currentIndex)), false));
+            }
+            else if (this.compare(currentElement, element) <= 0) {
+                indexes.push.apply(indexes, __spreadArray([], __read(Heap.getChildrenIndexOf(currentIndex)), false));
+            }
+            currentIndex = indexes.shift() || this.heapArray.length;
+        }
+        return foundIndexes;
+    };
+    /**
      * Get the leafs of the tree (no children nodes)
+     * @return {Array}
+     * @see getChildrenOf
+     * @see bottom
      */
     Heap.prototype.leafs = function () {
         if (this.heapArray.length === 0) {
@@ -1792,6 +1855,7 @@ var Heap = /** @class */ (function () {
         /**
          * Length of the heap.
          * @return {Number}
+         * @see size
          */
         get: function () {
             return this.heapArray.length;
@@ -1822,6 +1886,7 @@ var Heap = /** @class */ (function () {
      * Top node. Aliases: `element`.
      * Same as: `top(1)[0]`
      * @return {any} Top node
+     * @see top
      */
     Heap.prototype.peek = function () {
         return this.heapArray[0];
@@ -1871,20 +1936,20 @@ var Heap = /** @class */ (function () {
         return element;
     };
     /**
-     * Remove an element from the heap.
+     * Remove the first occurrence of an element from the heap.
      * @param  {any}   o      Element to be found
-     * @param  {Function} fn  Optional function to compare
+     * @param  {Function} callbackFn  Optional equality function, receives (element, needle)
      * @return {Boolean}      True if the heap was modified
      */
-    Heap.prototype.remove = function (o, fn) {
-        if (fn === void 0) { fn = Heap.defaultIsEqual; }
+    Heap.prototype.remove = function (o, callbackFn) {
+        if (callbackFn === void 0) { callbackFn = Heap.defaultIsEqual; }
         if (this.length > 0) {
             if (o === undefined) {
                 this.pop();
                 return true;
             }
             else {
-                var idx = this.heapArray.findIndex(function (el) { return fn(el, o); });
+                var idx = this.indexOf(o, callbackFn);
                 if (idx >= 0) {
                     if (idx === 0) {
                         this.pop();
