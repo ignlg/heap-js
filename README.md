@@ -53,7 +53,7 @@ heap vs array: push + top(50) of 100
 
 ### 2.3
 
-- Adds the `HeapAsync` class, with async methods and supporting async comparators. It is a drop-in replacement for `Heap` class with Promises.
+- Adds the `HeapAsync` class, with async methods and supporting async comparators. It is a drop-in replacement for the `Heap` class with Promises.
 
 ### 2.2
 
@@ -65,14 +65,14 @@ Notice that _using the heap directly as an iterator will consume the heap,_ as P
 
 ### 2.1
 
-- Adds `Heap.nlargest` as `heapq`.
-- Adds `Heap.nsmallest` as `heapq`.
+- Adds `Heap.nlargest` as in `heapq`.
+- Adds `Heap.nsmallest` as in `heapq`.
 - Sanitizes `top` / `bottom` input to force an integer.
 - Linted with Eslint.
 
 ### 2.0
 
-The main breaking change is that now _`top(N)` does NOT sort the output_. It should not be part of the spec for a priority queue, the output should be the top N elements. It will be _partially ordered_ with the peek at index `0` by definition, that is all.
+The main breaking change is that now _`top(N)` does NOT sort the output_, because sorting should not be part of the spec for a priority queue. The output is the top N elements, and they will be _partially ordered_ with the peek at index `0` by definition.
 
 - `top(N)` is unordered, only the first element is guaranteed to be the top priority element.
 - Fixes custom heap issue [#31](https://github.com/ignlg/heap-js/issues/31).
