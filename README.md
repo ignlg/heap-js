@@ -43,6 +43,12 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 2.5
+
+- Improves the `limit` property to support negative, Infinity, and NaN values. They will be set as `0` and the heap will not be limited.
+- Adds the `setLimit` method to set the limit of the heap. It returns `NaN` if the limit is negative, or NaN. This method is useful to check if the limit was set as expected.
+- Improves tests and documentation.
+
 ### 2.4
 
 - Adds the `indexOf` method to find the first index of an element in the heap.
