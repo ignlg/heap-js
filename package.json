@@ -19,7 +19,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ignlg/heap-js.git"
+    "url": "git+ssh://git@github.com/ignlg/heap-js.git"
   },
   "files": [
     "dist"
