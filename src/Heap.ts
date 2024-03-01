@@ -14,25 +14,25 @@ export class Heap<T> implements Iterable<T> {
   _limit = 0;
 
   /**
-   * Alias of add
+   * Alias of {@link add}
    * @see add
    */
   offer = this.add;
 
   /**
-   * Alias of peek
+   * Alias of {@link peek}
    * @see peek
    */
   element = this.peek;
 
   /**
-   * Alias of pop
+   * Alias of {@link pop}
    * @see pop
    */
   poll = this.pop;
 
   /**
-   * Alias of clear
+   * Alias of {@link clear}
    * @see clear
    */
   removeAll = this.clear;
@@ -322,8 +322,8 @@ export class Heap<T> implements Iterable<T> {
    */
 
   /**
-   * Adds an element to the heap. Aliases: `offer`.
-   * Same as: push(element)
+   * Adds an element to the heap. Aliases: {@link offer}.
+   * Same as: {@link push}(element).
    * @param {any} element Element to be added
    * @return {Boolean} true
    */
@@ -335,7 +335,7 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Adds an array of elements to the heap.
-   * Similar as: push(element, element, ...).
+   * Similar as: {@link push}(element, element, ...).
    * @param {Array} elements Elements to be added
    * @return {Boolean} true
    */
@@ -490,7 +490,8 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Get the leafs of the tree (no children nodes)
+   * Get the leafs of the tree (no children nodes).
+   * See also: {@link getChildrenOf} and {@link bottom}.
    * @return {Array}
    * @see getChildrenOf
    * @see bottom
@@ -504,7 +505,7 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Length of the heap.
+   * Length of the heap. Aliases: {@link size}.
    * @return {Number}
    * @see size
    */
@@ -514,24 +515,50 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Get length limit of the heap.
+   * Use {@link setLimit} or {@link limit} to set the limit.
    * @return {Number}
+   * @see setLimit
    */
   get limit(): number {
     return this._limit;
   }
 
   /**
-   * Set length limit of the heap.
-   * @return {Number}
+   * Set length limit of the heap. Same as using {@link setLimit}.
+   * @description If the heap is longer than the limit, the needed amount of leafs are removed.
+   * @param {Number} _l Limit, defaults to 0 (no limit). Negative, Infinity, or NaN values set the limit to 0.
+   * @see setLimit
    */
   set limit(_l: number) {
-    this._limit = ~~_l;
+    if (_l < 0 || isNaN(_l)) {
+      // NaN, negative, and Infinity are treated as 0
+      this._limit = 0;
+    } else {
+      // truncating a floating-point number to an integer
+      this._limit = ~~_l;
+    }
     this._applyLimit();
   }
 
   /**
-   * Top node. Aliases: `element`.
-   * Same as: `top(1)[0]`
+   * Set length limit of the heap.
+   * Same as assigning to {@link limit} but returns NaN if the value was invalid.
+   * @param {Number} _l Limit. Negative, Infinity, or NaN values set the limit to 0.
+   * @return {Number} The limit or NaN if the value was negative, or NaN.
+   * @see limit
+   */
+  setLimit(_l: number): number {
+    this.limit = _l;
+    if (_l < 0 || isNaN(_l)) {
+      return NaN;
+    } else {
+      return this._limit;
+    }
+  }
+
+  /**
+   * Top node. Aliases: {@link element}.
+   * Same as: {@link top}(1)[0].
    * @return {any} Top node
    * @see top
    */
@@ -540,7 +567,7 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Extract the top node (root). Aliases: `poll`.
+   * Extract the top node (root). Aliases: {@link poll}.
    * @return {any} Extracted top node, undefined if empty
    */
   pop(): T | undefined {
@@ -553,6 +580,7 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Pushes element(s) to the heap.
+   * See also: {@link add} and {@link addAll}.
    * @param  {...any} elements Elements to insert
    * @return {Boolean} True if elements are present
    */
@@ -717,7 +745,7 @@ export class Heap<T> implements Iterable<T> {
    * Limit heap size if needed
    */
   _applyLimit(): void {
-    if (this._limit && this._limit < this.heapArray.length) {
+    if (this._limit > 0 && this._limit < this.heapArray.length) {
       let rm = this.heapArray.length - this._limit;
       // It's much faster than splice
       while (rm) {
