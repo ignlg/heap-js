@@ -296,16 +296,128 @@ describe('Heap instances', function () {
       });
 
       describe('#limit', function () {
+        const lowLimit = Math.floor(values.length / 3);
+        const midLimit = Math.floor(values.length / 2);
+        const highLimit = values.length * 10;
+        const extraValues = values.slice(0, Math.floor(values.length / 2));
+        it('should set the limit', function () {
+          heap.limit = midLimit;
+          expect(heap.limit).toEqual(midLimit);
+          heap.limit = lowLimit;
+          expect(heap.limit).toEqual(lowLimit);
+        });
         it('should limit the heap length', function () {
           heap.init(values);
           expect(heap.length).toEqual(values.length);
-          heap.limit = 5;
-          expect(heap.limit).toEqual(5);
-          expect(heap.length).toEqual(5);
-          const otherValues = values.slice(0, Math.floor(values.length / 2));
-          heap.push(...otherValues);
-          expect(heap.length).toEqual(5);
+          heap.limit = lowLimit;
+          expect(heap.limit).toEqual(lowLimit);
+          expect(heap.length).toEqual(lowLimit);
+          heap.push(...extraValues);
+          expect(heap.length).toEqual(lowLimit);
           expect(heap.check()).not.toBeDefined();
+        });
+        it('should apply the limit to the heap length', function () {
+          heap.init(values);
+          expect(heap.length).toEqual(values.length);
+          heap.limit = midLimit;
+          expect(heap.limit).toEqual(midLimit);
+          expect(heap.length).toEqual(midLimit);
+          expect(heap.check()).not.toBeDefined();
+          heap.limit = lowLimit;
+          expect(heap.limit).toEqual(lowLimit);
+          expect(heap.length).toEqual(lowLimit);
+          expect(heap.check()).not.toBeDefined();
+          heap.limit = highLimit;
+          expect(heap.limit).toEqual(highLimit);
+          expect(heap.length).toEqual(lowLimit);
+          expect(heap.check()).not.toBeDefined();
+        });
+        it('should not limit the heap length if the limit is higher than the length', function () {
+          heap.init(values);
+          expect(heap.length).toEqual(values.length);
+          heap.limit = highLimit;
+          expect(heap.limit).toEqual(highLimit);
+          expect(heap.length).toEqual(values.length);
+          heap.push(...extraValues);
+          expect(heap.length).toEqual(values.length + extraValues.length);
+          expect(heap.check()).not.toBeDefined();
+        });
+        it('should not limit the heap length if the limit is 0', function () {
+          heap.init(values);
+          expect(heap.length).toEqual(values.length);
+          heap.limit = 0;
+          expect(heap.limit).toEqual(0);
+          expect(heap.length).toEqual(values.length);
+          heap.push(...extraValues);
+          expect(heap.length).toEqual(values.length + extraValues.length);
+          expect(heap.check()).not.toBeDefined();
+        });
+        it('should not limit the heap length if the limit is negative', function () {
+          heap.init(values);
+          expect(heap.length).toEqual(values.length);
+          heap.limit = -1;
+          expect(heap.limit).toEqual(0);
+          expect(heap.length).toEqual(values.length);
+          heap.push(...extraValues);
+          expect(heap.length).toEqual(values.length + extraValues.length);
+          expect(heap.check()).not.toBeDefined();
+        });
+        it('should not limit the heap length if the limit is NaN', function () {
+          heap.init(values);
+          expect(heap.length).toEqual(values.length);
+          heap.limit = NaN;
+          expect(heap.limit).toEqual(0);
+          expect(heap.length).toEqual(values.length);
+          heap.push(...extraValues);
+          expect(heap.length).toEqual(values.length + extraValues.length);
+          expect(heap.check()).not.toBeDefined();
+        });
+        it('should not limit the heap length if the limit is Infinity', function () {
+          heap.init(values);
+          expect(heap.length).toEqual(values.length);
+          heap.limit = Infinity;
+          expect(heap.limit).toEqual(0);
+          expect(heap.length).toEqual(values.length);
+          heap.push(...extraValues);
+          expect(heap.length).toEqual(values.length + extraValues.length);
+          expect(heap.check()).not.toBeDefined();
+        });
+        it('should limit the heap length if the limit is one', function () {
+          heap.init(values);
+          expect(heap.length).toEqual(values.length);
+          heap.limit = 1;
+          expect(heap.limit).toEqual(1);
+          expect(heap.length).toEqual(1);
+          heap.push(...extraValues);
+          expect(heap.length).toEqual(1);
+          expect(heap.check()).not.toBeDefined();
+        });
+        it('should limit the heap length if the limit is the length', function () {
+          heap.init(values);
+          expect(heap.length).toEqual(values.length);
+          heap.limit = values.length;
+          expect(heap.limit).toEqual(values.length);
+          expect(heap.length).toEqual(values.length);
+          heap.push(...extraValues);
+          expect(heap.length).toEqual(values.length);
+          expect(heap.check()).not.toBeDefined();
+        });
+      });
+
+      describe('#setLimit()', function () {
+        it('should set the limit if valid, returning the limit', function () {
+          expect(heap.setLimit(10)).toBe(10);
+          expect(heap.limit).toEqual(10);
+          expect(heap.setLimit(0)).toBe(0);
+          expect(heap.limit).toEqual(0);
+          expect(heap.setLimit(Infinity)).toBe(0);
+          expect(heap.limit).toEqual(0);
+        });
+        it('should set the limit to 0 if invalid, returning NaN', function () {
+          expect(heap.setLimit(-10)).toBe(NaN);
+          expect(heap.limit).toEqual(0);
+          expect(heap.setLimit(NaN)).toBe(NaN);
+          expect(heap.limit).toEqual(0);
         });
       });
 

@@ -11,22 +11,22 @@ export declare class Heap<T> implements Iterable<T> {
     heapArray: Array<T>;
     _limit: number;
     /**
-     * Alias of add
+     * Alias of {@link add}
      * @see add
      */
     offer: (element: T) => boolean;
     /**
-     * Alias of peek
+     * Alias of {@link peek}
      * @see peek
      */
     element: () => T | undefined;
     /**
-     * Alias of pop
+     * Alias of {@link pop}
      * @see pop
      */
     poll: () => T | undefined;
     /**
-     * Alias of clear
+     * Alias of {@link clear}
      * @see clear
      */
     removeAll: () => void;
@@ -164,15 +164,15 @@ export declare class Heap<T> implements Iterable<T> {
      */
     static nsmallest<N>(n: number, iterable: Iterable<N>, compare?: Comparator<N>): Array<N>;
     /**
-     * Adds an element to the heap. Aliases: `offer`.
-     * Same as: push(element)
+     * Adds an element to the heap. Aliases: {@link offer}.
+     * Same as: {@link push}(element).
      * @param {any} element Element to be added
      * @return {Boolean} true
      */
     add(element: T): boolean;
     /**
      * Adds an array of elements to the heap.
-     * Similar as: push(element, element, ...).
+     * Similar as: {@link push}(element, element, ...).
      * @param {Array} elements Elements to be added
      * @return {Boolean} true
      */
@@ -235,42 +235,56 @@ export declare class Heap<T> implements Iterable<T> {
      */
     indexOfEvery(element: T, callbackFn?: IsEqual<T>): number[];
     /**
-     * Get the leafs of the tree (no children nodes)
+     * Get the leafs of the tree (no children nodes).
+     * See also: {@link getChildrenOf} and {@link bottom}.
      * @return {Array}
      * @see getChildrenOf
      * @see bottom
      */
     leafs(): Array<T>;
     /**
-     * Length of the heap.
+     * Length of the heap. Aliases: {@link size}.
      * @return {Number}
      * @see size
      */
     get length(): number;
     /**
      * Get length limit of the heap.
+     * Use {@link setLimit} or {@link limit} to set the limit.
      * @return {Number}
+     * @see setLimit
      */
     get limit(): number;
     /**
-     * Set length limit of the heap.
-     * @return {Number}
+     * Set length limit of the heap. Same as using {@link setLimit}.
+     * @description If the heap is longer than the limit, the needed amount of leafs are removed.
+     * @param {Number} _l Limit, defaults to 0 (no limit). Negative, Infinity, or NaN values set the limit to 0.
+     * @see setLimit
      */
     set limit(_l: number);
     /**
-     * Top node. Aliases: `element`.
-     * Same as: `top(1)[0]`
+     * Set length limit of the heap.
+     * Same as assigning to {@link limit} but returns NaN if the value was invalid.
+     * @param {Number} _l Limit. Negative, Infinity, or NaN values set the limit to 0.
+     * @return {Number} The limit or NaN if the value was negative, or NaN.
+     * @see limit
+     */
+    setLimit(_l: number): number;
+    /**
+     * Top node. Aliases: {@link element}.
+     * Same as: {@link top}(1)[0].
      * @return {any} Top node
      * @see top
      */
     peek(): T | undefined;
     /**
-     * Extract the top node (root). Aliases: `poll`.
+     * Extract the top node (root). Aliases: {@link poll}.
      * @return {any} Extracted top node, undefined if empty
      */
     pop(): T | undefined;
     /**
      * Pushes element(s) to the heap.
+     * See also: {@link add} and {@link addAll}.
      * @param  {...any} elements Elements to insert
      * @return {Boolean} True if elements are present
      */

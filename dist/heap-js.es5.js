@@ -1384,22 +1384,22 @@ var Heap = /** @class */ (function () {
         this.heapArray = [];
         this._limit = 0;
         /**
-         * Alias of add
+         * Alias of {@link add}
          * @see add
          */
         this.offer = this.add;
         /**
-         * Alias of peek
+         * Alias of {@link peek}
          * @see peek
          */
         this.element = this.peek;
         /**
-         * Alias of pop
+         * Alias of {@link pop}
          * @see pop
          */
         this.poll = this.pop;
         /**
-         * Alias of clear
+         * Alias of {@link clear}
          * @see clear
          */
         this.removeAll = this.clear;
@@ -1674,8 +1674,8 @@ var Heap = /** @class */ (function () {
               Instance methods
      */
     /**
-     * Adds an element to the heap. Aliases: `offer`.
-     * Same as: push(element)
+     * Adds an element to the heap. Aliases: {@link offer}.
+     * Same as: {@link push}(element).
      * @param {any} element Element to be added
      * @return {Boolean} true
      */
@@ -1686,7 +1686,7 @@ var Heap = /** @class */ (function () {
     };
     /**
      * Adds an array of elements to the heap.
-     * Similar as: push(element, element, ...).
+     * Similar as: {@link push}(element, element, ...).
      * @param {Array} elements Elements to be added
      * @return {Boolean} true
      */
@@ -1839,7 +1839,8 @@ var Heap = /** @class */ (function () {
         return foundIndexes;
     };
     /**
-     * Get the leafs of the tree (no children nodes)
+     * Get the leafs of the tree (no children nodes).
+     * See also: {@link getChildrenOf} and {@link bottom}.
      * @return {Array}
      * @see getChildrenOf
      * @see bottom
@@ -1853,7 +1854,7 @@ var Heap = /** @class */ (function () {
     };
     Object.defineProperty(Heap.prototype, "length", {
         /**
-         * Length of the heap.
+         * Length of the heap. Aliases: {@link size}.
          * @return {Number}
          * @see size
          */
@@ -1866,25 +1867,52 @@ var Heap = /** @class */ (function () {
     Object.defineProperty(Heap.prototype, "limit", {
         /**
          * Get length limit of the heap.
+         * Use {@link setLimit} or {@link limit} to set the limit.
          * @return {Number}
+         * @see setLimit
          */
         get: function () {
             return this._limit;
         },
         /**
-         * Set length limit of the heap.
-         * @return {Number}
+         * Set length limit of the heap. Same as using {@link setLimit}.
+         * @description If the heap is longer than the limit, the needed amount of leafs are removed.
+         * @param {Number} _l Limit, defaults to 0 (no limit). Negative, Infinity, or NaN values set the limit to 0.
+         * @see setLimit
          */
         set: function (_l) {
-            this._limit = ~~_l;
+            if (_l < 0 || isNaN(_l)) {
+                // NaN, negative, and Infinity are treated as 0
+                this._limit = 0;
+            }
+            else {
+                // truncating a floating-point number to an integer
+                this._limit = ~~_l;
+            }
             this._applyLimit();
         },
         enumerable: false,
         configurable: true
     });
     /**
-     * Top node. Aliases: `element`.
-     * Same as: `top(1)[0]`
+     * Set length limit of the heap.
+     * Same as assigning to {@link limit} but returns NaN if the value was invalid.
+     * @param {Number} _l Limit. Negative, Infinity, or NaN values set the limit to 0.
+     * @return {Number} The limit or NaN if the value was negative, or NaN.
+     * @see limit
+     */
+    Heap.prototype.setLimit = function (_l) {
+        this.limit = _l;
+        if (_l < 0 || isNaN(_l)) {
+            return NaN;
+        }
+        else {
+            return this._limit;
+        }
+    };
+    /**
+     * Top node. Aliases: {@link element}.
+     * Same as: {@link top}(1)[0].
      * @return {any} Top node
      * @see top
      */
@@ -1892,7 +1920,7 @@ var Heap = /** @class */ (function () {
         return this.heapArray[0];
     };
     /**
-     * Extract the top node (root). Aliases: `poll`.
+     * Extract the top node (root). Aliases: {@link poll}.
      * @return {any} Extracted top node, undefined if empty
      */
     Heap.prototype.pop = function () {
@@ -1904,6 +1932,7 @@ var Heap = /** @class */ (function () {
     };
     /**
      * Pushes element(s) to the heap.
+     * See also: {@link add} and {@link addAll}.
      * @param  {...any} elements Elements to insert
      * @return {Boolean} True if elements are present
      */
@@ -2079,7 +2108,7 @@ var Heap = /** @class */ (function () {
      * Limit heap size if needed
      */
     Heap.prototype._applyLimit = function () {
-        if (this._limit && this._limit < this.heapArray.length) {
+        if (this._limit > 0 && this._limit < this.heapArray.length) {
             var rm = this.heapArray.length - this._limit;
             // It's much faster than splice
             while (rm) {
