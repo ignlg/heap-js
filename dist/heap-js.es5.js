@@ -486,9 +486,9 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    HeapAsync.prototype.bottom = function (n) {
-        if (n === void 0) { n = 1; }
-        return __awaiter(this, void 0, void 0, function () {
+    HeapAsync.prototype.bottom = function () {
+        return __awaiter(this, arguments, void 0, function (n) {
+            if (n === void 0) { n = 1; }
             return __generator$1(this, function (_a) {
                 if (this.heapArray.length === 0 || n <= 0) {
                     // Nothing to do
@@ -591,11 +591,11 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Function} fn  Optional comparison function, receives (element, needle)
      * @return {Boolean}
      */
-    HeapAsync.prototype.contains = function (o, fn) {
-        if (fn === void 0) { fn = HeapAsync.defaultIsEqual; }
-        return __awaiter(this, void 0, void 0, function () {
+    HeapAsync.prototype.contains = function (o_1) {
+        return __awaiter(this, arguments, void 0, function (o, fn) {
             var _a, _b, el, e_2_1;
             var e_2, _c;
+            if (fn === void 0) { fn = HeapAsync.defaultIsEqual; }
             return __generator$1(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -785,10 +785,10 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Function} fn  Optional function to compare
      * @return {Boolean}      True if the heap was modified
      */
-    HeapAsync.prototype.remove = function (o, fn) {
-        if (fn === void 0) { fn = HeapAsync.defaultIsEqual; }
-        return __awaiter(this, void 0, void 0, function () {
+    HeapAsync.prototype.remove = function (o_1) {
+        return __awaiter(this, arguments, void 0, function (o, fn) {
             var idx, i;
+            if (fn === void 0) { fn = HeapAsync.defaultIsEqual; }
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -874,9 +874,9 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Number} n  Number of elements.
      * @return {Array}    Array of length <= N.
      */
-    HeapAsync.prototype.top = function (n) {
-        if (n === void 0) { n = 1; }
-        return __awaiter(this, void 0, void 0, function () {
+    HeapAsync.prototype.top = function () {
+        return __awaiter(this, arguments, void 0, function (n) {
+            if (n === void 0) { n = 1; }
             return __generator$1(this, function (_a) {
                 if (this.heapArray.length === 0 || n <= 0) {
                     // Nothing to do
