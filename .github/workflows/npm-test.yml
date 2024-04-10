@@ -10,12 +10,12 @@ on:
     branches: ["master", "next"]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [lts/*, latest]
+        node-version: [lts/*, current]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -26,7 +26,43 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm install --global yarn
-      - run: yarn
-      #    - run: npm run build --if-present
+      - run: yarn --immutable
       - run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [lts/*, current]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm install --global yarn
+      - run: yarn --immutable
       - run: npm run test
+
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [lts/*, current]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm install --global yarn
+      - run: yarn --immutable
+      - run: npm run build
