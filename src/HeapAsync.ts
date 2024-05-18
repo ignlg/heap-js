@@ -658,8 +658,10 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * Iterator interface
    */
   *[Symbol.iterator](): Iterator<Promise<T>> {
-    while (this.length) {
-      yield this.pop() as Promise<T>;
+    const cloned = this.clone();
+    
+    while (cloned.length) {
+      yield cloned.pop() as Promise<T>;
     }
   }
 

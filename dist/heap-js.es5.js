@@ -943,15 +943,19 @@ var HeapAsync = /** @class */ (function () {
      * Iterator interface
      */
     HeapAsync.prototype[Symbol.iterator] = function () {
+        var cloned;
         return __generator$1(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!this.length) return [3 /*break*/, 2];
-                    return [4 /*yield*/, this.pop()];
+                    cloned = this.clone();
+                    _a.label = 1;
                 case 1:
+                    if (!cloned.length) return [3 /*break*/, 3];
+                    return [4 /*yield*/, cloned.pop()];
+                case 2:
                     _a.sent();
-                    return [3 /*break*/, 0];
-                case 2: return [2 /*return*/];
+                    return [3 /*break*/, 1];
+                case 3: return [2 /*return*/];
             }
         });
     };
@@ -2086,15 +2090,19 @@ var Heap = /** @class */ (function () {
      * Iterator interface
      */
     Heap.prototype[Symbol.iterator] = function () {
+        var cloned;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!this.length) return [3 /*break*/, 2];
-                    return [4 /*yield*/, this.pop()];
+                    cloned = this.clone();
+                    _a.label = 1;
                 case 1:
+                    if (!cloned.length) return [3 /*break*/, 3];
+                    return [4 /*yield*/, cloned.pop()];
+                case 2:
                     _a.sent();
-                    return [3 /*break*/, 0];
-                case 2: return [2 /*return*/];
+                    return [3 /*break*/, 1];
+                case 3: return [2 /*return*/];
             }
         });
     };

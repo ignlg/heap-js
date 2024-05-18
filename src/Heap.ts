@@ -729,8 +729,10 @@ export class Heap<T> implements Iterable<T> {
    * Iterator interface
    */
   *[Symbol.iterator](): Iterator<T> {
-    while (this.length) {
-      yield this.pop() as T;
+    const cloned = this.clone();
+
+    while (cloned.length) {
+      yield cloned.pop() as T;
     }
   }
 
