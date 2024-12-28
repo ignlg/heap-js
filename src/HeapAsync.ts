@@ -735,8 +735,8 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Number} i Index of the node
    */
   async _sortNodeDown(i: number): Promise<void> {
-    const length = this.heapArray.length;
-    while (true) {
+    const { length } = this.heapArray;
+    do {
       const left = 2 * i + 1;
       const right = left + 1;
       let best = i;
@@ -749,7 +749,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
       if (best === i) break;
       this._moveNode(i, best);
       i = best;
-    }
+    } while (true);
   }
 
   /**
@@ -759,7 +759,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
   async _sortNodeUp(i: number): Promise<void> {
     while (i > 0) {
       const pi = HeapAsync.getParentIndexOf(i);
-      if (pi >= 0 && (await this.compare(this.heapArray[i], this.heapArray[pi])) < 0) {
+      if ((await this.compare(this.heapArray[i], this.heapArray[pi])) < 0) {
         this._moveNode(i, pi);
         i = pi;
       } else break;

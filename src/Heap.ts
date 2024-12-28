@@ -836,7 +836,7 @@ export class Heap<T> implements Iterable<T> {
   _sortNodeUp(i: number): void {
     while (i > 0) {
       const pi = Heap.getParentIndexOf(i);
-      if (pi >= 0 && this.compare(this.heapArray[i], this.heapArray[pi]) < 0) {
+      if (this.compare(this.heapArray[i], this.heapArray[pi]) < 0) {
         this._moveNode(i, pi);
         i = pi;
       } else break;
