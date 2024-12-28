@@ -51,7 +51,7 @@ jobs:
       - name: Run tests
         run: npm run test
       - name: Coveralls GitHub Action
-        uses: coverallsapp/github-action@v2.3.0
+        uses: coverallsapp/github-action@v2
 
 
   build:
