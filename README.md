@@ -43,6 +43,11 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 2.6
+
+- Improves performance of remove and sorting methods.
+- Improves tests and documentation.
+
 ### 2.5
 
 - Improves the `limit` property to support negative, Infinity, and NaN values. They will be set as `0` and the heap will not be limited.
@@ -331,9 +336,13 @@ To do:
 
 <https://ignlg.github.io/heap-js/>
 
-## Contributing
+## Sponsor
 
-Development of **Heap.js** happens in the open on GitHub, and I am grateful to the community for contributing bug fixes and improvements.
+We are looking for sponsors to help us maintain and improve **Heap.js**. If you're interested in supporting this project, please get in touch with us.
+
+## Collaborate
+
+Would you like to contribute to **Heap.js**? Feel free to submit a pull request, open an issue, or reach out to the maintainers. We welcome your feedback and ideas!
 
 ### Dev setup
 
@@ -355,4 +364,4 @@ npm run benchmarks
 
 ### License
 
-Heap.js is [BSD licensed](LICENSE).
+Heap.js is [BSD 3-Clause Licensed](LICENSE).

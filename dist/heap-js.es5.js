@@ -8,8 +8,8 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
     });
 };
 var __generator$1 = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -486,9 +486,9 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Number} n  Number of elements.
      * @return {Array}     Array of length <= N.
      */
-    HeapAsync.prototype.bottom = function (n) {
-        if (n === void 0) { n = 1; }
-        return __awaiter(this, void 0, void 0, function () {
+    HeapAsync.prototype.bottom = function () {
+        return __awaiter(this, arguments, void 0, function (n) {
+            if (n === void 0) { n = 1; }
             return __generator$1(this, function (_a) {
                 if (this.heapArray.length === 0 || n <= 0) {
                     // Nothing to do
@@ -591,11 +591,11 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Function} fn  Optional comparison function, receives (element, needle)
      * @return {Boolean}
      */
-    HeapAsync.prototype.contains = function (o, fn) {
-        if (fn === void 0) { fn = HeapAsync.defaultIsEqual; }
-        return __awaiter(this, void 0, void 0, function () {
+    HeapAsync.prototype.contains = function (o_1) {
+        return __awaiter(this, arguments, void 0, function (o, fn) {
             var _a, _b, el, e_2_1;
             var e_2, _c;
+            if (fn === void 0) { fn = HeapAsync.defaultIsEqual; }
             return __generator$1(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -785,56 +785,54 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Function} fn  Optional function to compare
      * @return {Boolean}      True if the heap was modified
      */
-    HeapAsync.prototype.remove = function (o, fn) {
-        if (fn === void 0) { fn = HeapAsync.defaultIsEqual; }
-        return __awaiter(this, void 0, void 0, function () {
-            var idx, i;
+    HeapAsync.prototype.remove = function (o_1) {
+        return __awaiter(this, arguments, void 0, function (o, fn) {
+            var queue, idx, children;
+            var _this = this;
+            if (fn === void 0) { fn = HeapAsync.defaultIsEqual; }
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(this.length > 0)) return [3 /*break*/, 13];
+                        if (!this.heapArray.length)
+                            return [2 /*return*/, false];
                         if (!(o === undefined)) return [3 /*break*/, 2];
                         return [4 /*yield*/, this.pop()];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, true];
                     case 2:
-                        idx = -1;
-                        i = 0;
+                        queue = [0];
                         _a.label = 3;
                     case 3:
-                        if (!(i < this.heapArray.length)) return [3 /*break*/, 6];
-                        return [4 /*yield*/, fn(this.heapArray[i], o)];
+                        if (!queue.length) return [3 /*break*/, 13];
+                        idx = queue.shift();
+                        return [4 /*yield*/, fn(this.heapArray[idx], o)];
                     case 4:
-                        if (_a.sent()) {
-                            idx = i;
-                            return [3 /*break*/, 6];
-                        }
-                        _a.label = 5;
-                    case 5:
-                        ++i;
-                        return [3 /*break*/, 3];
-                    case 6:
-                        if (!(idx >= 0)) return [3 /*break*/, 13];
-                        if (!(idx === 0)) return [3 /*break*/, 8];
+                        if (!_a.sent()) return [3 /*break*/, 11];
+                        if (!(idx === 0)) return [3 /*break*/, 6];
                         return [4 /*yield*/, this.pop()];
-                    case 7:
+                    case 5:
                         _a.sent();
-                        return [3 /*break*/, 12];
-                    case 8:
-                        if (!(idx === this.length - 1)) return [3 /*break*/, 9];
+                        return [3 /*break*/, 10];
+                    case 6:
+                        if (!(idx === this.heapArray.length - 1)) return [3 /*break*/, 7];
                         this.heapArray.pop();
-                        return [3 /*break*/, 12];
-                    case 9:
+                        return [3 /*break*/, 10];
+                    case 7:
                         this.heapArray.splice(idx, 1, this.heapArray.pop());
                         return [4 /*yield*/, this._sortNodeUp(idx)];
-                    case 10:
+                    case 8:
                         _a.sent();
                         return [4 /*yield*/, this._sortNodeDown(idx)];
-                    case 11:
+                    case 9:
                         _a.sent();
+                        _a.label = 10;
+                    case 10: return [2 /*return*/, true];
+                    case 11:
+                        children = HeapAsync.getChildrenIndexOf(idx).filter(function (c) { return c < _this.heapArray.length; });
+                        queue.push.apply(queue, __spreadArray$1([], __read$1(children), false));
                         _a.label = 12;
-                    case 12: return [2 /*return*/, true];
+                    case 12: return [3 /*break*/, 3];
                     case 13: return [2 /*return*/, false];
                 }
             });
@@ -874,9 +872,9 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Number} n  Number of elements.
      * @return {Array}    Array of length <= N.
      */
-    HeapAsync.prototype.top = function (n) {
-        if (n === void 0) { n = 1; }
-        return __awaiter(this, void 0, void 0, function () {
+    HeapAsync.prototype.top = function () {
+        return __awaiter(this, arguments, void 0, function (n) {
+            if (n === void 0) { n = 1; }
             return __generator$1(this, function (_a) {
                 if (this.heapArray.length === 0 || n <= 0) {
                     // Nothing to do
@@ -1034,66 +1032,44 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype._sortNodeDown = function (i) {
         return __awaiter(this, void 0, void 0, function () {
-            var moveIt, self, getPotentialParent, childrenIdx, bestChildIndex, j, bestChild, _a;
-            var _this = this;
-            return __generator$1(this, function (_b) {
-                switch (_b.label) {
+            var length, left, right, best, _a, _b;
+            return __generator$1(this, function (_c) {
+                switch (_c.label) {
                     case 0:
-                        moveIt = i < this.heapArray.length - 1;
-                        self = this.heapArray[i];
-                        getPotentialParent = function (best, j) { return __awaiter(_this, void 0, void 0, function () {
-                            var _a;
-                            return __generator$1(this, function (_b) {
-                                switch (_b.label) {
-                                    case 0:
-                                        _a = this.heapArray.length > j;
-                                        if (!_a) return [3 /*break*/, 2];
-                                        return [4 /*yield*/, this.compare(this.heapArray[j], this.heapArray[best])];
-                                    case 1:
-                                        _a = (_b.sent()) < 0;
-                                        _b.label = 2;
-                                    case 2:
-                                        if (_a) {
-                                            best = j;
-                                        }
-                                        return [2 /*return*/, best];
-                                }
-                            });
-                        }); };
-                        _b.label = 1;
+                        length = this.heapArray.length;
+                        _c.label = 1;
                     case 1:
-                        if (!moveIt) return [3 /*break*/, 8];
-                        childrenIdx = HeapAsync.getChildrenIndexOf(i);
-                        bestChildIndex = childrenIdx[0];
-                        j = 1;
-                        _b.label = 2;
+                        left = 2 * i + 1;
+                        right = left + 1;
+                        best = i;
+                        _a = left < length;
+                        if (!_a) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.compare(this.heapArray[left], this.heapArray[best])];
                     case 2:
-                        if (!(j < childrenIdx.length)) return [3 /*break*/, 5];
-                        return [4 /*yield*/, getPotentialParent(bestChildIndex, childrenIdx[j])];
+                        _a = (_c.sent()) < 0;
+                        _c.label = 3;
                     case 3:
-                        bestChildIndex = _b.sent();
-                        _b.label = 4;
-                    case 4:
-                        ++j;
-                        return [3 /*break*/, 2];
-                    case 5:
-                        bestChild = this.heapArray[bestChildIndex];
-                        _a = typeof bestChild !== 'undefined';
-                        if (!_a) return [3 /*break*/, 7];
-                        return [4 /*yield*/, this.compare(self, bestChild)];
-                    case 6:
-                        _a = (_b.sent()) > 0;
-                        _b.label = 7;
-                    case 7:
                         if (_a) {
-                            this._moveNode(i, bestChildIndex);
-                            i = bestChildIndex;
+                            best = left;
                         }
-                        else {
-                            moveIt = false;
+                        _b = right < length;
+                        if (!_b) return [3 /*break*/, 5];
+                        return [4 /*yield*/, this.compare(this.heapArray[right], this.heapArray[best])];
+                    case 4:
+                        _b = (_c.sent()) < 0;
+                        _c.label = 5;
+                    case 5:
+                        if (_b) {
+                            best = right;
                         }
+                        if (best === i)
+                            return [3 /*break*/, 7];
+                        this._moveNode(i, best);
+                        i = best;
+                        _c.label = 6;
+                    case 6:
                         return [3 /*break*/, 1];
-                    case 8: return [2 /*return*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -1104,31 +1080,22 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype._sortNodeUp = function (i) {
         return __awaiter(this, void 0, void 0, function () {
-            var moveIt, pi, _a;
-            return __generator$1(this, function (_b) {
-                switch (_b.label) {
+            var pi;
+            return __generator$1(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        moveIt = i > 0;
-                        _b.label = 1;
-                    case 1:
-                        if (!moveIt) return [3 /*break*/, 4];
+                        if (!(i > 0)) return [3 /*break*/, 2];
                         pi = HeapAsync.getParentIndexOf(i);
-                        _a = pi >= 0;
-                        if (!_a) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.compare(this.heapArray[pi], this.heapArray[i])];
-                    case 2:
-                        _a = (_b.sent()) > 0;
-                        _b.label = 3;
-                    case 3:
-                        if (_a) {
+                        return [4 /*yield*/, this.compare(this.heapArray[i], this.heapArray[pi])];
+                    case 1:
+                        if ((_a.sent()) < 0) {
                             this._moveNode(i, pi);
                             i = pi;
                         }
-                        else {
-                            moveIt = false;
-                        }
-                        return [3 /*break*/, 1];
-                    case 4: return [2 /*return*/];
+                        else
+                            return [3 /*break*/, 2];
+                        return [3 /*break*/, 0];
+                    case 2: return [2 /*return*/];
                 }
             });
         });
@@ -1316,8 +1283,8 @@ var HeapAsync = /** @class */ (function () {
 }());
 
 var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -1971,28 +1938,34 @@ var Heap = /** @class */ (function () {
      * @return {Boolean}      True if the heap was modified
      */
     Heap.prototype.remove = function (o, callbackFn) {
+        var _this = this;
         if (callbackFn === void 0) { callbackFn = Heap.defaultIsEqual; }
-        if (this.length > 0) {
-            if (o === undefined) {
-                this.pop();
+        if (!this.heapArray.length)
+            return false;
+        if (o === undefined) {
+            this.pop();
+            return true;
+        }
+        var queue = [0];
+        while (queue.length) {
+            var idx = queue.shift();
+            if (callbackFn(this.heapArray[idx], o)) {
+                if (idx === 0) {
+                    this.pop();
+                }
+                else if (idx === this.heapArray.length - 1) {
+                    this.heapArray.pop();
+                }
+                else {
+                    this.heapArray.splice(idx, 1, this.heapArray.pop());
+                    this._sortNodeUp(idx);
+                    this._sortNodeDown(idx);
+                }
                 return true;
             }
-            else {
-                var idx = this.indexOf(o, callbackFn);
-                if (idx >= 0) {
-                    if (idx === 0) {
-                        this.pop();
-                    }
-                    else if (idx === this.length - 1) {
-                        this.heapArray.pop();
-                    }
-                    else {
-                        this.heapArray.splice(idx, 1, this.heapArray.pop());
-                        this._sortNodeUp(idx);
-                        this._sortNodeDown(idx);
-                    }
-                    return true;
-                }
+            else if (this.compare(this.heapArray[idx], o) <= 0) {
+                var children = Heap.getChildrenIndexOf(idx).filter(function (c) { return c < _this.heapArray.length; });
+                queue.push.apply(queue, __spreadArray([], __read(children), false));
             }
         }
         return false;
@@ -2161,26 +2134,21 @@ var Heap = /** @class */ (function () {
      * @param  {Number} i Index of the node
      */
     Heap.prototype._sortNodeDown = function (i) {
-        var _this = this;
-        var moveIt = i < this.heapArray.length - 1;
-        var self = this.heapArray[i];
-        var getPotentialParent = function (best, j) {
-            if (_this.heapArray.length > j && _this.compare(_this.heapArray[j], _this.heapArray[best]) < 0) {
-                best = j;
+        var length = this.heapArray.length;
+        while (true) {
+            var left = 2 * i + 1;
+            var right = left + 1;
+            var best = i;
+            if (left < length && this.compare(this.heapArray[left], this.heapArray[best]) < 0) {
+                best = left;
             }
-            return best;
-        };
-        while (moveIt) {
-            var childrenIdx = Heap.getChildrenIndexOf(i);
-            var bestChildIndex = childrenIdx.reduce(getPotentialParent, childrenIdx[0]);
-            var bestChild = this.heapArray[bestChildIndex];
-            if (typeof bestChild !== 'undefined' && this.compare(self, bestChild) > 0) {
-                this._moveNode(i, bestChildIndex);
-                i = bestChildIndex;
+            if (right < length && this.compare(this.heapArray[right], this.heapArray[best]) < 0) {
+                best = right;
             }
-            else {
-                moveIt = false;
-            }
+            if (best === i)
+                break;
+            this._moveNode(i, best);
+            i = best;
         }
     };
     /**
@@ -2188,16 +2156,14 @@ var Heap = /** @class */ (function () {
      * @param  {Number} i Index of the node
      */
     Heap.prototype._sortNodeUp = function (i) {
-        var moveIt = i > 0;
-        while (moveIt) {
+        while (i > 0) {
             var pi = Heap.getParentIndexOf(i);
-            if (pi >= 0 && this.compare(this.heapArray[pi], this.heapArray[i]) > 0) {
+            if (this.compare(this.heapArray[i], this.heapArray[pi]) < 0) {
                 this._moveNode(i, pi);
                 i = pi;
             }
-            else {
-                moveIt = false;
-            }
+            else
+                break;
         }
     };
     /**
