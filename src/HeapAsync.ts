@@ -537,30 +537,28 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @return {Boolean}      True if the heap was modified
    */
   async remove(o?: T, fn: AsyncIsEqual<T> = HeapAsync.defaultIsEqual): Promise<boolean> {
-    if (this.length > 0) {
-      if (o === undefined) {
-        await this.pop();
+    if (!this.heapArray.length) return false;
+    if (o === undefined) {
+      await this.pop();
+      return true;
+    }
+    const queue = [0];
+    while (queue.length) {
+      const idx = queue.shift() as number;
+      if (await fn(this.heapArray[idx], o)) {
+        if (idx === 0) {
+          await this.pop();
+        } else if (idx === this.heapArray.length - 1) {
+          this.heapArray.pop();
+        } else {
+          this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
+          await this._sortNodeUp(idx);
+          await this._sortNodeDown(idx);
+        }
         return true;
       } else {
-        let idx = -1;
-        for (let i = 0; i < this.heapArray.length; ++i) {
-          if (await fn(this.heapArray[i], o)) {
-            idx = i;
-            break;
-          }
-        }
-        if (idx >= 0) {
-          if (idx === 0) {
-            await this.pop();
-          } else if (idx === this.length - 1) {
-            this.heapArray.pop();
-          } else {
-            this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
-            await this._sortNodeUp(idx);
-            await this._sortNodeDown(idx);
-          }
-          return true;
-        }
+        const children = HeapAsync.getChildrenIndexOf(idx).filter((c) => c < this.heapArray.length);
+        queue.push(...children);
       }
     }
     return false;
@@ -737,29 +735,20 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Number} i Index of the node
    */
   async _sortNodeDown(i: number): Promise<void> {
-    let moveIt = i < this.heapArray.length - 1;
-    const self = this.heapArray[i];
-
-    const getPotentialParent = async (best: number, j: number) => {
-      if (this.heapArray.length > j && (await this.compare(this.heapArray[j], this.heapArray[best])) < 0) {
-        best = j;
+    const length = this.heapArray.length;
+    while (true) {
+      const left = 2 * i + 1;
+      const right = left + 1;
+      let best = i;
+      if (left < length && (await this.compare(this.heapArray[left], this.heapArray[best])) < 0) {
+        best = left;
       }
-      return best;
-    };
-
-    while (moveIt) {
-      const childrenIdx = HeapAsync.getChildrenIndexOf(i);
-      let bestChildIndex = childrenIdx[0];
-      for (let j = 1; j < childrenIdx.length; ++j) {
-        bestChildIndex = await getPotentialParent(bestChildIndex, childrenIdx[j]);
+      if (right < length && (await this.compare(this.heapArray[right], this.heapArray[best])) < 0) {
+        best = right;
       }
-      const bestChild = this.heapArray[bestChildIndex];
-      if (typeof bestChild !== 'undefined' && (await this.compare(self, bestChild)) > 0) {
-        this._moveNode(i, bestChildIndex);
-        i = bestChildIndex;
-      } else {
-        moveIt = false;
-      }
+      if (best === i) break;
+      this._moveNode(i, best);
+      i = best;
     }
   }
 
@@ -768,15 +757,12 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Number} i Index of the node
    */
   async _sortNodeUp(i: number): Promise<void> {
-    let moveIt = i > 0;
-    while (moveIt) {
+    while (i > 0) {
       const pi = HeapAsync.getParentIndexOf(i);
-      if (pi >= 0 && (await this.compare(this.heapArray[pi], this.heapArray[i])) > 0) {
+      if (pi >= 0 && (await this.compare(this.heapArray[i], this.heapArray[pi])) < 0) {
         this._moveNode(i, pi);
         i = pi;
-      } else {
-        moveIt = false;
-      }
+      } else break;
     }
   }
 
