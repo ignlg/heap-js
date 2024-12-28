@@ -118,6 +118,13 @@ describe('HeapAsync private', function () {
             expect(await heap._topN_heap(slice)).toEqual(top.slice(0, slice));
           }
         );
+        it('should return empty array when N is 0', async function () {
+          await heap.init(someValues);
+          expect(await heap._topN_heap(0)).toEqual([]);
+        });
+        it('should return empty array when heap is empty', async function () {
+          expect(await heap._topN_heap(5)).toEqual([]);
+        });
       });
       describe('#_bottomN(N)', function () {
         it.each([1, 6, 12, someValues.length])(
