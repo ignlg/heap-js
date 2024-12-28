@@ -43,6 +43,11 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 2.6
+
+- Improves performance of remove and sorting methods.
+- Improves tests and documentation.
+
 ### 2.5
 
 - Improves the `limit` property to support negative, Infinity, and NaN values. They will be set as `0` and the heap will not be limited.
