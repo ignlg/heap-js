@@ -44,9 +44,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm install --global yarn
-      - run: yarn --immutable
-      - run: npm run test
+      - name: Install yarn
+        run: npm install --global yarn
+      - name: Install dependencies
+        run: yarn --immutable
+      - name: Run tests
+        run: npm run test
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2.3.0
+
 
   build:
     runs-on: ubuntu-latest
