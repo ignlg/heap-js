@@ -7,7 +7,7 @@ const N = 100;
 
 const data = Array(N);
 for (let i = 0; i < N; i++) {
-  const value = Math.floor(MAX * Math.random() + MIN);
+  const value = Math.floor((MAX - MIN) * Math.random() + MIN);
   data[i] = value;
 }
 
