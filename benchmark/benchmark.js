@@ -1,3 +1,4 @@
+const HeapHeap = require('heap');
 const { Heap } = require('../dist/heap-js.umd');
 const { runBenchmark } = require('./benchmark.helpers');
 
@@ -128,6 +129,35 @@ for (const n of samples) {
         }
         array.sort();
         array.slice(0, n);
+      },
+    },
+  ]);
+}
+
+for (const n of samples) {
+  const heapHeap = new HeapHeap();
+  const heapJsHeap = new Heap();
+  runBenchmark(`heap vs heap-js: push + pop ${n}`, [
+    {
+      name: 'heap',
+      func: function () {
+        for (let i = 0; i < n; i++) {
+          heapHeap.push(data[i]);
+        }
+        for (let i = 0; i < n; i++) {
+          heapHeap.pop();
+        }
+      },
+    },
+    {
+      name: 'heap-js',
+      func: function () {
+        for (let i = 0; i < n; i++) {
+          heapJsHeap.push(data[i]);
+        }
+        for (let i = 0; i < n; i++) {
+          heapJsHeap.pop();
+        }
       },
     },
   ]);
