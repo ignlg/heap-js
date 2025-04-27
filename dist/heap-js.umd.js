@@ -2135,7 +2135,7 @@
         Heap.prototype._moveNode = function (j, k) {
             var temp = this.heapArray[j];
             this.heapArray[j] = this.heapArray[k];
-            this.heapArray[j] = temp;
+            this.heapArray[k] = temp;
         };
         /**
          * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
