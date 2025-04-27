@@ -1023,8 +1023,9 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Number} k Another node index
      */
     HeapAsync.prototype._moveNode = function (j, k) {
-        var _a;
-        _a = __read$1([this.heapArray[k], this.heapArray[j]], 2), this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
+        var temp = this.heapArray[j];
+        this.heapArray[j] = this.heapArray[k];
+        this.heapArray[k] = temp;
     };
     /**
      * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
@@ -2126,8 +2127,9 @@ var Heap = /** @class */ (function () {
      * @param  {Number} k Another node index
      */
     Heap.prototype._moveNode = function (j, k) {
-        var _a;
-        _a = __read([this.heapArray[k], this.heapArray[j]], 2), this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
+        var temp = this.heapArray[j];
+        this.heapArray[j] = this.heapArray[k];
+        this.heapArray[j] = temp;
     };
     /**
      * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
