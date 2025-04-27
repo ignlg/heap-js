@@ -69,6 +69,7 @@
     }
   },
   "devDependencies": {
+    "0x": "^5.8.0",
     "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@types/benchmark": "^2.1.5",
