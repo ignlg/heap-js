@@ -806,7 +806,7 @@ export class Heap<T> implements Iterable<T> {
   _moveNode(j: number, k: number): void {
     let temp = this.heapArray[j];
     this.heapArray[j] = this.heapArray[k];
-    this.heapArray[j] = temp;
+    this.heapArray[k] = temp;
   }
 
   /**
