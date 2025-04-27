@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heap-js implementation benchmark</title>
+</head>
+<body>
+    <h1>Heap-js</h1>
+    <button onclick="benchmark()">Run benchmark</button>
+    <script src="../dist/heap-js.umd.js"></script>
+    <script>
+        const Heap = window.heap.Heap;
+        function benchmark() {
+            console.log("running!")
+            const heap = new Heap();
+            for (let i = 0; i < 100_000; i++) {
+                heap.push(Math.random());
+            }
+            for (let i = 0; i < 100_000; i++) {
+                heap.pop();
+            }
+            console.log("finished")
+        }
+    </script>
+</body>
+</html>
