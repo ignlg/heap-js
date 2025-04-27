@@ -727,7 +727,9 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Number} k Another node index
    */
   _moveNode(j: number, k: number): void {
-    [this.heapArray[j], this.heapArray[k]] = [this.heapArray[k], this.heapArray[j]];
+    let temp = this.heapArray[j];
+    this.heapArray[j] = this.heapArray[k];
+    this.heapArray[k] = temp;
   }
 
   /**
