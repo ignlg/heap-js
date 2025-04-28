@@ -139,7 +139,7 @@ for (const n of samples) {
   const heapJsHeap = new Heap();
   runBenchmark(`heap vs heap-js: push + pop ${n}`, [
     {
-      name: 'heap',
+      name: 'heap   ',
       func: function () {
         for (let i = 0; i < n; i++) {
           heapHeap.push(data[i]);
