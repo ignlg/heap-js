@@ -65,8 +65,7 @@ export class Heap<T> implements Iterable<T> {
     if (idx <= 0) {
       return -1;
     }
-    const whichChildren = idx % 2 ? 1 : 2;
-    return Math.floor((idx - whichChildren) / 2);
+    return (idx - 1) >> 1;
   }
 
   /**
