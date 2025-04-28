@@ -821,7 +821,8 @@ export class Heap<T> implements Iterable<T> {
       const right = left + 1;
       if (left >= length) break;
 
-      const best = right >= length || this.compare(this.heapArray[left], this.heapArray[right]) < 0 ? left : right;
+      const best =
+        right >= length || this.compare(this.heapArray[left], this.heapArray[right]) < 0 ? left : right;
       if (this.compare(this.heapArray[best], value) < 0) {
         this.heapArray[i] = this.heapArray[best];
         i = best;

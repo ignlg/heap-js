@@ -745,8 +745,11 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
       const right = left + 1;
       if (left >= length) break;
 
-      const best = right >= length || await this.compare(this.heapArray[left], this.heapArray[right]) < 0 ? left : right;
-      if (await this.compare(this.heapArray[best], value) < 0) {
+      const best =
+        right >= length || (await this.compare(this.heapArray[left], this.heapArray[right])) < 0
+          ? left
+          : right;
+      if ((await this.compare(this.heapArray[best], value)) < 0) {
         this.heapArray[i] = this.heapArray[best];
         i = best;
       } else break;
@@ -765,7 +768,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     const originalIndex = i;
     while (i > 0) {
       const pi = HeapAsync.getParentIndexOf(i);
-      if (await this.compare(value, this.heapArray[pi]) < 0) {
+      if ((await this.compare(value, this.heapArray[pi])) < 0) {
         this.heapArray[i] = this.heapArray[pi];
         i = pi;
       } else break;
