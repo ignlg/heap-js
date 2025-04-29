@@ -424,7 +424,7 @@ export class Heap<T> implements Iterable<T> {
     if (array) {
       this.heapArray = [...array];
     }
-    for (let i = Math.floor(this.heapArray.length / 2); i >= 0; --i) {
+    for (let i = Heap.getParentIndexOf(this.length - 1); i >= 0; --i) {
       this._sortNodeDown(i);
     }
     this._applyLimit();
