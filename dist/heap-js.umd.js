@@ -1753,7 +1753,7 @@
             if (array) {
                 this.heapArray = __spreadArray([], __read(array), false);
             }
-            for (var i = Math.floor(this.heapArray.length / 2); i >= 0; --i) {
+            for (var i = Heap.getParentIndexOf(this.length - 1); i >= 0; --i) {
                 this._sortNodeDown(i);
             }
             this._applyLimit();
