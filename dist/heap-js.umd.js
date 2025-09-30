@@ -1046,12 +1046,11 @@
                             length = this.heapArray.length;
                             originalIndex = i;
                             value = this.heapArray[i];
+                            left = 2 * i + 1;
                             _b.label = 1;
                         case 1:
-                            left = 2 * i + 1;
+                            if (!(left < length)) return [3 /*break*/, 5];
                             right = left + 1;
-                            if (left >= length)
-                                return [3 /*break*/, 5];
                             _a = right >= length;
                             if (_a) return [3 /*break*/, 3];
                             return [4 /*yield*/, this.compare(this.heapArray[left], this.heapArray[right])];
@@ -1066,6 +1065,7 @@
                             if ((_b.sent()) < 0) {
                                 this.heapArray[i] = this.heapArray[best];
                                 i = best;
+                                left = 2 * i + 1;
                             }
                             else
                                 return [3 /*break*/, 5];
@@ -2150,15 +2150,14 @@
             var length = this.heapArray.length;
             var originalIndex = i;
             var value = this.heapArray[i];
-            while (true) {
-                var left = 2 * i + 1;
+            var left = 2 * i + 1;
+            while (left < length) {
                 var right = left + 1;
-                if (left >= length)
-                    break;
                 var best = right >= length || this.compare(this.heapArray[left], this.heapArray[right]) < 0 ? left : right;
                 if (this.compare(this.heapArray[best], value) < 0) {
                     this.heapArray[i] = this.heapArray[best];
                     i = best;
+                    left = 2 * i + 1;
                 }
                 else
                     break;
