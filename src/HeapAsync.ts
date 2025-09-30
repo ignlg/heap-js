@@ -431,7 +431,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     if (array) {
       this.heapArray = [...array];
     }
-    for (let i = Math.floor(this.heapArray.length / 2); i >= 0; --i) {
+    for (let i = HeapAsync.getParentIndexOf(this.length - 1); i >= 0; --i) {
       await this._sortNodeDown(i);
     }
     this._applyLimit();

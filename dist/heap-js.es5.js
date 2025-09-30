@@ -643,7 +643,7 @@ var HeapAsync = /** @class */ (function () {
                         if (array) {
                             this.heapArray = __spreadArray$1([], __read$1(array), false);
                         }
-                        i = Math.floor(this.heapArray.length / 2);
+                        i = HeapAsync.getParentIndexOf(this.length - 1);
                         _a.label = 1;
                     case 1:
                         if (!(i >= 0)) return [3 /*break*/, 4];
