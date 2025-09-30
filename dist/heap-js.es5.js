@@ -643,7 +643,7 @@ var HeapAsync = /** @class */ (function () {
                         if (array) {
                             this.heapArray = __spreadArray$1([], __read$1(array), false);
                         }
-                        i = Math.floor(this.heapArray.length);
+                        i = Math.floor(this.heapArray.length / 2);
                         _a.label = 1;
                     case 1:
                         if (!(i >= 0)) return [3 /*break*/, 4];
@@ -1023,8 +1023,9 @@ var HeapAsync = /** @class */ (function () {
      * @param  {Number} k Another node index
      */
     HeapAsync.prototype._moveNode = function (j, k) {
-        var _a;
-        _a = __read$1([this.heapArray[k], this.heapArray[j]], 2), this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
+        var temp = this.heapArray[j];
+        this.heapArray[j] = this.heapArray[k];
+        this.heapArray[k] = temp;
     };
     /**
      * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
@@ -1032,44 +1033,42 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype._sortNodeDown = function (i) {
         return __awaiter(this, void 0, void 0, function () {
-            var length, left, right, best, _a, _b;
-            return __generator$1(this, function (_c) {
-                switch (_c.label) {
+            var length, originalIndex, value, left, right, best, _a;
+            return __generator$1(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         length = this.heapArray.length;
-                        _c.label = 1;
+                        originalIndex = i;
+                        value = this.heapArray[i];
+                        _b.label = 1;
                     case 1:
                         left = 2 * i + 1;
                         right = left + 1;
-                        best = i;
-                        _a = left < length;
-                        if (!_a) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.compare(this.heapArray[left], this.heapArray[best])];
+                        if (left >= length)
+                            return [3 /*break*/, 5];
+                        _a = right >= length;
+                        if (_a) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.compare(this.heapArray[left], this.heapArray[right])];
                     case 2:
-                        _a = (_c.sent()) < 0;
-                        _c.label = 3;
+                        _a = (_b.sent()) < 0;
+                        _b.label = 3;
                     case 3:
-                        if (_a) {
-                            best = left;
-                        }
-                        _b = right < length;
-                        if (!_b) return [3 /*break*/, 5];
-                        return [4 /*yield*/, this.compare(this.heapArray[right], this.heapArray[best])];
+                        best = _a ? left
+                            : right;
+                        return [4 /*yield*/, this.compare(this.heapArray[best], value)];
                     case 4:
-                        _b = (_c.sent()) < 0;
-                        _c.label = 5;
-                    case 5:
-                        if (_b) {
-                            best = right;
+                        if ((_b.sent()) < 0) {
+                            this.heapArray[i] = this.heapArray[best];
+                            i = best;
                         }
-                        if (best === i)
-                            return [3 /*break*/, 7];
-                        this._moveNode(i, best);
-                        i = best;
-                        _c.label = 6;
-                    case 6:
+                        else
+                            return [3 /*break*/, 5];
                         return [3 /*break*/, 1];
-                    case 7: return [2 /*return*/];
+                    case 5:
+                        if (i !== originalIndex) {
+                            this.heapArray[i] = value;
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
@@ -1080,22 +1079,30 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype._sortNodeUp = function (i) {
         return __awaiter(this, void 0, void 0, function () {
-            var pi;
+            var value, originalIndex, pi;
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(i > 0)) return [3 /*break*/, 2];
-                        pi = HeapAsync.getParentIndexOf(i);
-                        return [4 /*yield*/, this.compare(this.heapArray[i], this.heapArray[pi])];
+                        value = this.heapArray[i];
+                        originalIndex = i;
+                        _a.label = 1;
                     case 1:
+                        if (!(i > 0)) return [3 /*break*/, 3];
+                        pi = HeapAsync.getParentIndexOf(i);
+                        return [4 /*yield*/, this.compare(value, this.heapArray[pi])];
+                    case 2:
                         if ((_a.sent()) < 0) {
-                            this._moveNode(i, pi);
+                            this.heapArray[i] = this.heapArray[pi];
                             i = pi;
                         }
                         else
-                            return [3 /*break*/, 2];
-                        return [3 /*break*/, 0];
-                    case 2: return [2 /*return*/];
+                            return [3 /*break*/, 3];
+                        return [3 /*break*/, 1];
+                    case 3:
+                        if (i !== originalIndex) {
+                            this.heapArray[i] = value;
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
@@ -1398,8 +1405,7 @@ var Heap = /** @class */ (function () {
         if (idx <= 0) {
             return -1;
         }
-        var whichChildren = idx % 2 ? 1 : 2;
-        return Math.floor((idx - whichChildren) / 2);
+        return (idx - 1) >> 1;
     };
     /**
      * Gets sibling index for given index.
@@ -1741,7 +1747,7 @@ var Heap = /** @class */ (function () {
         if (array) {
             this.heapArray = __spreadArray([], __read(array), false);
         }
-        for (var i = Math.floor(this.heapArray.length); i >= 0; --i) {
+        for (var i = Heap.getParentIndexOf(this.length - 1); i >= 0; --i) {
             this._sortNodeDown(i);
         }
         this._applyLimit();
@@ -2126,8 +2132,9 @@ var Heap = /** @class */ (function () {
      * @param  {Number} k Another node index
      */
     Heap.prototype._moveNode = function (j, k) {
-        var _a;
-        _a = __read([this.heapArray[k], this.heapArray[j]], 2), this.heapArray[j] = _a[0], this.heapArray[k] = _a[1];
+        var temp = this.heapArray[j];
+        this.heapArray[j] = this.heapArray[k];
+        this.heapArray[k] = temp;
     };
     /**
      * Move a node down the tree (to the leaves) to find a place where the heap is sorted.
@@ -2135,20 +2142,23 @@ var Heap = /** @class */ (function () {
      */
     Heap.prototype._sortNodeDown = function (i) {
         var length = this.heapArray.length;
+        var originalIndex = i;
+        var value = this.heapArray[i];
         while (true) {
             var left = 2 * i + 1;
             var right = left + 1;
-            var best = i;
-            if (left < length && this.compare(this.heapArray[left], this.heapArray[best]) < 0) {
-                best = left;
-            }
-            if (right < length && this.compare(this.heapArray[right], this.heapArray[best]) < 0) {
-                best = right;
-            }
-            if (best === i)
+            if (left >= length)
                 break;
-            this._moveNode(i, best);
-            i = best;
+            var best = right >= length || this.compare(this.heapArray[left], this.heapArray[right]) < 0 ? left : right;
+            if (this.compare(this.heapArray[best], value) < 0) {
+                this.heapArray[i] = this.heapArray[best];
+                i = best;
+            }
+            else
+                break;
+        }
+        if (i !== originalIndex) {
+            this.heapArray[i] = value;
         }
     };
     /**
@@ -2156,14 +2166,19 @@ var Heap = /** @class */ (function () {
      * @param  {Number} i Index of the node
      */
     Heap.prototype._sortNodeUp = function (i) {
+        var value = this.heapArray[i];
+        var originalIndex = i;
         while (i > 0) {
             var pi = Heap.getParentIndexOf(i);
-            if (this.compare(this.heapArray[i], this.heapArray[pi]) < 0) {
-                this._moveNode(i, pi);
+            if (this.compare(value, this.heapArray[pi]) < 0) {
+                this.heapArray[i] = this.heapArray[pi];
                 i = pi;
             }
             else
                 break;
+        }
+        if (i !== originalIndex) {
+            this.heapArray[i] = value;
         }
     };
     /**

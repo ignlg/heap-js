@@ -65,8 +65,7 @@ export class Heap<T> implements Iterable<T> {
     if (idx <= 0) {
       return -1;
     }
-    const whichChildren = idx % 2 ? 1 : 2;
-    return Math.floor((idx - whichChildren) / 2);
+    return (idx - 1) >> 1;
   }
 
   /**
@@ -425,7 +424,7 @@ export class Heap<T> implements Iterable<T> {
     if (array) {
       this.heapArray = [...array];
     }
-    for (let i = Math.floor(this.heapArray.length); i >= 0; --i) {
+    for (let i = Heap.getParentIndexOf(this.length - 1); i >= 0; --i) {
       this._sortNodeDown(i);
     }
     this._applyLimit();
@@ -804,7 +803,9 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} k Another node index
    */
   _moveNode(j: number, k: number): void {
-    [this.heapArray[j], this.heapArray[k]] = [this.heapArray[k], this.heapArray[j]];
+    const temp = this.heapArray[j];
+    this.heapArray[j] = this.heapArray[k];
+    this.heapArray[k] = temp;
   }
 
   /**
@@ -813,19 +814,21 @@ export class Heap<T> implements Iterable<T> {
    */
   _sortNodeDown(i: number): void {
     const { length } = this.heapArray;
-    while (true) {
-      const left = 2 * i + 1;
+    const originalIndex = i;
+    const value = this.heapArray[i];
+    let left = 2 * i + 1;
+    while (left < length) {
       const right = left + 1;
-      let best = i;
-      if (left < length && this.compare(this.heapArray[left], this.heapArray[best]) < 0) {
-        best = left;
-      }
-      if (right < length && this.compare(this.heapArray[right], this.heapArray[best]) < 0) {
-        best = right;
-      }
-      if (best === i) break;
-      this._moveNode(i, best);
-      i = best;
+      const best =
+        right >= length || this.compare(this.heapArray[left], this.heapArray[right]) < 0 ? left : right;
+      if (this.compare(this.heapArray[best], value) < 0) {
+        this.heapArray[i] = this.heapArray[best];
+        i = best;
+        left = 2 * i + 1;
+      } else break;
+    }
+    if (i !== originalIndex) {
+      this.heapArray[i] = value;
     }
   }
 
@@ -834,12 +837,17 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Number} i Index of the node
    */
   _sortNodeUp(i: number): void {
+    const value = this.heapArray[i];
+    const originalIndex = i;
     while (i > 0) {
       const pi = Heap.getParentIndexOf(i);
-      if (this.compare(this.heapArray[i], this.heapArray[pi]) < 0) {
-        this._moveNode(i, pi);
+      if (this.compare(value, this.heapArray[pi]) < 0) {
+        this.heapArray[i] = this.heapArray[pi];
         i = pi;
       } else break;
+    }
+    if (i !== originalIndex) {
+      this.heapArray[i] = value;
     }
   }
 
