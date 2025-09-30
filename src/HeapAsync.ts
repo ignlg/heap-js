@@ -431,7 +431,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     if (array) {
       this.heapArray = [...array];
     }
-    for (let i = Math.floor(this.heapArray.length); i >= 0; --i) {
+    for (let i = Math.floor(this.heapArray.length / 2); i >= 0; --i) {
       await this._sortNodeDown(i);
     }
     this._applyLimit();
@@ -727,7 +727,9 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Number} k Another node index
    */
   _moveNode(j: number, k: number): void {
-    [this.heapArray[j], this.heapArray[k]] = [this.heapArray[k], this.heapArray[j]];
+    const temp = this.heapArray[j];
+    this.heapArray[j] = this.heapArray[k];
+    this.heapArray[k] = temp;
   }
 
   /**
@@ -736,20 +738,25 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    */
   async _sortNodeDown(i: number): Promise<void> {
     const { length } = this.heapArray;
-    do {
+    const originalIndex = i;
+    const value = this.heapArray[i];
+    while (true) {
       const left = 2 * i + 1;
       const right = left + 1;
-      let best = i;
-      if (left < length && (await this.compare(this.heapArray[left], this.heapArray[best])) < 0) {
-        best = left;
-      }
-      if (right < length && (await this.compare(this.heapArray[right], this.heapArray[best])) < 0) {
-        best = right;
-      }
-      if (best === i) break;
-      this._moveNode(i, best);
-      i = best;
-    } while (true);
+      if (left >= length) break;
+
+      const best =
+        right >= length || (await this.compare(this.heapArray[left], this.heapArray[right])) < 0
+          ? left
+          : right;
+      if ((await this.compare(this.heapArray[best], value)) < 0) {
+        this.heapArray[i] = this.heapArray[best];
+        i = best;
+      } else break;
+    }
+    if (i !== originalIndex) {
+      this.heapArray[i] = value;
+    }
   }
 
   /**
@@ -757,12 +764,17 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Number} i Index of the node
    */
   async _sortNodeUp(i: number): Promise<void> {
+    const value = this.heapArray[i];
+    const originalIndex = i;
     while (i > 0) {
       const pi = HeapAsync.getParentIndexOf(i);
-      if ((await this.compare(this.heapArray[i], this.heapArray[pi])) < 0) {
-        this._moveNode(i, pi);
+      if ((await this.compare(value, this.heapArray[pi])) < 0) {
+        this.heapArray[i] = this.heapArray[pi];
         i = pi;
       } else break;
+    }
+    if (i !== originalIndex) {
+      this.heapArray[i] = value;
     }
   }
 
