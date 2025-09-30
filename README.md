@@ -43,6 +43,11 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 2.7
+
+- Improves performance of sorting methods. Thanks to @BeatsuDev for the contribution.
+- Improves tests and documentation.
+
 ### 2.6
 
 - Improves performance of remove and sorting methods.
@@ -69,7 +74,7 @@ heap vs array: push + top(50) of 100
 ### 2.2
 
 - Fixes `.iterator()` method to follow [Java's PriorityQueue implementation:
-  ](https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html)
+](https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html)
   > The Iterator provided in method [iterator()](<https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html#iterator()>) is not guaranteed to traverse the elements of the priority queue in any particular order.
 
 Notice that _using the heap directly as an iterator will consume the heap,_ as Python's `heapq` implementation does.
