@@ -43,6 +43,10 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 2.7.1
+
+- Optimize loop condition in HeapAsync init method.
+
 ### 2.7
 
 - Improves performance of sorting methods. Thanks to @BeatsuDev for the contribution.
