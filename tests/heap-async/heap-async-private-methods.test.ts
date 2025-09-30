@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Heap from '../../src/Heap';
 import HeapAsync from '../../src/HeapAsync';
 import { someValues } from '../test-helpers';

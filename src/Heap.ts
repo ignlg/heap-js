@@ -816,16 +816,15 @@ export class Heap<T> implements Iterable<T> {
     const { length } = this.heapArray;
     const originalIndex = i;
     const value = this.heapArray[i];
-    while (true) {
-      const left = 2 * i + 1;
+    let left = 2 * i + 1;
+    while (left < length) {
       const right = left + 1;
-      if (left >= length) break;
-
       const best =
         right >= length || this.compare(this.heapArray[left], this.heapArray[right]) < 0 ? left : right;
       if (this.compare(this.heapArray[best], value) < 0) {
         this.heapArray[i] = this.heapArray[best];
         i = best;
+        left = 2 * i + 1;
       } else break;
     }
     if (i !== originalIndex) {
