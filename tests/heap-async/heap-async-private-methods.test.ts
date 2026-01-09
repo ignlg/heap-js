@@ -165,6 +165,11 @@ describe('HeapAsync private', function () {
           expect(await heap._topIdxOf(top)).toEqual(mid);
         });
       });
+      describe('#_worstIndex()', function () {
+        it('should return -1 for an empty heap', async function () {
+          expect(await heap._worstIndex()).toBe(-1);
+        });
+      });
     });
   });
 });

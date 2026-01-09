@@ -1,13 +1,29 @@
 export type AsyncComparator<T> = (a: T, b: T) => Promise<number>;
 export type AsyncIsEqual<T> = (e: T, o: T) => Promise<boolean>;
 /**
+ * HeapAsync configuration options.
+ */
+export interface HeapAsyncOptions<T> {
+    /**
+     * Comparison function for heap ordering.
+     * @default HeapAsync.minComparator
+     */
+    compare?: AsyncComparator<T>;
+    /**
+     * Default equality function for contains and remove.
+     * @default HeapAsync.defaultIsEqual
+     */
+    isEqual?: AsyncIsEqual<T>;
+}
+/**
  * Heap
  * @type {Class}
  */
 export declare class HeapAsync<T> implements Iterable<Promise<T>> {
-    compare: AsyncComparator<T>;
     heapArray: Array<T>;
     _limit: number;
+    isEqual: AsyncIsEqual<T>;
+    compare: AsyncComparator<T>;
     /**
      * Alias of add
      */
@@ -22,9 +38,9 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
     poll: () => Promise<T | undefined>;
     /**
      * Heap instance constructor.
-     * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
+     * @param  {Function | HeapAsyncOptions} compareOrOptions Optional comparison function or options object
      */
-    constructor(compare?: AsyncComparator<T>);
+    constructor(compareOrOptions?: AsyncComparator<T> | HeapAsyncOptions<T>);
     /**
      * Gets children indices for given index.
      * @param  {Number} idx     Parent index
@@ -157,7 +173,7 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      * Adds an element to the heap. Aliases: `offer`.
      * Same as: push(element)
      * @param {any} element Element to be added
-     * @return {Boolean} true
+     * @return {Boolean} true if added, false if limit exceeded and element not good enough
      */
     add(element: T): Promise<boolean>;
     /**
@@ -225,10 +241,17 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      */
     get limit(): number;
     /**
-     * Set length limit of the heap.
-     * @return {Number}
+     * Set length limit of the heap without eviction.
+     * Note: Use setLimit() for async limit application with proper eviction.
+     * @param {Number} _l Limit value
      */
     set limit(_l: number);
+    /**
+     * Set length limit of the heap with async limit application.
+     * @param {Number} _l Limit value
+     * @return {Promise<number>} The limit value
+     */
+    setLimit(_l: number): Promise<number>;
     /**
      * Top node. Aliases: `element`.
      * Same as: `top(1)[0]`
@@ -314,9 +337,9 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      */
     iterator(): Iterable<Promise<T>>;
     /**
-     * Limit heap size if needed
+     * Limit heap size if needed, removing worst elements to keep best N
      */
-    _applyLimit(): void;
+    _applyLimit(): Promise<void>;
     /**
      * Return the bottom (lowest value) N elements of the heap, without corner cases, unsorted
      *
@@ -379,5 +402,11 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      * @param list
      */
     _topOf(...list: Array<T>): Promise<T | undefined>;
+    /**
+     * Find index of the worst element (for eviction when at limit).
+     * Worst is always among leaves (second half of array).
+     * @return {number} Index of worst element, -1 if empty
+     */
+    _worstIndex(): Promise<number>;
 }
 export default HeapAsync;

@@ -1,15 +1,32 @@
 export * from './HeapAsync';
 export type Comparator<T> = (a: T, b: T) => number;
 export type IsEqual<T> = (e: T, o: T) => boolean;
+/**
+ * Heap configuration options.
+ */
+export interface HeapOptions<T> {
+    /**
+     * Comparison function for heap ordering.
+     * @default Heap.minComparator
+     */
+    compare?: Comparator<T>;
+    /**
+     * Default equality function for indexOf, contains, and remove.
+     * When provided, these methods use heap-optimized search.
+     * @default Heap.defaultIsEqual
+     */
+    isEqual?: IsEqual<T>;
+}
 export declare const toInt: (n: number) => number;
 /**
  * Heap
  * @type {Class}
  */
 export declare class Heap<T> implements Iterable<T> {
-    compare: Comparator<T>;
     heapArray: Array<T>;
     _limit: number;
+    isEqual: IsEqual<T>;
+    compare: Comparator<T>;
     /**
      * Alias of {@link add}
      * @see add
@@ -32,9 +49,9 @@ export declare class Heap<T> implements Iterable<T> {
     removeAll: () => void;
     /**
      * Heap instance constructor.
-     * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
+     * @param  {Function | HeapOptions} compareOrOptions Optional comparison function or options object
      */
-    constructor(compare?: Comparator<T>);
+    constructor(compareOrOptions?: Comparator<T> | HeapOptions<T>);
     /**
      * Gets children indices for given index.
      * @param  {Number} idx     Parent index
@@ -167,7 +184,7 @@ export declare class Heap<T> implements Iterable<T> {
      * Adds an element to the heap. Aliases: {@link offer}.
      * Same as: {@link push}(element).
      * @param {any} element Element to be added
-     * @return {Boolean} true
+     * @return {Boolean} true if added, false if limit exceeded and element not good enough
      */
     add(element: T): boolean;
     /**
@@ -221,16 +238,16 @@ export declare class Heap<T> implements Iterable<T> {
      */
     isEmpty(): boolean;
     /**
-     * Get the index of the first occurrence of the element in the heap (using the comparator).
+     * Get the index of the first occurrence of the element in the heap.
      * @param  {any}      element    Element to be found
-     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle). Note: Custom callbacks trigger O(n) full scan vs O(log n) average for default equality.
      * @return {Number}              Index or -1 if not found
      */
     indexOf(element: T, callbackFn?: IsEqual<T>): number;
     /**
-     * Get the indexes of the every occurrence of the element in the heap (using the comparator).
+     * Get the indexes of every occurrence of the element in the heap.
      * @param  {any}      element    Element to be found
-     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle). Note: Custom callbacks trigger O(n) full scan vs optimized heap search for default equality.
      * @return {Array}               Array of indexes or empty array if not found
      */
     indexOfEvery(element: T, callbackFn?: IsEqual<T>): number[];
@@ -357,7 +374,7 @@ export declare class Heap<T> implements Iterable<T> {
      */
     iterator(): Iterable<T>;
     /**
-     * Limit heap size if needed
+     * Limit heap size if needed, removing worst elements to keep best N
      */
     _applyLimit(): void;
     /**
@@ -422,5 +439,11 @@ export declare class Heap<T> implements Iterable<T> {
      * @param list
      */
     _topOf(...list: Array<T>): T | undefined;
+    /**
+     * Find index of the worst element (for eviction when at limit).
+     * Worst is always among leaves (second half of array).
+     * @return {number} Index of worst element, -1 if empty
+     */
+    _worstIndex(): number;
 }
 export default Heap;
