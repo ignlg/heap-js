@@ -347,11 +347,21 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * Adds an element to the heap. Aliases: `offer`.
    * Same as: push(element)
    * @param {any} element Element to be added
-   * @return {Boolean} true
+   * @return {Boolean} true if added, false if limit exceeded and element not good enough
    */
   async add(element: T): Promise<boolean> {
+    if (this._limit > 0 && this.heapArray.length >= this._limit) {
+      const worstIdx = await this._worstIndex();
+      if ((await this.compare(element, this.heapArray[worstIdx])) >= 0) {
+        return false; // New element is not better than worst keeper
+      }
+      // Replace worst with new element
+      this.heapArray[worstIdx] = element;
+      await this._sortNodeUp(worstIdx);
+      await this._sortNodeDown(worstIdx);
+      return true;
+    }
     await this._sortNodeUp(this.heapArray.push(element) - 1);
-    this._applyLimit();
     return true;
   }
 
@@ -367,7 +377,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     for (const l = this.length; i < l; ++i) {
       await this._sortNodeUp(i);
     }
-    this._applyLimit();
+    await this._applyLimit();
     return true;
   }
 
@@ -463,7 +473,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     for (let i = HeapAsync.getParentIndexOf(this.length - 1); i >= 0; --i) {
       await this._sortNodeDown(i);
     }
-    this._applyLimit();
+    await this._applyLimit();
   }
 
   /**
@@ -502,12 +512,24 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
   }
 
   /**
-   * Set length limit of the heap.
-   * @return {Number}
+   * Set length limit of the heap without eviction.
+   * Note: Use setLimit() for async limit application with proper eviction.
+   * @param {Number} _l Limit value
    */
   set limit(_l: number) {
     this._limit = ~~_l;
-    this._applyLimit();
+    // Note: This setter cannot await _applyLimit(). Use setLimit() for async application.
+  }
+
+  /**
+   * Set length limit of the heap with async limit application.
+   * @param {Number} _l Limit value
+   * @return {Promise<number>} The limit value
+   */
+  async setLimit(_l: number): Promise<number> {
+    this._limit = ~~_l;
+    await this._applyLimit();
+    return this._limit;
   }
 
   /**
@@ -699,14 +721,21 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
   }
 
   /**
-   * Limit heap size if needed
+   * Limit heap size if needed, removing worst elements to keep best N
    */
-  _applyLimit(): void {
-    if (this._limit && this._limit < this.heapArray.length) {
+  async _applyLimit(): Promise<void> {
+    if (this._limit > 0 && this._limit < this.heapArray.length) {
       let rm = this.heapArray.length - this._limit;
-      // It's much faster than splice
-      while (rm) {
-        this.heapArray.pop();
+      while (rm > 0) {
+        const worstIdx = await this._worstIndex();
+        // Swap with last and pop (standard heap removal for non-root)
+        if (worstIdx === this.heapArray.length - 1) {
+          this.heapArray.pop();
+        } else {
+          this.heapArray[worstIdx] = this.heapArray.pop() as T;
+          await this._sortNodeUp(worstIdx);
+          await this._sortNodeDown(worstIdx);
+        }
         --rm;
       }
     }
@@ -913,6 +942,23 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     const heap = new HeapAsync(this.compare);
     await heap.init(list);
     return heap.peek();
+  }
+
+  /**
+   * Find index of the worst element (for eviction when at limit).
+   * Worst is always among leaves (second half of array).
+   * @return {number} Index of worst element, -1 if empty
+   */
+  async _worstIndex(): Promise<number> {
+    if (this.heapArray.length === 0) return -1;
+    const start = this.heapArray.length >> 1; // First leaf
+    let worstIdx = start;
+    for (let i = start + 1; i < this.heapArray.length; i++) {
+      if ((await this.compare(this.heapArray[i], this.heapArray[worstIdx])) > 0) {
+        worstIdx = i;
+      }
+    }
+    return worstIdx;
   }
 }
 

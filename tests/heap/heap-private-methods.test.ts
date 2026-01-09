@@ -147,6 +147,11 @@ describe('Heap private', function () {
           expect(heap._topIdxOf(top)).toEqual(mid);
         });
       });
+      describe('#_worstIndex()', function () {
+        it('should return -1 for an empty heap', function () {
+          expect(heap._worstIndex()).toBe(-1);
+        });
+      });
     });
   });
 });

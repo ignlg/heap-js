@@ -218,16 +218,73 @@ describe('HeapAsync instances', function () {
       });
 
       describe('#limit', function () {
-        it('should limit the heap length', async function () {
+        it('should limit the heap length using setLimit', async function () {
           await heap.init(values);
           expect(heap.length).toEqual(values.length);
-          heap.limit = 5;
+          await heap.setLimit(5);
           expect(heap.limit).toEqual(5);
           expect(heap.length).toEqual(5);
           const otherValues = values.slice(0, Math.floor(values.length / 2));
           await heap.push(...otherValues);
           expect(heap.length).toEqual(5);
           expect(await heap.check()).not.toBeDefined();
+        });
+      });
+
+      describe('#limit keeps top N best values', function () {
+        it('should keep the N smallest values for min-heap', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.setLimit(3);
+          await minHeap.push(5, 1, 8, 2, 9, 3, 7);
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should keep the N largest values for max-heap', async function () {
+          const maxHeap = new HeapAsync(HeapAsync.maxComparatorNumber);
+          await maxHeap.setLimit(3);
+          await maxHeap.push(5, 1, 8, 2, 9, 3, 7);
+          expect(maxHeap.length).toEqual(3);
+          expect(maxHeap.toArray().sort((a, b) => b - a)).toEqual([9, 8, 7]);
+        });
+
+        it('should keep the N best values when limit is set after init', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.init([5, 1, 8, 2, 9, 3, 7]);
+          await minHeap.setLimit(3);
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should reject elements worse than the worst kept when at capacity', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.setLimit(3);
+          await minHeap.push(1, 2, 3);
+          expect(await minHeap.add(4)).toBe(false); // 4 is worse than 3
+          expect(await minHeap.add(5)).toBe(false); // 5 is worse than 3
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should accept elements better than the worst kept when at capacity', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.setLimit(3);
+          await minHeap.push(3, 4, 5);
+          expect(await minHeap.add(2)).toBe(true); // 2 is better than 5
+          expect(await minHeap.add(1)).toBe(true); // 1 is better than 4
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should maintain heap property after limit enforcement', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.setLimit(5);
+          for (let i = 100; i > 0; i--) {
+            await minHeap.push(i);
+          }
+          expect(minHeap.length).toEqual(5);
+          expect(await minHeap.check()).toBeUndefined();
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5]);
         });
       });
 

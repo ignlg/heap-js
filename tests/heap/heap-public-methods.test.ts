@@ -421,6 +421,63 @@ describe('Heap instances', function () {
         });
       });
 
+      describe('#limit keeps top N best values', function () {
+        it('should keep the N smallest values for min-heap', function () {
+          const minHeap = new Heap(Heap.minComparatorNumber);
+          minHeap.limit = 3;
+          minHeap.push(5, 1, 8, 2, 9, 3, 7);
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should keep the N largest values for max-heap', function () {
+          const maxHeap = new Heap(Heap.maxComparatorNumber);
+          maxHeap.limit = 3;
+          maxHeap.push(5, 1, 8, 2, 9, 3, 7);
+          expect(maxHeap.length).toEqual(3);
+          expect(maxHeap.toArray().sort((a, b) => b - a)).toEqual([9, 8, 7]);
+        });
+
+        it('should keep the N best values when limit is set after init', function () {
+          const minHeap = new Heap(Heap.minComparatorNumber);
+          minHeap.init([5, 1, 8, 2, 9, 3, 7]);
+          minHeap.limit = 3;
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should reject elements worse than the worst kept when at capacity', function () {
+          const minHeap = new Heap(Heap.minComparatorNumber);
+          minHeap.limit = 3;
+          minHeap.push(1, 2, 3);
+          expect(minHeap.add(4)).toBe(false); // 4 is worse than 3 (the worst kept)
+          expect(minHeap.add(5)).toBe(false); // 5 is worse than 3
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should accept elements better than the worst kept when at capacity', function () {
+          const minHeap = new Heap(Heap.minComparatorNumber);
+          minHeap.limit = 3;
+          minHeap.push(3, 4, 5);
+          expect(minHeap.add(2)).toBe(true); // 2 is better than 5 (the worst kept)
+          expect(minHeap.add(1)).toBe(true); // 1 is better than 4
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should maintain heap property after limit enforcement', function () {
+          const minHeap = new Heap(Heap.minComparatorNumber);
+          minHeap.limit = 5;
+          for (let i = 100; i > 0; i--) {
+            minHeap.push(i);
+          }
+          expect(minHeap.length).toEqual(5);
+          expect(minHeap.check()).toBeUndefined();
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5]);
+        });
+      });
+
       describe('#peek()', function () {
         it('should return the top element of the heap', function () {
           const minValue = top(...values);
