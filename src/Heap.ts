@@ -3,6 +3,23 @@ export * from './HeapAsync';
 export type Comparator<T> = (a: T, b: T) => number;
 export type IsEqual<T> = (e: T, o: T) => boolean;
 
+/**
+ * Heap configuration options.
+ */
+export interface HeapOptions<T> {
+  /**
+   * Comparison function for heap ordering.
+   * @default Heap.minComparator
+   */
+  compare?: Comparator<T>;
+  /**
+   * Default equality function for indexOf, contains, and remove.
+   * When provided, these methods use heap-optimized search.
+   * @default Heap.defaultIsEqual
+   */
+  isEqual?: IsEqual<T>;
+}
+
 export const toInt = (n: number): number => ~~n;
 
 /**
@@ -12,6 +29,8 @@ export const toInt = (n: number): number => ~~n;
 export class Heap<T> implements Iterable<T> {
   heapArray: Array<T> = [];
   _limit = 0;
+  isEqual: IsEqual<T> = Heap.defaultIsEqual;
+  compare: Comparator<T>;
 
   /**
    * Alias of {@link add}
@@ -39,9 +58,18 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Heap instance constructor.
-   * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
+   * @param  {Function | HeapOptions} compareOrOptions Optional comparison function or options object
    */
-  constructor(public compare: Comparator<T> = Heap.minComparator) {}
+  constructor(compareOrOptions?: Comparator<T> | HeapOptions<T>) {
+    if (typeof compareOrOptions === 'function') {
+      this.compare = compareOrOptions;
+    } else if (compareOrOptions) {
+      this.compare = compareOrOptions.compare ?? Heap.minComparator;
+      this.isEqual = compareOrOptions.isEqual ?? Heap.defaultIsEqual;
+    } else {
+      this.compare = Heap.minComparator;
+    }
+  }
 
   /*
             Static methods
@@ -395,6 +423,7 @@ export class Heap<T> implements Iterable<T> {
     const cloned = new Heap<T>(this.comparator());
     cloned.heapArray = this.toArray();
     cloned._limit = this._limit;
+    cloned.isEqual = this.isEqual;
     return cloned;
   }
 
@@ -412,7 +441,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} callbackFn  Optional comparison function, receives (element, needle)
    * @return {Boolean}
    */
-  contains(o: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): boolean {
+  contains(o: T, callbackFn?: IsEqual<T>): boolean {
     return this.indexOf(o, callbackFn) !== -1;
   }
 
@@ -439,20 +468,32 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Get the index of the first occurrence of the element in the heap (using the comparator).
+   * Get the index of the first occurrence of the element in the heap.
    * @param  {any}      element    Element to be found
-   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle). Note: Custom callbacks trigger O(n) full scan vs O(log n) average for default equality.
    * @return {Number}              Index or -1 if not found
    */
-  indexOf(element: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): number {
+  indexOf(element: T, callbackFn?: IsEqual<T>): number {
     if (this.heapArray.length === 0) {
       return -1;
     }
+    const isEqual = callbackFn ?? this.isEqual;
+    // When a different callback is provided, we must search all elements
+    // because the callback may not be consistent with this.compare
+    if (isEqual !== this.isEqual) {
+      for (let i = 0; i < this.heapArray.length; i++) {
+        if (isEqual(this.heapArray[i], element)) {
+          return i;
+        }
+      }
+      return -1;
+    }
+    // Default case: use heap structure optimization
     const indexes: number[] = [];
     let currentIndex = 0;
     while (currentIndex < this.heapArray.length) {
       const currentElement = this.heapArray[currentIndex];
-      if (callbackFn(currentElement, element)) {
+      if (isEqual(currentElement, element)) {
         return currentIndex;
       } else if (this.compare(currentElement, element) <= 0) {
         indexes.push(...Heap.getChildrenIndexOf(currentIndex));
@@ -463,21 +504,34 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Get the indexes of the every occurrence of the element in the heap (using the comparator).
+   * Get the indexes of every occurrence of the element in the heap.
    * @param  {any}      element    Element to be found
-   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle). Note: Custom callbacks trigger O(n) full scan vs optimized heap search for default equality.
    * @return {Array}               Array of indexes or empty array if not found
    */
-  indexOfEvery(element: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): number[] {
+  indexOfEvery(element: T, callbackFn?: IsEqual<T>): number[] {
     if (this.heapArray.length === 0) {
       return [];
     }
+    const isEqual = callbackFn ?? this.isEqual;
+    // When a different callback is provided, we must search all elements
+    // because the callback may not be consistent with this.compare
+    if (isEqual !== this.isEqual) {
+      const foundIndexes: number[] = [];
+      for (let i = 0; i < this.heapArray.length; i++) {
+        if (isEqual(this.heapArray[i], element)) {
+          foundIndexes.push(i);
+        }
+      }
+      return foundIndexes;
+    }
+    // Default case: use heap structure optimization
     const indexes: number[] = [];
     const foundIndexes: number[] = [];
     let currentIndex = 0;
     while (currentIndex < this.heapArray.length) {
       const currentElement = this.heapArray[currentIndex];
-      if (callbackFn(currentElement, element)) {
+      if (isEqual(currentElement, element)) {
         foundIndexes.push(currentIndex);
         indexes.push(...Heap.getChildrenIndexOf(currentIndex));
       } else if (this.compare(currentElement, element) <= 0) {
@@ -612,16 +666,36 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} callbackFn  Optional equality function, receives (element, needle)
    * @return {Boolean}      True if the heap was modified
    */
-  remove(o?: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): boolean {
+  remove(o?: T, callbackFn?: IsEqual<T>): boolean {
     if (!this.heapArray.length) return false;
     if (o === undefined) {
       this.pop();
       return true;
     }
+    const isEqual = callbackFn ?? this.isEqual;
+    // When a different callback is provided, we must search all elements
+    // because the callback may not be consistent with this.compare
+    if (isEqual !== this.isEqual) {
+      const idx = this.indexOf(o, isEqual);
+      if (idx === -1) {
+        return false;
+      }
+      if (idx === 0) {
+        this.pop();
+      } else if (idx === this.heapArray.length - 1) {
+        this.heapArray.pop();
+      } else {
+        this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
+        this._sortNodeUp(idx);
+        this._sortNodeDown(idx);
+      }
+      return true;
+    }
+    // Default case: use heap structure optimization
     const queue = [0];
     while (queue.length) {
       const idx = queue.shift() as number;
-      if (callbackFn(this.heapArray[idx], o)) {
+      if (isEqual(this.heapArray[idx], o)) {
         if (idx === 0) {
           this.pop();
         } else if (idx === this.heapArray.length - 1) {

@@ -641,3 +641,201 @@ describe('Heap instances', function () {
     });
   });
 });
+
+describe('Heap with custom IsEqual function', function () {
+  describe('when using object heap with custom IsEqual', function () {
+    let heap: Heap<{ value: number }>;
+
+    beforeEach(function () {
+      heap = new Heap<{ value: number }>((a, b) => b.value - a.value);
+      heap.add({ value: 1 });
+      heap.add({ value: 2 });
+      heap.add({ value: 3 });
+    });
+
+    describe('#contains(element, fn)', function () {
+      it('should find element using custom IsEqual that ignores the needle parameter', function () {
+        // Using a custom IsEqual that only checks the element, ignoring the needle
+        expect(heap.contains(0 as any, (a) => a.value === 2)).toBe(true);
+        expect(heap.contains(0 as any, (a) => a.value === 1)).toBe(true);
+        expect(heap.contains(0 as any, (a) => a.value === 3)).toBe(true);
+        expect(heap.contains(0 as any, (a) => a.value === 99)).toBe(false);
+      });
+    });
+
+    describe('#indexOf(element, fn)', function () {
+      it('should find index using custom IsEqual that ignores the needle parameter', function () {
+        // Should find the element regardless of what needle is passed
+        expect(heap.indexOf(0 as any, (a) => a.value === 2)).not.toBe(-1);
+        expect(heap.indexOf(0 as any, (a) => a.value === 1)).not.toBe(-1);
+        expect(heap.indexOf(0 as any, (a) => a.value === 3)).not.toBe(-1);
+        expect(heap.indexOf(0 as any, (a) => a.value === 99)).toBe(-1);
+      });
+
+      it('should find correct element at returned index', function () {
+        const idx = heap.indexOf(0 as any, (a) => a.value === 2);
+        expect(heap.heapArray[idx].value).toBe(2);
+      });
+    });
+
+    describe('#indexOfEvery(element, fn)', function () {
+      it('should find all indexes using custom IsEqual', function () {
+        heap.add({ value: 2 }); // Add duplicate
+        const indexes = heap.indexOfEvery(0 as any, (a) => a.value === 2);
+        expect(indexes.length).toBe(2);
+        for (const idx of indexes) {
+          expect(heap.heapArray[idx].value).toBe(2);
+        }
+      });
+    });
+
+    describe('#remove(element, fn)', function () {
+      it('should remove element using custom IsEqual that ignores the needle parameter', function () {
+        // This was the failing case from the issue
+        expect(heap.remove(0 as any, (a) => a.value === 2)).toBe(true);
+        expect(heap.length).toBe(2);
+        expect(heap.contains(0 as any, (a) => a.value === 2)).toBe(false);
+        expect(heap.check()).not.toBeDefined();
+      });
+
+      it('should remove any element regardless of heap position', function () {
+        // Test removing elements at different positions
+        const heap2 = new Heap<{ value: number }>((a, b) => b.value - a.value);
+        heap2.add({ value: 1 });
+        heap2.add({ value: 2 });
+        heap2.add({ value: 3 });
+
+        expect(heap2.remove(0 as any, (a) => a.value === 1)).toBe(true);
+        expect(heap2.check()).not.toBeDefined();
+
+        const heap3 = new Heap<{ value: number }>((a, b) => b.value - a.value);
+        heap3.add({ value: 1 });
+        heap3.add({ value: 2 });
+        heap3.add({ value: 3 });
+
+        expect(heap3.remove(0 as any, (a) => a.value === 3)).toBe(true);
+        expect(heap3.check()).not.toBeDefined();
+      });
+
+      it('should return false when element is not found', function () {
+        expect(heap.remove(0 as any, (a) => a.value === 99)).toBe(false);
+        expect(heap.length).toBe(3);
+      });
+    });
+  });
+});
+
+describe('Heap with options constructor', function () {
+  describe('constructor', function () {
+    it('should accept a comparator function (backward compatibility)', function () {
+      const heap = new Heap<number>((a, b) => b - a);
+      heap.push(1, 2, 3);
+      expect(heap.peek()).toBe(3);
+    });
+
+    it('should accept an options object with compare only', function () {
+      const heap = new Heap<number>({ compare: (a, b) => b - a });
+      heap.push(1, 2, 3);
+      expect(heap.peek()).toBe(3);
+    });
+
+    it('should accept an options object with compare and isEqual', function () {
+      const isEqual = (a: { id: number }, b: { id: number }) => a.id === b.id;
+      const heap = new Heap<{ id: number; name: string }>({
+        compare: (a, b) => a.id - b.id,
+        isEqual,
+      });
+      heap.push({ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' });
+      expect(heap.isEqual).toBe(isEqual);
+    });
+
+    it('should use default comparator when no options provided', function () {
+      const heap = new Heap<number>();
+      heap.push(3, 1, 2);
+      expect(heap.peek()).toBe(1);
+    });
+
+    it('should use default isEqual when not provided in options', function () {
+      const heap = new Heap<number>({ compare: (a, b) => a - b });
+      expect(heap.isEqual).toBe(Heap.defaultIsEqual);
+    });
+
+    it('should use defaults when empty options object provided', function () {
+      const heap = new Heap<number>({});
+      heap.push(3, 1, 2);
+      expect(heap.peek()).toBe(1);
+      expect(heap.isEqual).toBe(Heap.defaultIsEqual);
+    });
+  });
+
+  describe('with configured isEqual', function () {
+    type Item = { id: number; name: string };
+    let heap: Heap<Item>;
+    const isEqual = (a: Item, b: Item) => a.id === b.id;
+
+    beforeEach(function () {
+      heap = new Heap<Item>({
+        compare: (a, b) => a.id - b.id,
+        isEqual,
+      });
+      heap.push({ id: 1, name: 'one' }, { id: 2, name: 'two' }, { id: 3, name: 'three' });
+    });
+
+    describe('#contains', function () {
+      it('should use configured isEqual by default', function () {
+        expect(heap.contains({ id: 2, name: 'different' })).toBe(true);
+        expect(heap.contains({ id: 99, name: 'not found' })).toBe(false);
+      });
+
+      it('should allow override with method callback', function () {
+        expect(heap.contains({ id: 2, name: 'two' }, (a, b) => a.name === b.name)).toBe(true);
+        expect(heap.contains({ id: 2, name: 'wrong' }, (a, b) => a.name === b.name)).toBe(false);
+      });
+    });
+
+    describe('#indexOf', function () {
+      it('should use configured isEqual by default', function () {
+        const idx = heap.indexOf({ id: 2, name: 'different' });
+        expect(idx).not.toBe(-1);
+        expect(heap.heapArray[idx].id).toBe(2);
+      });
+
+      it('should return -1 when not found', function () {
+        expect(heap.indexOf({ id: 99, name: 'not found' })).toBe(-1);
+      });
+    });
+
+    describe('#indexOfEvery', function () {
+      it('should use configured isEqual by default', function () {
+        heap.push({ id: 2, name: 'two-duplicate' });
+        const indexes = heap.indexOfEvery({ id: 2, name: 'any' });
+        expect(indexes.length).toBe(2);
+        for (const idx of indexes) {
+          expect(heap.heapArray[idx].id).toBe(2);
+        }
+      });
+    });
+
+    describe('#remove', function () {
+      it('should use configured isEqual by default', function () {
+        expect(heap.remove({ id: 2, name: 'different' })).toBe(true);
+        expect(heap.length).toBe(2);
+        expect(heap.contains({ id: 2, name: 'any' })).toBe(false);
+        expect(heap.check()).not.toBeDefined();
+      });
+
+      it('should return false when not found', function () {
+        expect(heap.remove({ id: 99, name: 'not found' })).toBe(false);
+        expect(heap.length).toBe(3);
+      });
+    });
+
+    describe('#clone', function () {
+      it('should preserve isEqual configuration', function () {
+        const cloned = heap.clone();
+        expect(cloned.isEqual).toBe(isEqual);
+        expect(cloned.contains({ id: 2, name: 'different' })).toBe(true);
+      });
+    });
+  });
+});

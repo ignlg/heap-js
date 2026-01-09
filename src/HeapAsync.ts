@@ -2,12 +2,30 @@ export type AsyncComparator<T> = (a: T, b: T) => Promise<number>;
 export type AsyncIsEqual<T> = (e: T, o: T) => Promise<boolean>;
 
 /**
+ * HeapAsync configuration options.
+ */
+export interface HeapAsyncOptions<T> {
+  /**
+   * Comparison function for heap ordering.
+   * @default HeapAsync.minComparator
+   */
+  compare?: AsyncComparator<T>;
+  /**
+   * Default equality function for contains and remove.
+   * @default HeapAsync.defaultIsEqual
+   */
+  isEqual?: AsyncIsEqual<T>;
+}
+
+/**
  * Heap
  * @type {Class}
  */
 export class HeapAsync<T> implements Iterable<Promise<T>> {
   heapArray: Array<T> = [];
   _limit = 0;
+  isEqual: AsyncIsEqual<T> = HeapAsync.defaultIsEqual;
+  compare: AsyncComparator<T>;
 
   /**
    * Alias of add
@@ -26,9 +44,18 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
 
   /**
    * Heap instance constructor.
-   * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
+   * @param  {Function | HeapAsyncOptions} compareOrOptions Optional comparison function or options object
    */
-  constructor(public compare: AsyncComparator<T> = HeapAsync.minComparator) {}
+  constructor(compareOrOptions?: AsyncComparator<T> | HeapAsyncOptions<T>) {
+    if (typeof compareOrOptions === 'function') {
+      this.compare = compareOrOptions;
+    } else if (compareOrOptions) {
+      this.compare = compareOrOptions.compare ?? HeapAsync.minComparator;
+      this.isEqual = compareOrOptions.isEqual ?? HeapAsync.defaultIsEqual;
+    } else {
+      this.compare = HeapAsync.minComparator;
+    }
+  }
 
   /*
             Static methods
@@ -397,6 +424,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     const cloned = new HeapAsync<T>(this.comparator());
     cloned.heapArray = this.toArray();
     cloned._limit = this._limit;
+    cloned.isEqual = this.isEqual;
     return cloned;
   }
 
@@ -414,9 +442,10 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Function} fn  Optional comparison function, receives (element, needle)
    * @return {Boolean}
    */
-  async contains(o: T, fn: AsyncIsEqual<T> = HeapAsync.defaultIsEqual): Promise<boolean> {
+  async contains(o: T, fn?: AsyncIsEqual<T>): Promise<boolean> {
+    const isEqual = fn ?? this.isEqual;
     for (const el of this.heapArray) {
-      if (await fn(el, o)) {
+      if (await isEqual(el, o)) {
         return true;
       }
     }
@@ -536,16 +565,17 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Function} fn  Optional function to compare
    * @return {Boolean}      True if the heap was modified
    */
-  async remove(o?: T, fn: AsyncIsEqual<T> = HeapAsync.defaultIsEqual): Promise<boolean> {
+  async remove(o?: T, fn?: AsyncIsEqual<T>): Promise<boolean> {
     if (!this.heapArray.length) return false;
     if (o === undefined) {
       await this.pop();
       return true;
     }
+    const isEqual = fn ?? this.isEqual;
     const queue = [0];
     while (queue.length) {
       const idx = queue.shift() as number;
-      if (await fn(this.heapArray[idx], o)) {
+      if (await isEqual(this.heapArray[idx], o)) {
         if (idx === 0) {
           await this.pop();
         } else if (idx === this.heapArray.length - 1) {

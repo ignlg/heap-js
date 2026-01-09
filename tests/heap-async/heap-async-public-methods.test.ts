@@ -458,3 +458,95 @@ describe('HeapAsync instances', function () {
     });
   });
 });
+
+describe('HeapAsync with options constructor', function () {
+  describe('constructor', function () {
+    it('should accept a comparator function (backward compatibility)', async function () {
+      const heap = new HeapAsync<number>(async (a, b) => b - a);
+      await heap.push(1, 2, 3);
+      expect(heap.peek()).toBe(3);
+    });
+
+    it('should accept an options object with compare only', async function () {
+      const heap = new HeapAsync<number>({ compare: async (a, b) => b - a });
+      await heap.push(1, 2, 3);
+      expect(heap.peek()).toBe(3);
+    });
+
+    it('should accept an options object with compare and isEqual', async function () {
+      const isEqual = async (a: { id: number }, b: { id: number }) => a.id === b.id;
+      const heap = new HeapAsync<{ id: number; name: string }>({
+        compare: async (a, b) => a.id - b.id,
+        isEqual,
+      });
+      await heap.push({ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' });
+      expect(heap.isEqual).toBe(isEqual);
+    });
+
+    it('should use default comparator when no options provided', async function () {
+      const heap = new HeapAsync<number>();
+      await heap.push(3, 1, 2);
+      expect(heap.peek()).toBe(1);
+    });
+
+    it('should use default isEqual when not provided in options', function () {
+      const heap = new HeapAsync<number>({ compare: async (a, b) => a - b });
+      expect(heap.isEqual).toBe(HeapAsync.defaultIsEqual);
+    });
+
+    it('should use defaults when empty options object provided', async function () {
+      const heap = new HeapAsync<number>({});
+      await heap.push(3, 1, 2);
+      expect(heap.peek()).toBe(1);
+      expect(heap.isEqual).toBe(HeapAsync.defaultIsEqual);
+    });
+  });
+
+  describe('with configured isEqual', function () {
+    type Item = { id: number; name: string };
+    let heap: HeapAsync<Item>;
+    const isEqual = async (a: Item, b: Item) => a.id === b.id;
+
+    beforeEach(async function () {
+      heap = new HeapAsync<Item>({
+        compare: async (a, b) => a.id - b.id,
+        isEqual,
+      });
+      await heap.push({ id: 1, name: 'one' }, { id: 2, name: 'two' }, { id: 3, name: 'three' });
+    });
+
+    describe('#contains', function () {
+      it('should use configured isEqual by default', async function () {
+        expect(await heap.contains({ id: 2, name: 'different' })).toBe(true);
+        expect(await heap.contains({ id: 99, name: 'not found' })).toBe(false);
+      });
+
+      it('should allow override with method callback', async function () {
+        expect(await heap.contains({ id: 2, name: 'two' }, async (a, b) => a.name === b.name)).toBe(true);
+        expect(await heap.contains({ id: 2, name: 'wrong' }, async (a, b) => a.name === b.name)).toBe(false);
+      });
+    });
+
+    describe('#remove', function () {
+      it('should use configured isEqual by default', async function () {
+        expect(await heap.remove({ id: 2, name: 'different' })).toBe(true);
+        expect(heap.length).toBe(2);
+        expect(await heap.contains({ id: 2, name: 'any' })).toBe(false);
+        expect(await heap.check()).not.toBeDefined();
+      });
+
+      it('should return false when not found', async function () {
+        expect(await heap.remove({ id: 99, name: 'not found' })).toBe(false);
+        expect(heap.length).toBe(3);
+      });
+    });
+
+    describe('#clone', function () {
+      it('should preserve isEqual configuration', async function () {
+        const cloned = heap.clone();
+        expect(cloned.isEqual).toBe(isEqual);
+        expect(await cloned.contains({ id: 2, name: 'different' })).toBe(true);
+      });
+    });
+  });
+});
