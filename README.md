@@ -43,6 +43,16 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 3.0.0
+
+The main breaking changes are that `setLimit` and `_applyLimit` methods of the HeapAsync class are now async, and that setting the `limit` property will NOT apply the limit asynchronously; use the `setLimit` method instead.
+
+- Constructor now accepts an options object, `HeapOptions` and `HeapAsyncOptions`, with the `compare` and `isEqual` options.
+- Adds the `isEqual` property to the `Heap` and `HeapAsync` classes to support custom equality functions to override the default equality function.
+- Custom comparison callbacks trigger O(n) full scan vs O(log n) average for default equality. Addressing [#669](https://github.com/ignlg/heap-js/issues/669).
+- Setting a limit makes the heap evict the worst elements to keep the best N elements. Addressing [#656](https://github.com/ignlg/heap-js/issues/656).
+- HeapAsync limit should be set with the `setLimit` method to support async limit application. Setting only the `limit` property will not apply the limit asynchronously.
+
 ### 2.7.1
 
 - Optimize loop condition in HeapAsync init method.
