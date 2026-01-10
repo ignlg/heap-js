@@ -147,7 +147,7 @@ A heap where the largest element is always at the top.
 import { Heap } from 'heap-js';
 
 // Max Heap
-const maxHeap = new Heap(Heap.maxComparator);
+const maxHeap = new Heap({ compare: Heap.maxComparator });
 
 // Initialize the heap with an array
 maxHeap.init([3, 4, 1, 12, 8]);
@@ -168,7 +168,7 @@ import { Heap } from 'heap-js';
 
 const customPriorityComparator = (a, b) => a.priority - b.priority;
 // Custom Heap
-const customHeap = new Heap(customPriorityComparator);
+const customHeap = new Heap({ compare: customPriorityComparator });
 
 // Initialize the heap with an array
 customHeap.init([{ priority: 5 }, { priority: 18 }, { priority: 1 }]);
@@ -189,7 +189,7 @@ import { HeapAsync } from 'heap-js';
 
 const customPriorityComparator = (a, b) => Promise.resolve(a.priority - b.priority);
 // Custom HeapAsync
-const customHeap = new HeapAsync(customPriorityComparator);
+const customHeap = new HeapAsync({ compare: customPriorityComparator });
 
 // Initialize the heap with an array
 await customHeap.init([{ priority: 5 }, { priority: 18 }, { priority: 1 }]);
@@ -216,7 +216,7 @@ const tasks = db.collection.find().toArray();
 const customPriorityComparator = (a, b) => a.priority - b.priority;
 
 // Create the priority queue
-const priorityQueue = new Heap(customPriorityComparator);
+const priorityQueue = new Heap({ compare: customPriorityComparator });
 // Initialize the priority queue with the tasks
 priorityQueue.init(tasks);
 
@@ -238,7 +238,7 @@ const tasks = db.collection.find().toArray();
 // The most important task has the lowest priority value
 const customPriorityComparator = (a, b) => a.priority - b.priority;
 
-const priorityQueue = new Heap(customPriorityComparator);
+const priorityQueue = new Heap({ compare: customPriorityComparator });
 // Initialize the priority queue with the tasks
 priorityQueue.init(tasks);
 
@@ -276,13 +276,17 @@ npm install --save heap-js # if you use npm
 ### Heap
 
 ```js
-new Heap([comparator]);
+new Heap();
+new Heap(comparator);
+new Heap({ compare: comparator, isEqual: isEqual });
 ```
 
 ### HeapAsync
 
 ```js
-new HeapAsync([asyncComparator]);
+new HeapAsync();
+new HeapAsync(asyncComparator);
+new HeapAsync({ compare: asyncComparator, isEqual: isEqual });
 ```
 
 ## Comparators already included
@@ -294,13 +298,14 @@ new HeapAsync([asyncComparator]);
 
 ## Implements JavaScript-style methods
 
-- `for (const value of heap)` directly usable as an Iterator, **consumes the heap.**
+- `for (const value of heap)` directly usable as an Iterator; notice that **it consumes the heap.**
 - `length` of the heap.
-- `limit` the number of elements in the heap.
+- `limit` limit the number of elements in the heap to the N most valuable elements. Use the `setLimit` method to set the limit asynchronously.
 - `pop()` the top element.
 - `push(...elements)` one or more elements to the heap.
 - `pushpop(element)` faster than `push` & `pop`.
 - `replace(element)` faster than `pop` & `push`.
+- `setLimit(limit)` set the `limit` of the heap to the N most valuable elements.
 - `top(number?)` most valuable elements from the heap.
 - `bottom(number?)` least valuable elements from the heap.
 - `indexOf(element, fn?)` returns the internal index of the first occurrence of the element in the heap.
