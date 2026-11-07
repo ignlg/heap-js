@@ -375,8 +375,8 @@ export class Heap<T> implements Iterable<T> {
    * @return {Undefined | Element}  Returns an element if something wrong is found, otherwise it's undefined
    */
   check(): T | undefined {
-    return this.heapArray.find(
-      (el: T, j: number) => !!this.getChildrenOf(j).find((ch) => this.compare(el, ch) > 0)
+    return this.heapArray.find((el: T, j: number) =>
+      this.getChildrenOf(j).some((ch) => this.compare(el, ch) > 0)
     );
   }
 
