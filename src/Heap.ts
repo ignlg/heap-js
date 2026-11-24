@@ -967,7 +967,14 @@ export class Heap<T> implements Iterable<T> {
         }
       }
     }
-    return topHeap.toArray();
+    const result = topHeap.toArray();
+    const peekVal = arr[0];
+    const idx = result.indexOf(peekVal);
+    if (idx > 0) {
+      result[idx] = result[0];
+      result[0] = peekVal;
+    }
+    return result;
   }
 
   /**
@@ -1001,7 +1008,14 @@ export class Heap<T> implements Iterable<T> {
         }
       }
     }
-    return topHeap.toArray();
+    const result = topHeap.toArray();
+    const peekVal = heapArray[0];
+    const idx = result.indexOf(peekVal);
+    if (idx > 0) {
+      result[idx] = result[0];
+      result[0] = peekVal;
+    }
+    return result;
   }
 
   /**

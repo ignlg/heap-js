@@ -469,6 +469,13 @@ describe('HeapAsync instances', function () {
           await heap.init(values.concat(values));
           expect(await heap.top()).toEqual(await heap.top(1));
         });
+        it('should have top(n)[0] === peek() (#672)', async function () {
+          await heap.init(values.concat(values));
+          for (const n of [2, 3, 5, values.length]) {
+            const topN = await heap.top(n);
+            expect(topN[0]).toEqual(heap.peek());
+          }
+        });
       });
 
       describe('#toArray()', function () {
