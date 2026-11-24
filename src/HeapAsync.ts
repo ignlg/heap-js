@@ -372,9 +372,11 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @return {Boolean} true
    */
   async addAll(elements: Array<T>): Promise<boolean> {
-    let i = this.length;
-    this.heapArray.push(...elements);
-    for (const l = this.length; i < l; ++i) {
+    const start = this.length;
+    for (let j = 0; j < elements.length; j++) {
+      this.heapArray.push(elements[j]);
+    }
+    for (let i = start; i < this.heapArray.length; i++) {
       await this._sortNodeUp(i);
     }
     await this._applyLimit();
@@ -453,13 +455,61 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @return {Boolean}
    */
   async contains(o: T, fn?: AsyncIsEqual<T>): Promise<boolean> {
-    const isEqual = fn ?? this.isEqual;
-    for (const el of this.heapArray) {
-      if (await isEqual(el, o)) {
-        return true;
+    return (await this.indexOf(o, fn)) !== -1;
+  }
+
+  /**
+   * Get the index of the first occurrence of the element in the heap.
+   * @param  {any}      element    Element to be found
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+   * @return {Number}              Index or -1 if not found
+   */
+  async indexOf(element: T, callbackFn?: AsyncIsEqual<T>): Promise<number> {
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) {
+      return -1;
+    }
+    const isEqual = callbackFn ?? this.isEqual;
+    if (isEqual === HeapAsync.defaultIsEqual) {
+      return arr.indexOf(element);
+    }
+    for (let i = 0; i < len; i++) {
+      if (await isEqual(arr[i], element)) {
+        return i;
       }
     }
-    return false;
+    return -1;
+  }
+
+  /**
+   * Get the indexes of every occurrence of the element in the heap.
+   * @param  {any}      element    Element to be found
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+   * @return {Array}               Array of indexes or empty array if not found
+   */
+  async indexOfEvery(element: T, callbackFn?: AsyncIsEqual<T>): Promise<number[]> {
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) {
+      return [];
+    }
+    const isEqual = callbackFn ?? this.isEqual;
+    const result: number[] = [];
+    if (isEqual === HeapAsync.defaultIsEqual) {
+      for (let i = 0; i < len; i++) {
+        if (arr[i] === element) {
+          result.push(i);
+        }
+      }
+    } else {
+      for (let i = 0; i < len; i++) {
+        if (await isEqual(arr[i], element)) {
+          result.push(i);
+        }
+      }
+    }
+    return result;
   }
 
   /**
@@ -593,27 +643,12 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
       await this.pop();
       return true;
     }
-    const isEqual = fn ?? this.isEqual;
-    const queue = [0];
-    while (queue.length) {
-      const idx = queue.shift() as number;
-      if (await isEqual(this.heapArray[idx], o)) {
-        if (idx === 0) {
-          await this.pop();
-        } else if (idx === this.heapArray.length - 1) {
-          this.heapArray.pop();
-        } else {
-          this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
-          await this._sortNodeUp(idx);
-          await this._sortNodeDown(idx);
-        }
-        return true;
-      } else {
-        const children = HeapAsync.getChildrenIndexOf(idx).filter((c) => c < this.heapArray.length);
-        queue.push(...children);
-      }
+    const idx = await this.indexOf(o, fn);
+    if (idx === -1) {
+      return false;
     }
-    return false;
+    await this._removeAt(idx);
+    return true;
   }
 
   /**
@@ -718,6 +753,22 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    */
   iterator(): Iterable<Promise<T>> {
     return this;
+  }
+
+  /**
+   * Remove the element at the given index, re-establishing the heap property.
+   * @param  {Number} idx Index of the element to remove
+   */
+  async _removeAt(idx: number): Promise<void> {
+    if (idx === 0) {
+      await this.pop();
+    } else if (idx === this.heapArray.length - 1) {
+      this.heapArray.pop();
+    } else {
+      this.heapArray[idx] = this.heapArray.pop() as T;
+      await this._sortNodeUp(idx);
+      await this._sortNodeDown(idx);
+    }
   }
 
   /**
@@ -950,11 +1001,13 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @return {number} Index of worst element, -1 if empty
    */
   async _worstIndex(): Promise<number> {
-    if (this.heapArray.length === 0) return -1;
-    const start = this.heapArray.length >> 1; // First leaf
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) return -1;
+    const start = len >> 1; // First leaf
     let worstIdx = start;
-    for (let i = start + 1; i < this.heapArray.length; i++) {
-      if ((await this.compare(this.heapArray[i], this.heapArray[worstIdx])) > 0) {
+    for (let i = start + 1; i < len; i++) {
+      if ((await this.compare(arr[i], arr[worstIdx])) > 0) {
         worstIdx = i;
       }
     }

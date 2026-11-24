@@ -377,9 +377,11 @@ export class Heap<T> implements Iterable<T> {
    * @return {Boolean} true
    */
   addAll(elements: Array<T>): boolean {
-    let i = this.length;
-    this.heapArray.push(...elements);
-    for (const l = this.length; i < l; ++i) {
+    const start = this.length;
+    for (let j = 0; j < elements.length; j++) {
+      this.heapArray.push(elements[j]);
+    }
+    for (let i = start; i < this.heapArray.length; i++) {
       this._sortNodeUp(i);
     }
     this._applyLimit();
@@ -484,31 +486,19 @@ export class Heap<T> implements Iterable<T> {
    * @return {Number}              Index or -1 if not found
    */
   indexOf(element: T, callbackFn?: IsEqual<T>): number {
-    if (this.heapArray.length === 0) {
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) {
       return -1;
     }
     const isEqual = callbackFn ?? this.isEqual;
-    // When a different callback is provided, we must search all elements
-    // because the callback may not be consistent with this.compare
-    if (isEqual !== this.isEqual) {
-      for (let i = 0; i < this.heapArray.length; i++) {
-        if (isEqual(this.heapArray[i], element)) {
-          return i;
-        }
-      }
-      return -1;
+    if (isEqual === Heap.defaultIsEqual) {
+      return arr.indexOf(element);
     }
-    // Default case: use heap structure optimization
-    const indexes: number[] = [];
-    let currentIndex = 0;
-    while (currentIndex < this.heapArray.length) {
-      const currentElement = this.heapArray[currentIndex];
-      if (isEqual(currentElement, element)) {
-        return currentIndex;
-      } else if (this.compare(currentElement, element) <= 0) {
-        indexes.push(...Heap.getChildrenIndexOf(currentIndex));
+    for (let i = 0; i < len; i++) {
+      if (isEqual(arr[i], element)) {
+        return i;
       }
-      currentIndex = indexes.shift() || this.heapArray.length;
     }
     return -1;
   }
@@ -516,40 +506,31 @@ export class Heap<T> implements Iterable<T> {
   /**
    * Get the indexes of every occurrence of the element in the heap.
    * @param  {any}      element    Element to be found
-   * @param  {Function} callbackFn Optional comparison function, receives (element, needle). Note: Custom callbacks trigger O(n) full scan vs optimized heap search for default equality.
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
    * @return {Array}               Array of indexes or empty array if not found
    */
   indexOfEvery(element: T, callbackFn?: IsEqual<T>): number[] {
-    if (this.heapArray.length === 0) {
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) {
       return [];
     }
     const isEqual = callbackFn ?? this.isEqual;
-    // When a different callback is provided, we must search all elements
-    // because the callback may not be consistent with this.compare
-    if (isEqual !== this.isEqual) {
-      const foundIndexes: number[] = [];
-      for (let i = 0; i < this.heapArray.length; i++) {
-        if (isEqual(this.heapArray[i], element)) {
-          foundIndexes.push(i);
+    const result: number[] = [];
+    if (isEqual === Heap.defaultIsEqual) {
+      for (let i = 0; i < len; i++) {
+        if (arr[i] === element) {
+          result.push(i);
         }
       }
-      return foundIndexes;
-    }
-    // Default case: use heap structure optimization
-    const indexes: number[] = [];
-    const foundIndexes: number[] = [];
-    let currentIndex = 0;
-    while (currentIndex < this.heapArray.length) {
-      const currentElement = this.heapArray[currentIndex];
-      if (isEqual(currentElement, element)) {
-        foundIndexes.push(currentIndex);
-        indexes.push(...Heap.getChildrenIndexOf(currentIndex));
-      } else if (this.compare(currentElement, element) <= 0) {
-        indexes.push(...Heap.getChildrenIndexOf(currentIndex));
+    } else {
+      for (let i = 0; i < len; i++) {
+        if (isEqual(arr[i], element)) {
+          result.push(i);
+        }
       }
-      currentIndex = indexes.shift() || this.heapArray.length;
     }
-    return foundIndexes;
+    return result;
   }
 
   /**
@@ -682,46 +663,12 @@ export class Heap<T> implements Iterable<T> {
       this.pop();
       return true;
     }
-    const isEqual = callbackFn ?? this.isEqual;
-    // When a different callback is provided, we must search all elements
-    // because the callback may not be consistent with this.compare
-    if (isEqual !== this.isEqual) {
-      const idx = this.indexOf(o, isEqual);
-      if (idx === -1) {
-        return false;
-      }
-      if (idx === 0) {
-        this.pop();
-      } else if (idx === this.heapArray.length - 1) {
-        this.heapArray.pop();
-      } else {
-        this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
-        this._sortNodeUp(idx);
-        this._sortNodeDown(idx);
-      }
-      return true;
+    const idx = this.indexOf(o, callbackFn);
+    if (idx === -1) {
+      return false;
     }
-    // Default case: use heap structure optimization
-    const queue = [0];
-    while (queue.length) {
-      const idx = queue.shift() as number;
-      if (isEqual(this.heapArray[idx], o)) {
-        if (idx === 0) {
-          this.pop();
-        } else if (idx === this.heapArray.length - 1) {
-          this.heapArray.pop();
-        } else {
-          this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
-          this._sortNodeUp(idx);
-          this._sortNodeDown(idx);
-        }
-        return true;
-      } else if (this.compare(this.heapArray[idx], o) <= 0) {
-        const children = Heap.getChildrenIndexOf(idx).filter((c) => c < this.heapArray.length);
-        queue.push(...children);
-      }
-    }
-    return false;
+    this._removeAt(idx);
+    return true;
   }
 
   /**
@@ -826,6 +773,22 @@ export class Heap<T> implements Iterable<T> {
    */
   iterator(): Iterable<T> {
     return this.toArray();
+  }
+
+  /**
+   * Remove the element at the given index, re-establishing the heap property.
+   * @param  {Number} idx Index of the element to remove
+   */
+  _removeAt(idx: number): void {
+    if (idx === 0) {
+      this.pop();
+    } else if (idx === this.heapArray.length - 1) {
+      this.heapArray.pop();
+    } else {
+      this.heapArray[idx] = this.heapArray.pop() as T;
+      this._sortNodeUp(idx);
+      this._sortNodeDown(idx);
+    }
   }
 
   /**
@@ -1056,11 +1019,13 @@ export class Heap<T> implements Iterable<T> {
    * @return {number} Index of worst element, -1 if empty
    */
   _worstIndex(): number {
-    if (this.heapArray.length === 0) return -1;
-    const start = this.heapArray.length >> 1; // First leaf
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) return -1;
+    const start = len >> 1; // First leaf
     let worstIdx = start;
-    for (let i = start + 1; i < this.heapArray.length; i++) {
-      if (this.compare(this.heapArray[i], this.heapArray[worstIdx]) > 0) {
+    for (let i = start + 1; i < len; i++) {
+      if (this.compare(arr[i], arr[worstIdx]) > 0) {
         worstIdx = i;
       }
     }
