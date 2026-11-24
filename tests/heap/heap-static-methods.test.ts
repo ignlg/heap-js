@@ -207,4 +207,24 @@ describe('Heap class', function () {
       expect(full).toEqual(sortedArr);
     });
   });
+  describe('#heaptop top(n)[0] === peek() (#672)', function () {
+    it('should have index 0 equal to the heap peek', function () {
+      const arr = [1, 12, 3, 41, 51, 16, 7];
+      Heap.heapify(arr);
+      for (const n of [2, 3, 4, 5, arr.length - 1]) {
+        const topN = Heap.heaptop(arr, n);
+        expect(topN[0]).toBe(arr[0]);
+      }
+    });
+  });
+  describe('#nlargest top(n)[0] === peek() (#672)', function () {
+    it('should have index 0 equal to the heap peek', function () {
+      const arr = [1, 12, 3, 41, 51, 16, 7];
+      const heap = Heap.heapify(arr);
+      for (const n of [2, 3, 4, 5]) {
+        const result = Heap.nlargest(n, arr);
+        expect(result[0]).toBe(heap.peek());
+      }
+    });
+  });
 });
