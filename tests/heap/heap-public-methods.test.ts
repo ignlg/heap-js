@@ -641,3 +641,52 @@ describe('Heap instances', function () {
     });
   });
 });
+
+describe('Heap.check() with falsy child values', function () {
+  it.each(
+    [
+      [1, 0],
+      [1, -0],
+      [2, 0, 1],
+      [2, 3, 0],
+    ].map((values) => [values])
+  )('detects a violation in %j', function (values) {
+    const heap = new Heap<number>();
+    heap.heapArray = values;
+    expect(heap.check()).toBe(values[0]);
+    expect(heap.heapArray).toEqual(values);
+  });
+
+  it('detects an empty string child', function () {
+    const heap = new Heap<string>();
+    heap.heapArray = ['a', ''];
+    expect(heap.check()).toBe('a');
+  });
+
+  it('detects a false child', function () {
+    const heap = new Heap<boolean>();
+    heap.heapArray = [true, false];
+    expect(heap.check()).toBe(true);
+  });
+
+  it('continues checking later parents', function () {
+    const heap = new Heap<number>();
+    heap.heapArray = [-1, 1, 2, 0];
+    expect(heap.check()).toBe(1);
+  });
+
+  it('detects a falsy child with a custom comparator', function () {
+    const heap = new Heap<number>((a, b) => Math.abs(a) - Math.abs(b));
+    heap.heapArray = [-1, 0];
+    expect(heap.check()).toBe(-1);
+  });
+
+  it.each([[], [0], [0, 1], [-1, 0, 0]].map((values) => [values]))(
+    'accepts the valid heap %j',
+    function (values) {
+      const heap = new Heap<number>();
+      heap.heapArray = values;
+      expect(heap.check()).toBeUndefined();
+    }
+  );
+});
