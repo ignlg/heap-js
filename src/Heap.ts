@@ -363,7 +363,6 @@ export class Heap<T> implements Iterable<T> {
       // Replace worst with new element
       this.heapArray[worstIdx] = element;
       this._sortNodeUp(worstIdx);
-      this._sortNodeDown(worstIdx);
       return true;
     }
     this._sortNodeUp(this.heapArray.push(element) - 1);
@@ -792,23 +791,31 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Limit heap size if needed, removing worst elements to keep best N
+   * Limit heap size if needed, keeping the best N elements.
+   * Evicts the worst leaves when few are removed, otherwise pops the best N.
    */
   _applyLimit(): void {
-    if (this._limit > 0 && this._limit < this.heapArray.length) {
-      let rm = this.heapArray.length - this._limit;
-      while (rm > 0) {
-        const worstIdx = this._worstIndex();
+    const n = this._limit;
+    if (n <= 0 || n >= this.heapArray.length) return;
+    const len = this.heapArray.length;
+    const rm = len - n;
+    const evictCost = rm * (len >> 1);
+    const popCost = n * Math.ceil(Math.log2(len + 1));
+    if (evictCost <= popCost) {
+      for (let j = 0; j < rm; j++) {
+        const w = this._worstIndex();
         // Swap with last and pop (standard heap removal for non-root)
-        if (worstIdx === this.heapArray.length - 1) {
+        if (w === this.heapArray.length - 1) {
           this.heapArray.pop();
         } else {
-          this.heapArray[worstIdx] = this.heapArray.pop() as T;
-          this._sortNodeUp(worstIdx);
-          this._sortNodeDown(worstIdx);
+          this.heapArray[w] = this.heapArray.pop() as T;
+          this._sortNodeUp(w);
         }
-        --rm;
       }
+    } else {
+      const kept = new Array<T>(n);
+      for (let i = 0; i < n; i++) kept[i] = this.pop() as T;
+      this.heapArray = kept;
     }
   }
 
@@ -821,7 +828,6 @@ export class Heap<T> implements Iterable<T> {
   _bottomN_push(n: number): Array<T> {
     // Use an inverted heap
     const bottomHeap = new Heap(this.compare);
-    bottomHeap.limit = n;
     bottomHeap.heapArray = this.heapArray.slice(-n);
     bottomHeap.init();
     const startAt = this.heapArray.length - 1 - n;
@@ -915,7 +921,6 @@ export class Heap<T> implements Iterable<T> {
   _topN_push(n: number): Array<T> {
     // Use an inverted heap
     const topHeap = new Heap(this._invertedCompare);
-    topHeap.limit = n;
     const indices = [0];
     const arr = this.heapArray;
     while (indices.length) {

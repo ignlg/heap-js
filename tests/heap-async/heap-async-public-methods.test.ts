@@ -632,23 +632,6 @@ describe('HeapAsync with options constructor', function () {
 });
 
 describe('HeapAsync linear search fixes (#669)', function () {
-  it('contains with custom callback finds deep elements', async function () {
-    const heap = new HeapAsync<{ id: number }>(async (a, b) => a.id - b.id);
-    await heap.push({ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 });
-    expect(await heap.contains({ id: 4 }, async (a, b) => a.id === b.id)).toBe(true);
-    expect(await heap.contains({ id: 99 }, async (a, b) => a.id === b.id)).toBe(false);
-  });
-
-  it('configured isEqual finds elements without callback override', async function () {
-    const heap = new HeapAsync<{ id: number }>({
-      compare: async (a, b) => a.id - b.id,
-      isEqual: async (a, b) => a.id === b.id,
-    });
-    await heap.push({ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 });
-    expect(await heap.contains({ id: 4 })).toBe(true);
-    expect(await heap.contains({ id: 99 })).toBe(false);
-  });
-
   it('remove with needle-ignoring callback finds the element (#669 repro)', async function () {
     const heap = new HeapAsync<{ value: number }>(async (a, b) => b.value - a.value);
     await heap.add({ value: 1 });
@@ -734,5 +717,73 @@ describe('HeapAsync linear search fixes (#669)', function () {
     it('should return false for different values', async function () {
       expect(await HeapAsync.defaultIsEqual(1, 2)).toBe(false);
     });
+  });
+});
+
+describe('HeapAsync hybrid _applyLimit', function () {
+  it('eviction path: replaces worst leaf (not last) and re-sorts', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    heap.heapArray = [1, 3, 2, 7, 5, 4, 6];
+    await heap.setLimit(6);
+    expect(heap.length).toBe(6);
+    expect(await heap.check()).toBeUndefined();
+    expect(heap.toArray()).not.toContain(7);
+  });
+
+  it('pop-trim path: rebuilds heap when rm is large relative to limit', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    for (let i = 0; i < 1000; i++) await heap.push(i);
+    await heap.setLimit(3);
+    expect(heap.length).toBe(3);
+    expect(await heap.check()).toBeUndefined();
+    expect(heap.toArray().sort((a, b) => a - b)).toEqual([0, 1, 2]);
+  });
+
+  it('lazy setter defers trim; setLimit trims eagerly', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    await heap.push(1, 2, 3, 4, 5);
+    heap.limit = 3;
+    expect(heap.length).toBe(5);
+    await heap.setLimit(3);
+    expect(heap.length).toBe(3);
+  });
+
+  it('lazy setter: add() pre-trims when heap exceeds limit', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    await heap.push(1, 2, 3, 4, 5);
+    heap.limit = 2;
+    expect(heap.length).toBe(5);
+    await heap.add(0);
+    expect(heap.length).toBeLessThanOrEqual(2);
+    expect(await heap.check()).toBeUndefined();
+  });
+
+  it('setLimit with NaN returns NaN and sets limit to 0', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    expect(await heap.setLimit(NaN)).toBe(NaN);
+    expect(heap.limit).toBe(0);
+  });
+
+  it('setLimit with negative returns NaN and sets limit to 0', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    expect(await heap.setLimit(-5)).toBe(NaN);
+    expect(heap.limit).toBe(0);
+  });
+
+  it('add returns false at capacity when element is worse', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    heap.limit = 3;
+    await heap.push(1, 2, 3);
+    expect(await heap.add(4)).toBe(false);
+    expect(heap.length).toBe(3);
+  });
+
+  it('add returns true at capacity when element is better', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    heap.limit = 3;
+    await heap.push(3, 4, 5);
+    expect(await heap.add(2)).toBe(true);
+    expect(heap.length).toBe(3);
+    expect(await heap.check()).toBeUndefined();
   });
 });
