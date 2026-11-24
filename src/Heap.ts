@@ -339,9 +339,11 @@ export class Heap<T> implements Iterable<T> {
    * @return {Boolean} true
    */
   addAll(elements: Array<T>): boolean {
-    let i = this.length;
-    this.heapArray.push(...elements);
-    for (const l = this.length; i < l; ++i) {
+    const start = this.length;
+    for (let j = 0; j < elements.length; j++) {
+      this.heapArray.push(elements[j]);
+    }
+    for (let i = start; i < this.heapArray.length; i++) {
       this._sortNodeUp(i);
     }
     this._applyLimit();

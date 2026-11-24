@@ -335,9 +335,11 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @return {Boolean} true
    */
   async addAll(elements: Array<T>): Promise<boolean> {
-    let i = this.length;
-    this.heapArray.push(...elements);
-    for (const l = this.length; i < l; ++i) {
+    const start = this.length;
+    for (let j = 0; j < elements.length; j++) {
+      this.heapArray.push(elements[j]);
+    }
+    for (let i = start; i < this.heapArray.length; i++) {
       await this._sortNodeUp(i);
     }
     this._applyLimit();
