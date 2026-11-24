@@ -802,7 +802,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
         }
       }
     }
-    return topHeap.toArray();
+    return this._topFirst(topHeap.toArray());
   }
 
   /**
@@ -836,7 +836,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
         }
       }
     }
-    return topHeap.toArray();
+    return this._topFirst(topHeap.toArray());
   }
 
   /**
@@ -853,6 +853,19 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
       result.push((await topHeap.pop()) as T);
     }
     return result;
+  }
+
+  /**
+   * Move the top element of a list to index 0, in place.
+   * @param  {Array} list
+   * @return {Array}      The same list
+   */
+  async _topFirst(list: Array<T>): Promise<Array<T>> {
+    const idx = await this._topIdxOf(list);
+    if (idx > 0) {
+      [list[0], list[idx]] = [list[idx], list[0]];
+    }
+    return list;
   }
 
   /**
