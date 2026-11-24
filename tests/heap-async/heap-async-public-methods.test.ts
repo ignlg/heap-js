@@ -455,6 +455,99 @@ describe('HeapAsync instances', function () {
           expect(result).toEqual(topArr);
         });
       });
+
+      describe('#indexOf(element)', function () {
+        it('should return the index of the element', async function () {
+          await heap.init(values);
+          for (let idx = 0; idx < heap.length; idx++) {
+            const foundIdx = await heap.indexOf(heap.heapArray[idx]);
+            expect(heap.heapArray[foundIdx]).toEqual(heap.heapArray[idx]);
+          }
+        });
+        it('should return -1 if not found', async function () {
+          await heap.init(values);
+          expect(await heap.indexOf(99999)).toBe(-1);
+        });
+        it('should return -1 for empty heap', async function () {
+          expect(await heap.indexOf(1)).toBe(-1);
+        });
+      });
+
+      describe('#indexOf(element, fn)', function () {
+        it('should find element with custom callback', async function () {
+          await heap.init(values);
+          const idx = await heap.indexOf(heap.heapArray[0], async (a, b) => a === b);
+          expect(idx).toBe(0);
+        });
+        it('should return -1 with custom callback if not found', async function () {
+          await heap.init(values);
+          expect(await heap.indexOf(99999, async (a, b) => a === b)).toBe(-1);
+        });
+      });
+
+      describe('#indexOfEvery(element)', function () {
+        it('should return all indexes of a duplicated element', async function () {
+          await heap.init(values.concat(values));
+          const target = heap.heapArray[0];
+          const indexes = await heap.indexOfEvery(target);
+          expect(indexes.length).toBeGreaterThanOrEqual(2);
+          for (const idx of indexes) {
+            expect(heap.heapArray[idx]).toEqual(target);
+          }
+        });
+        it('should return empty array if not found', async function () {
+          await heap.init(values);
+          expect(await heap.indexOfEvery(99999)).toEqual([]);
+        });
+        it('should return empty array for empty heap', async function () {
+          expect(await heap.indexOfEvery(1)).toEqual([]);
+        });
+      });
+
+      describe('#indexOfEvery(element, fn)', function () {
+        it('should find indexes with custom callback', async function () {
+          await heap.init(values.concat(values));
+          const target = heap.heapArray[0];
+          const indexes = await heap.indexOfEvery(target, async (a, b) => a === b);
+          expect(indexes.length).toBeGreaterThanOrEqual(2);
+          for (const idx of indexes) {
+            expect(heap.heapArray[idx]).toEqual(target);
+          }
+        });
+      });
     });
+  });
+});
+
+describe('HeapAsync linear search fixes (#669)', function () {
+  it('contains with custom callback finds elements the pruned search missed', async function () {
+    const heap = new HeapAsync<{ id: number }>(async (a, b) => a.id - b.id);
+    await heap.push({ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 });
+    expect(await heap.contains({ id: 4 }, async (a, b) => a.id === b.id)).toBe(true);
+    expect(await heap.contains({ id: 99 }, async (a, b) => a.id === b.id)).toBe(false);
+  });
+
+  it('indexOf with custom callback finds deep elements', async function () {
+    const heap = new HeapAsync<{ id: number }>(async (a, b) => a.id - b.id);
+    await heap.push({ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 });
+    const idx = await heap.indexOf({ id: 4 }, async (a, b) => a.id === b.id);
+    expect(idx).not.toBe(-1);
+    expect(heap.heapArray[idx].id).toBe(4);
+  });
+
+  it('remove with custom callback works for any position', async function () {
+    const heap = new HeapAsync<{ id: number }>(async (a, b) => a.id - b.id);
+    await heap.push({ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 });
+    expect(await heap.remove({ id: 4 }, async (a, b) => a.id === b.id)).toBe(true);
+    expect(await heap.contains({ id: 4 }, async (a, b) => a.id === b.id)).toBe(false);
+    expect(await heap.check()).toBeUndefined();
+  });
+
+  it('remove(null) does not throw', async function () {
+    const heap = new HeapAsync<number | null>();
+    await heap.push(1, 2, null, 3);
+    expect(await heap.remove(null)).toBe(true);
+    expect(await heap.contains(null)).toBe(false);
+    expect(await heap.check()).toBeUndefined();
   });
 });

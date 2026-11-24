@@ -1,4 +1,5 @@
 import Heap from '../../src/Heap';
+import HeapAsync from '../../src/HeapAsync';
 import { customBottom, customTop, customValues, someValues } from '../test-helpers';
 
 describe('Heap instances', function () {
@@ -689,4 +690,53 @@ describe('Heap.check() with falsy child values', function () {
       expect(heap.check()).toBeUndefined();
     }
   );
+});
+
+describe('Linear search fixes (#669)', function () {
+  it('remove with needle-ignoring callback finds the element (#669 repro)', function () {
+    const heap = new Heap<{ value: number }>((a, b) => b.value - a.value);
+    heap.add({ value: 1 });
+    heap.add({ value: 2 });
+    heap.add({ value: 3 });
+    expect(heap.remove(0 as any, (a) => a.value === 2)).toBe(true);
+    expect(heap.length).toBe(2);
+    expect(heap.check()).toBeUndefined();
+  });
+
+  it('remove(null) on object heap does not throw (#669 repro)', function () {
+    const heap = new Heap<{ value: number }>((a, b) => b.value - a.value);
+    heap.add({ value: 1 });
+    heap.add({ value: 2 });
+    heap.add({ value: 3 });
+    expect(heap.remove(null as any)).toBe(false);
+    expect(heap.length).toBe(3);
+  });
+
+  it('contains with needle-ignoring callback finds the element', function () {
+    const heap = new Heap<{ value: number }>((a, b) => b.value - a.value);
+    heap.add({ value: 1 });
+    heap.add({ value: 2 });
+    heap.add({ value: 3 });
+    expect(heap.contains(0 as any, (a) => a.value === 2)).toBe(true);
+    expect(heap.contains(0 as any, (a) => a.value === 99)).toBe(false);
+  });
+
+  it('indexOf with needle-ignoring callback finds the element', function () {
+    const heap = new Heap<{ value: number }>((a, b) => b.value - a.value);
+    heap.add({ value: 1 });
+    heap.add({ value: 2 });
+    heap.add({ value: 3 });
+    const idx = heap.indexOf(0 as any, (a) => a.value === 2);
+    expect(idx).not.toBe(-1);
+    expect(heap.heapArray[idx].value).toBe(2);
+  });
+});
+
+describe('HeapAsync.defaultIsEqual coverage', function () {
+  it('should return true for equal values', async function () {
+    expect(await HeapAsync.defaultIsEqual(1, 1)).toBe(true);
+  });
+  it('should return false for different values', async function () {
+    expect(await HeapAsync.defaultIsEqual(1, 2)).toBe(false);
+  });
 });

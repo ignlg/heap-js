@@ -439,53 +439,55 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Get the index of the first occurrence of the element in the heap (using the comparator).
+   * Get the index of the first occurrence of the element in the heap.
    * @param  {any}      element    Element to be found
    * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
    * @return {Number}              Index or -1 if not found
    */
   indexOf(element: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): number {
-    if (this.heapArray.length === 0) {
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) {
       return -1;
     }
-    const indexes: number[] = [];
-    let currentIndex = 0;
-    while (currentIndex < this.heapArray.length) {
-      const currentElement = this.heapArray[currentIndex];
-      if (callbackFn(currentElement, element)) {
-        return currentIndex;
-      } else if (this.compare(currentElement, element) <= 0) {
-        indexes.push(...Heap.getChildrenIndexOf(currentIndex));
+    if (callbackFn === Heap.defaultIsEqual) {
+      return arr.indexOf(element);
+    }
+    for (let i = 0; i < len; i++) {
+      if (callbackFn(arr[i], element)) {
+        return i;
       }
-      currentIndex = indexes.shift() || this.heapArray.length;
     }
     return -1;
   }
 
   /**
-   * Get the indexes of the every occurrence of the element in the heap (using the comparator).
+   * Get the indexes of every occurrence of the element in the heap.
    * @param  {any}      element    Element to be found
    * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
    * @return {Array}               Array of indexes or empty array if not found
    */
   indexOfEvery(element: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): number[] {
-    if (this.heapArray.length === 0) {
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) {
       return [];
     }
-    const indexes: number[] = [];
-    const foundIndexes: number[] = [];
-    let currentIndex = 0;
-    while (currentIndex < this.heapArray.length) {
-      const currentElement = this.heapArray[currentIndex];
-      if (callbackFn(currentElement, element)) {
-        foundIndexes.push(currentIndex);
-        indexes.push(...Heap.getChildrenIndexOf(currentIndex));
-      } else if (this.compare(currentElement, element) <= 0) {
-        indexes.push(...Heap.getChildrenIndexOf(currentIndex));
+    const result: number[] = [];
+    if (callbackFn === Heap.defaultIsEqual) {
+      for (let i = 0; i < len; i++) {
+        if (arr[i] === element) {
+          result.push(i);
+        }
       }
-      currentIndex = indexes.shift() || this.heapArray.length;
+    } else {
+      for (let i = 0; i < len; i++) {
+        if (callbackFn(arr[i], element)) {
+          result.push(i);
+        }
+      }
     }
-    return foundIndexes;
+    return result;
   }
 
   /**
@@ -618,26 +620,12 @@ export class Heap<T> implements Iterable<T> {
       this.pop();
       return true;
     }
-    const queue = [0];
-    while (queue.length) {
-      const idx = queue.shift() as number;
-      if (callbackFn(this.heapArray[idx], o)) {
-        if (idx === 0) {
-          this.pop();
-        } else if (idx === this.heapArray.length - 1) {
-          this.heapArray.pop();
-        } else {
-          this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
-          this._sortNodeUp(idx);
-          this._sortNodeDown(idx);
-        }
-        return true;
-      } else if (this.compare(this.heapArray[idx], o) <= 0) {
-        const children = Heap.getChildrenIndexOf(idx).filter((c) => c < this.heapArray.length);
-        queue.push(...children);
-      }
+    const idx = this.indexOf(o, callbackFn);
+    if (idx === -1) {
+      return false;
     }
-    return false;
+    this._removeAt(idx);
+    return true;
   }
 
   /**
@@ -742,6 +730,22 @@ export class Heap<T> implements Iterable<T> {
    */
   iterator(): Iterable<T> {
     return this.toArray();
+  }
+
+  /**
+   * Remove the element at the given index, re-establishing the heap property.
+   * @param  {Number} idx Index of the element to remove
+   */
+  _removeAt(idx: number): void {
+    if (idx === 0) {
+      this.pop();
+    } else if (idx === this.heapArray.length - 1) {
+      this.heapArray.pop();
+    } else {
+      this.heapArray[idx] = this.heapArray.pop() as T;
+      this._sortNodeUp(idx);
+      this._sortNodeDown(idx);
+    }
   }
 
   /**
