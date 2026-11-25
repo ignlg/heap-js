@@ -217,6 +217,20 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      */
     contains(o: T, fn?: AsyncIsEqual<T>): Promise<boolean>;
     /**
+     * Get the index of the first occurrence of the element in the heap.
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Number}              Index or -1 if not found
+     */
+    indexOf(element: T, callbackFn?: AsyncIsEqual<T>): Promise<number>;
+    /**
+     * Get the indexes of every occurrence of the element in the heap.
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Array}               Array of indexes or empty array if not found
+     */
+    indexOfEvery(element: T, callbackFn?: AsyncIsEqual<T>): Promise<number[]>;
+    /**
      * Initialise a heap, sorting nodes
      * @param  {Array} array Optional initial state array
      */
@@ -241,15 +255,16 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      */
     get limit(): number;
     /**
-     * Set length limit of the heap without eviction.
-     * Note: Use setLimit() for async limit application with proper eviction.
-     * @param {Number} _l Limit value
+     * Set length limit of the heap.
+     * The limit is applied lazily on the next add() or eagerly via setLimit().
+     * @param {Number} _l Limit value. Negative, Infinity, or NaN set the limit to 0.
      */
     set limit(_l: number);
     /**
      * Set length limit of the heap with async limit application.
-     * @param {Number} _l Limit value
-     * @return {Promise<number>} The limit value
+     * Same as assigning to {@link limit} but awaits eviction and returns NaN if the value was invalid.
+     * @param {Number} _l Limit. Negative, Infinity, or NaN values set the limit to 0.
+     * @return {Promise<number>} The limit or NaN if the value was negative, or NaN.
      */
     setLimit(_l: number): Promise<number>;
     /**
@@ -337,7 +352,13 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      */
     iterator(): Iterable<Promise<T>>;
     /**
-     * Limit heap size if needed, removing worst elements to keep best N
+     * Remove the element at the given index, re-establishing the heap property.
+     * @param  {Number} idx Index of the element to remove
+     */
+    _removeAt(idx: number): Promise<void>;
+    /**
+     * Limit heap size if needed, keeping the best N elements.
+     * Evicts the worst leaves when few are removed, otherwise pops the best N.
      */
     _applyLimit(): Promise<void>;
     /**

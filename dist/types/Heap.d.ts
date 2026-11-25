@@ -247,7 +247,7 @@ export declare class Heap<T> implements Iterable<T> {
     /**
      * Get the indexes of every occurrence of the element in the heap.
      * @param  {any}      element    Element to be found
-     * @param  {Function} callbackFn Optional comparison function, receives (element, needle). Note: Custom callbacks trigger O(n) full scan vs optimized heap search for default equality.
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
      * @return {Array}               Array of indexes or empty array if not found
      */
     indexOfEvery(element: T, callbackFn?: IsEqual<T>): number[];
@@ -374,7 +374,13 @@ export declare class Heap<T> implements Iterable<T> {
      */
     iterator(): Iterable<T>;
     /**
-     * Limit heap size if needed, removing worst elements to keep best N
+     * Remove the element at the given index, re-establishing the heap property.
+     * @param  {Number} idx Index of the element to remove
+     */
+    _removeAt(idx: number): void;
+    /**
+     * Limit heap size if needed, keeping the best N elements.
+     * Evicts the worst leaves when few are removed, otherwise pops the best N.
      */
     _applyLimit(): void;
     /**

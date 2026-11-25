@@ -450,26 +450,30 @@ var HeapAsync = /** @class */ (function () {
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(this._limit > 0 && this.heapArray.length >= this._limit)) return [3 /*break*/, 5];
-                        return [4 /*yield*/, this._worstIndex()];
+                        if (!(this._limit > 0)) return [3 /*break*/, 6];
+                        if (!(this.heapArray.length > this._limit)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this._applyLimit()];
                     case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        if (!(this.heapArray.length >= this._limit)) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this._worstIndex()];
+                    case 3:
                         worstIdx = _a.sent();
                         return [4 /*yield*/, this.compare(element, this.heapArray[worstIdx])];
-                    case 2:
+                    case 4:
                         if ((_a.sent()) >= 0) {
                             return [2 /*return*/, false]; // New element is not better than worst keeper
                         }
                         // Replace worst with new element
                         this.heapArray[worstIdx] = element;
                         return [4 /*yield*/, this._sortNodeUp(worstIdx)];
-                    case 3:
-                        _a.sent();
-                        return [4 /*yield*/, this._sortNodeDown(worstIdx)];
-                    case 4:
+                    case 5:
                         _a.sent();
                         return [2 /*return*/, true];
-                    case 5: return [4 /*yield*/, this._sortNodeUp(this.heapArray.push(element) - 1)];
-                    case 6:
+                    case 6: return [4 /*yield*/, this._sortNodeUp(this.heapArray.push(element) - 1)];
+                    case 7:
                         _a.sent();
                         return [2 /*return*/, true];
                 }
@@ -484,27 +488,28 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype.addAll = function (elements) {
         return __awaiter(this, void 0, void 0, function () {
-            var i, l;
-            var _a;
-            return __generator$1(this, function (_b) {
-                switch (_b.label) {
+            var start, j, i;
+            return __generator$1(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        i = this.length;
-                        (_a = this.heapArray).push.apply(_a, __spreadArray$1([], __read$1(elements), false));
-                        l = this.length;
-                        _b.label = 1;
+                        start = this.length;
+                        for (j = 0; j < elements.length; j++) {
+                            this.heapArray.push(elements[j]);
+                        }
+                        i = start;
+                        _a.label = 1;
                     case 1:
-                        if (!(i < l)) return [3 /*break*/, 4];
+                        if (!(i < this.heapArray.length)) return [3 /*break*/, 4];
                         return [4 /*yield*/, this._sortNodeUp(i)];
                     case 2:
-                        _b.sent();
-                        _b.label = 3;
+                        _a.sent();
+                        _a.label = 3;
                     case 3:
-                        ++i;
+                        i++;
                         return [3 /*break*/, 1];
                     case 4: return [4 /*yield*/, this._applyLimit()];
                     case 5:
-                        _b.sent();
+                        _a.sent();
                         return [2 /*return*/, true];
                 }
             });
@@ -624,41 +629,94 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype.contains = function (o, fn) {
         return __awaiter(this, void 0, void 0, function () {
-            var isEqual, _a, _b, el, e_2_1;
-            var e_2, _c;
-            return __generator$1(this, function (_d) {
-                switch (_d.label) {
+            return __generator$1(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.indexOf(o, fn)];
+                    case 1: return [2 /*return*/, (_a.sent()) !== -1];
+                }
+            });
+        });
+    };
+    /**
+     * Get the index of the first occurrence of the element in the heap.
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Number}              Index or -1 if not found
+     */
+    HeapAsync.prototype.indexOf = function (element, callbackFn) {
+        return __awaiter(this, void 0, void 0, function () {
+            var arr, len, isEqual, i;
+            return __generator$1(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        isEqual = fn !== null && fn !== void 0 ? fn : this.isEqual;
-                        _d.label = 1;
+                        arr = this.heapArray;
+                        len = arr.length;
+                        if (len === 0) {
+                            return [2 /*return*/, -1];
+                        }
+                        isEqual = callbackFn !== null && callbackFn !== void 0 ? callbackFn : this.isEqual;
+                        if (isEqual === HeapAsync.defaultIsEqual) {
+                            return [2 /*return*/, arr.indexOf(element)];
+                        }
+                        i = 0;
+                        _a.label = 1;
                     case 1:
-                        _d.trys.push([1, 6, 7, 8]);
-                        _a = __values(this.heapArray), _b = _a.next();
-                        _d.label = 2;
+                        if (!(i < len)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, isEqual(arr[i], element)];
                     case 2:
-                        if (!!_b.done) return [3 /*break*/, 5];
-                        el = _b.value;
-                        return [4 /*yield*/, isEqual(el, o)];
+                        if (_a.sent()) {
+                            return [2 /*return*/, i];
+                        }
+                        _a.label = 3;
                     case 3:
-                        if (_d.sent()) {
-                            return [2 /*return*/, true];
+                        i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/, -1];
+                }
+            });
+        });
+    };
+    /**
+     * Get the indexes of every occurrence of the element in the heap.
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Array}               Array of indexes or empty array if not found
+     */
+    HeapAsync.prototype.indexOfEvery = function (element, callbackFn) {
+        return __awaiter(this, void 0, void 0, function () {
+            var arr, len, isEqual, result, i, i;
+            return __generator$1(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        arr = this.heapArray;
+                        len = arr.length;
+                        if (len === 0) {
+                            return [2 /*return*/, []];
                         }
-                        _d.label = 4;
+                        isEqual = callbackFn !== null && callbackFn !== void 0 ? callbackFn : this.isEqual;
+                        result = [];
+                        if (!(isEqual === HeapAsync.defaultIsEqual)) return [3 /*break*/, 1];
+                        for (i = 0; i < len; i++) {
+                            if (arr[i] === element) {
+                                result.push(i);
+                            }
+                        }
+                        return [3 /*break*/, 5];
+                    case 1:
+                        i = 0;
+                        _a.label = 2;
+                    case 2:
+                        if (!(i < len)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, isEqual(arr[i], element)];
+                    case 3:
+                        if (_a.sent()) {
+                            result.push(i);
+                        }
+                        _a.label = 4;
                     case 4:
-                        _b = _a.next();
+                        i++;
                         return [3 /*break*/, 2];
-                    case 5: return [3 /*break*/, 8];
-                    case 6:
-                        e_2_1 = _d.sent();
-                        e_2 = { error: e_2_1 };
-                        return [3 /*break*/, 8];
-                    case 7:
-                        try {
-                            if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
-                        }
-                        finally { if (e_2) throw e_2.error; }
-                        return [7 /*endfinally*/];
-                    case 8: return [2 /*return*/, false];
+                    case 5: return [2 /*return*/, result];
                 }
             });
         });
@@ -732,31 +790,39 @@ var HeapAsync = /** @class */ (function () {
             return this._limit;
         },
         /**
-         * Set length limit of the heap without eviction.
-         * Note: Use setLimit() for async limit application with proper eviction.
-         * @param {Number} _l Limit value
+         * Set length limit of the heap.
+         * The limit is applied lazily on the next add() or eagerly via setLimit().
+         * @param {Number} _l Limit value. Negative, Infinity, or NaN set the limit to 0.
          */
         set: function (_l) {
-            this._limit = ~~_l;
-            // Note: This setter cannot await _applyLimit(). Use setLimit() for async application.
+            if (_l < 0 || isNaN(_l)) {
+                this._limit = 0;
+            }
+            else {
+                this._limit = ~~_l;
+            }
         },
         enumerable: false,
         configurable: true
     });
     /**
      * Set length limit of the heap with async limit application.
-     * @param {Number} _l Limit value
-     * @return {Promise<number>} The limit value
+     * Same as assigning to {@link limit} but awaits eviction and returns NaN if the value was invalid.
+     * @param {Number} _l Limit. Negative, Infinity, or NaN values set the limit to 0.
+     * @return {Promise<number>} The limit or NaN if the value was negative, or NaN.
      */
     HeapAsync.prototype.setLimit = function (_l) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this._limit = ~~_l;
+                        this.limit = _l;
                         return [4 /*yield*/, this._applyLimit()];
                     case 1:
                         _a.sent();
+                        if (_l < 0 || isNaN(_l)) {
+                            return [2 /*return*/, NaN];
+                        }
                         return [2 /*return*/, this._limit];
                 }
             });
@@ -818,17 +884,24 @@ var HeapAsync = /** @class */ (function () {
     HeapAsync.prototype.pushpop = function (element) {
         return __awaiter(this, void 0, void 0, function () {
             var _a;
-            return __generator$1(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.compare(this.heapArray[0], element)];
+            var _b;
+            return __generator$1(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = this.heapArray.length > 0;
+                        if (!_a) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.compare(this.heapArray[0], element)];
                     case 1:
-                        if (!((_b.sent()) < 0)) return [3 /*break*/, 3];
-                        _a = __read$1([this.heapArray[0], element], 2), element = _a[0], this.heapArray[0] = _a[1];
-                        return [4 /*yield*/, this._sortNodeDown(0)];
+                        _a = (_c.sent()) < 0;
+                        _c.label = 2;
                     case 2:
-                        _b.sent();
-                        _b.label = 3;
-                    case 3: return [2 /*return*/, element];
+                        if (!_a) return [3 /*break*/, 4];
+                        _b = __read$1([this.heapArray[0], element], 2), element = _b[0], this.heapArray[0] = _b[1];
+                        return [4 /*yield*/, this._sortNodeDown(0)];
+                    case 3:
+                        _c.sent();
+                        _c.label = 4;
+                    case 4: return [2 /*return*/, element];
                 }
             });
         });
@@ -841,8 +914,7 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype.remove = function (o, fn) {
         return __awaiter(this, void 0, void 0, function () {
-            var isEqual, queue, idx, children;
-            var _this = this;
+            var idx;
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -853,41 +925,16 @@ var HeapAsync = /** @class */ (function () {
                     case 1:
                         _a.sent();
                         return [2 /*return*/, true];
-                    case 2:
-                        isEqual = fn !== null && fn !== void 0 ? fn : this.isEqual;
-                        queue = [0];
-                        _a.label = 3;
+                    case 2: return [4 /*yield*/, this.indexOf(o, fn)];
                     case 3:
-                        if (!queue.length) return [3 /*break*/, 13];
-                        idx = queue.shift();
-                        return [4 /*yield*/, isEqual(this.heapArray[idx], o)];
+                        idx = _a.sent();
+                        if (idx === -1) {
+                            return [2 /*return*/, false];
+                        }
+                        return [4 /*yield*/, this._removeAt(idx)];
                     case 4:
-                        if (!_a.sent()) return [3 /*break*/, 11];
-                        if (!(idx === 0)) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.pop()];
-                    case 5:
                         _a.sent();
-                        return [3 /*break*/, 10];
-                    case 6:
-                        if (!(idx === this.heapArray.length - 1)) return [3 /*break*/, 7];
-                        this.heapArray.pop();
-                        return [3 /*break*/, 10];
-                    case 7:
-                        this.heapArray.splice(idx, 1, this.heapArray.pop());
-                        return [4 /*yield*/, this._sortNodeUp(idx)];
-                    case 8:
-                        _a.sent();
-                        return [4 /*yield*/, this._sortNodeDown(idx)];
-                    case 9:
-                        _a.sent();
-                        _a.label = 10;
-                    case 10: return [2 /*return*/, true];
-                    case 11:
-                        children = HeapAsync.getChildrenIndexOf(idx).filter(function (c) { return c < _this.heapArray.length; });
-                        queue.push.apply(queue, __spreadArray$1([], __read$1(children), false));
-                        _a.label = 12;
-                    case 12: return [3 /*break*/, 3];
-                    case 13: return [2 /*return*/, false];
+                        return [2 /*return*/, true];
                 }
             });
         });
@@ -1014,38 +1061,94 @@ var HeapAsync = /** @class */ (function () {
         return this;
     };
     /**
-     * Limit heap size if needed, removing worst elements to keep best N
+     * Remove the element at the given index, re-establishing the heap property.
+     * @param  {Number} idx Index of the element to remove
      */
-    HeapAsync.prototype._applyLimit = function () {
+    HeapAsync.prototype._removeAt = function (idx) {
         return __awaiter(this, void 0, void 0, function () {
-            var rm, worstIdx;
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(this._limit > 0 && this._limit < this.heapArray.length)) return [3 /*break*/, 7];
-                        rm = this.heapArray.length - this._limit;
-                        _a.label = 1;
+                        if (!(idx === 0)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.pop()];
                     case 1:
-                        if (!(rm > 0)) return [3 /*break*/, 7];
-                        return [4 /*yield*/, this._worstIndex()];
+                        _a.sent();
+                        return [3 /*break*/, 6];
                     case 2:
-                        worstIdx = _a.sent();
-                        if (!(worstIdx === this.heapArray.length - 1)) return [3 /*break*/, 3];
+                        if (!(idx === this.heapArray.length - 1)) return [3 /*break*/, 3];
                         this.heapArray.pop();
                         return [3 /*break*/, 6];
                     case 3:
-                        this.heapArray[worstIdx] = this.heapArray.pop();
-                        return [4 /*yield*/, this._sortNodeUp(worstIdx)];
+                        this.heapArray[idx] = this.heapArray.pop();
+                        return [4 /*yield*/, this._sortNodeUp(idx)];
                     case 4:
                         _a.sent();
-                        return [4 /*yield*/, this._sortNodeDown(worstIdx)];
+                        return [4 /*yield*/, this._sortNodeDown(idx)];
                     case 5:
                         _a.sent();
                         _a.label = 6;
-                    case 6:
-                        --rm;
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Limit heap size if needed, keeping the best N elements.
+     * Evicts the worst leaves when few are removed, otherwise pops the best N.
+     */
+    HeapAsync.prototype._applyLimit = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var n, len, rm, evictCost, popCost, j, w, kept, i, _a, _b;
+            return __generator$1(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        n = this._limit;
+                        if (n <= 0 || n >= this.heapArray.length)
+                            return [2 /*return*/];
+                        len = this.heapArray.length;
+                        rm = len - n;
+                        evictCost = rm * (len >> 1);
+                        popCost = n * Math.ceil(Math.log2(len + 1));
+                        if (!(evictCost <= popCost)) return [3 /*break*/, 7];
+                        j = 0;
+                        _c.label = 1;
+                    case 1:
+                        if (!(j < rm)) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this._worstIndex()];
+                    case 2:
+                        w = _c.sent();
+                        if (!(w === this.heapArray.length - 1)) return [3 /*break*/, 3];
+                        this.heapArray.pop();
+                        return [3 /*break*/, 5];
+                    case 3:
+                        this.heapArray[w] = this.heapArray.pop();
+                        return [4 /*yield*/, this._sortNodeUp(w)];
+                    case 4:
+                        _c.sent();
+                        _c.label = 5;
+                    case 5:
+                        j++;
                         return [3 /*break*/, 1];
-                    case 7: return [2 /*return*/];
+                    case 6: return [3 /*break*/, 12];
+                    case 7:
+                        kept = new Array(n);
+                        i = 0;
+                        _c.label = 8;
+                    case 8:
+                        if (!(i < n)) return [3 /*break*/, 11];
+                        _a = kept;
+                        _b = i;
+                        return [4 /*yield*/, this.pop()];
+                    case 9:
+                        _a[_b] = (_c.sent());
+                        _c.label = 10;
+                    case 10:
+                        i++;
+                        return [3 /*break*/, 8];
+                    case 11:
+                        this.heapArray = kept;
+                        _c.label = 12;
+                    case 12: return [2 /*return*/];
                 }
             });
         });
@@ -1063,7 +1166,6 @@ var HeapAsync = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         bottomHeap = new HeapAsync(this.compare);
-                        bottomHeap.limit = n;
                         bottomHeap.heapArray = this.heapArray.slice(-n);
                         return [4 /*yield*/, bottomHeap.init()];
                     case 1:
@@ -1194,12 +1296,11 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype._topN_push = function (n) {
         return __awaiter(this, void 0, void 0, function () {
-            var topHeap, indices, arr, i;
+            var topHeap, indices, arr, i, result, peekVal, idx;
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         topHeap = new HeapAsync(this._invertedCompare);
-                        topHeap.limit = n;
                         indices = [0];
                         arr = this.heapArray;
                         _a.label = 1;
@@ -1222,7 +1323,15 @@ var HeapAsync = /** @class */ (function () {
                         indices.push.apply(indices, __spreadArray$1([], __read$1(HeapAsync.getChildrenIndexOf(i)), false));
                         _a.label = 6;
                     case 6: return [3 /*break*/, 1];
-                    case 7: return [2 /*return*/, topHeap.toArray()];
+                    case 7:
+                        result = topHeap.toArray();
+                        peekVal = arr[0];
+                        idx = result.indexOf(peekVal);
+                        if (idx > 0) {
+                            result[idx] = result[0];
+                            result[0] = peekVal;
+                        }
+                        return [2 /*return*/, result];
                 }
             });
         });
@@ -1236,13 +1345,12 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype._topN_fill = function (n) {
         return __awaiter(this, void 0, void 0, function () {
-            var heapArray, topHeap, branch, indices, i, i;
+            var heapArray, topHeap, branch, indices, i, i, result, peekVal, idx;
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         heapArray = this.heapArray;
                         topHeap = new HeapAsync(this._invertedCompare);
-                        topHeap.limit = n;
                         topHeap.heapArray = heapArray.slice(0, n);
                         return [4 /*yield*/, topHeap.init()];
                     case 1:
@@ -1269,7 +1377,15 @@ var HeapAsync = /** @class */ (function () {
                         indices.push.apply(indices, __spreadArray$1([], __read$1(HeapAsync.getChildrenIndexOf(i)), false));
                         _a.label = 5;
                     case 5: return [3 /*break*/, 2];
-                    case 6: return [2 /*return*/, topHeap.toArray()];
+                    case 6:
+                        result = topHeap.toArray();
+                        peekVal = heapArray[0];
+                        idx = result.indexOf(peekVal);
+                        if (idx > 0) {
+                            result[idx] = result[0];
+                            result[0] = peekVal;
+                        }
+                        return [2 /*return*/, result];
                 }
             });
         });
@@ -1371,19 +1487,21 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype._worstIndex = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var start, worstIdx, i;
+            var arr, len, start, worstIdx, i;
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (this.heapArray.length === 0)
+                        arr = this.heapArray;
+                        len = arr.length;
+                        if (len === 0)
                             return [2 /*return*/, -1];
-                        start = this.heapArray.length >> 1;
+                        start = len >> 1;
                         worstIdx = start;
                         i = start + 1;
                         _a.label = 1;
                     case 1:
-                        if (!(i < this.heapArray.length)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.compare(this.heapArray[i], this.heapArray[worstIdx])];
+                        if (!(i < len)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.compare(arr[i], arr[worstIdx])];
                     case 2:
                         if ((_a.sent()) > 0) {
                             worstIdx = i;
@@ -1782,7 +1900,6 @@ var Heap = /** @class */ (function () {
             // Replace worst with new element
             this.heapArray[worstIdx] = element;
             this._sortNodeUp(worstIdx);
-            this._sortNodeDown(worstIdx);
             return true;
         }
         this._sortNodeUp(this.heapArray.push(element) - 1);
@@ -1795,10 +1912,11 @@ var Heap = /** @class */ (function () {
      * @return {Boolean} true
      */
     Heap.prototype.addAll = function (elements) {
-        var _a;
-        var i = this.length;
-        (_a = this.heapArray).push.apply(_a, __spreadArray([], __read(elements), false));
-        for (var l = this.length; i < l; ++i) {
+        var start = this.length;
+        for (var j = 0; j < elements.length; j++) {
+            this.heapArray.push(elements[j]);
+        }
+        for (var i = start; i < this.heapArray.length; i++) {
             this._sortNodeUp(i);
         }
         this._applyLimit();
@@ -1835,7 +1953,9 @@ var Heap = /** @class */ (function () {
      */
     Heap.prototype.check = function () {
         var _this = this;
-        return this.heapArray.find(function (el, j) { return !!_this.getChildrenOf(j).find(function (ch) { return _this.compare(el, ch) > 0; }); });
+        return this.heapArray.find(function (el, j) {
+            return _this.getChildrenOf(j).some(function (ch) { return _this.compare(el, ch) > 0; });
+        });
     };
     /**
      * Remove all of the elements from this heap.
@@ -1897,73 +2017,51 @@ var Heap = /** @class */ (function () {
      * @return {Number}              Index or -1 if not found
      */
     Heap.prototype.indexOf = function (element, callbackFn) {
-        if (this.heapArray.length === 0) {
+        var arr = this.heapArray;
+        var len = arr.length;
+        if (len === 0) {
             return -1;
         }
         var isEqual = callbackFn !== null && callbackFn !== void 0 ? callbackFn : this.isEqual;
-        // When a different callback is provided, we must search all elements
-        // because the callback may not be consistent with this.compare
-        if (isEqual !== this.isEqual) {
-            for (var i = 0; i < this.heapArray.length; i++) {
-                if (isEqual(this.heapArray[i], element)) {
-                    return i;
-                }
-            }
-            return -1;
+        if (isEqual === Heap.defaultIsEqual) {
+            return arr.indexOf(element);
         }
-        // Default case: use heap structure optimization
-        var indexes = [];
-        var currentIndex = 0;
-        while (currentIndex < this.heapArray.length) {
-            var currentElement = this.heapArray[currentIndex];
-            if (isEqual(currentElement, element)) {
-                return currentIndex;
+        for (var i = 0; i < len; i++) {
+            if (isEqual(arr[i], element)) {
+                return i;
             }
-            else if (this.compare(currentElement, element) <= 0) {
-                indexes.push.apply(indexes, __spreadArray([], __read(Heap.getChildrenIndexOf(currentIndex)), false));
-            }
-            currentIndex = indexes.shift() || this.heapArray.length;
         }
         return -1;
     };
     /**
      * Get the indexes of every occurrence of the element in the heap.
      * @param  {any}      element    Element to be found
-     * @param  {Function} callbackFn Optional comparison function, receives (element, needle). Note: Custom callbacks trigger O(n) full scan vs optimized heap search for default equality.
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
      * @return {Array}               Array of indexes or empty array if not found
      */
     Heap.prototype.indexOfEvery = function (element, callbackFn) {
-        if (this.heapArray.length === 0) {
+        var arr = this.heapArray;
+        var len = arr.length;
+        if (len === 0) {
             return [];
         }
         var isEqual = callbackFn !== null && callbackFn !== void 0 ? callbackFn : this.isEqual;
-        // When a different callback is provided, we must search all elements
-        // because the callback may not be consistent with this.compare
-        if (isEqual !== this.isEqual) {
-            var foundIndexes_1 = [];
-            for (var i = 0; i < this.heapArray.length; i++) {
-                if (isEqual(this.heapArray[i], element)) {
-                    foundIndexes_1.push(i);
+        var result = [];
+        if (isEqual === Heap.defaultIsEqual) {
+            for (var i = 0; i < len; i++) {
+                if (arr[i] === element) {
+                    result.push(i);
                 }
             }
-            return foundIndexes_1;
         }
-        // Default case: use heap structure optimization
-        var indexes = [];
-        var foundIndexes = [];
-        var currentIndex = 0;
-        while (currentIndex < this.heapArray.length) {
-            var currentElement = this.heapArray[currentIndex];
-            if (isEqual(currentElement, element)) {
-                foundIndexes.push(currentIndex);
-                indexes.push.apply(indexes, __spreadArray([], __read(Heap.getChildrenIndexOf(currentIndex)), false));
+        else {
+            for (var i = 0; i < len; i++) {
+                if (isEqual(arr[i], element)) {
+                    result.push(i);
+                }
             }
-            else if (this.compare(currentElement, element) <= 0) {
-                indexes.push.apply(indexes, __spreadArray([], __read(Heap.getChildrenIndexOf(currentIndex)), false));
-            }
-            currentIndex = indexes.shift() || this.heapArray.length;
         }
-        return foundIndexes;
+        return result;
     };
     /**
      * Get the leafs of the tree (no children nodes).
@@ -2085,7 +2183,7 @@ var Heap = /** @class */ (function () {
      */
     Heap.prototype.pushpop = function (element) {
         var _a;
-        if (this.compare(this.heapArray[0], element) < 0) {
+        if (this.heapArray.length > 0 && this.compare(this.heapArray[0], element) < 0) {
             _a = __read([this.heapArray[0], element], 2), element = _a[0], this.heapArray[0] = _a[1];
             this._sortNodeDown(0);
         }
@@ -2098,58 +2196,18 @@ var Heap = /** @class */ (function () {
      * @return {Boolean}      True if the heap was modified
      */
     Heap.prototype.remove = function (o, callbackFn) {
-        var _this = this;
         if (!this.heapArray.length)
             return false;
         if (o === undefined) {
             this.pop();
             return true;
         }
-        var isEqual = callbackFn !== null && callbackFn !== void 0 ? callbackFn : this.isEqual;
-        // When a different callback is provided, we must search all elements
-        // because the callback may not be consistent with this.compare
-        if (isEqual !== this.isEqual) {
-            var idx = this.indexOf(o, isEqual);
-            if (idx === -1) {
-                return false;
-            }
-            if (idx === 0) {
-                this.pop();
-            }
-            else if (idx === this.heapArray.length - 1) {
-                this.heapArray.pop();
-            }
-            else {
-                this.heapArray.splice(idx, 1, this.heapArray.pop());
-                this._sortNodeUp(idx);
-                this._sortNodeDown(idx);
-            }
-            return true;
+        var idx = this.indexOf(o, callbackFn);
+        if (idx === -1) {
+            return false;
         }
-        // Default case: use heap structure optimization
-        var queue = [0];
-        while (queue.length) {
-            var idx = queue.shift();
-            if (isEqual(this.heapArray[idx], o)) {
-                if (idx === 0) {
-                    this.pop();
-                }
-                else if (idx === this.heapArray.length - 1) {
-                    this.heapArray.pop();
-                }
-                else {
-                    this.heapArray.splice(idx, 1, this.heapArray.pop());
-                    this._sortNodeUp(idx);
-                    this._sortNodeDown(idx);
-                }
-                return true;
-            }
-            else if (this.compare(this.heapArray[idx], o) <= 0) {
-                var children = Heap.getChildrenIndexOf(idx).filter(function (c) { return c < _this.heapArray.length; });
-                queue.push.apply(queue, __spreadArray([], __read(children), false));
-            }
-        }
-        return false;
+        this._removeAt(idx);
+        return true;
     };
     /**
      * Pop the current peek value, and add the new item.
@@ -2259,24 +2317,52 @@ var Heap = /** @class */ (function () {
         return this.toArray();
     };
     /**
-     * Limit heap size if needed, removing worst elements to keep best N
+     * Remove the element at the given index, re-establishing the heap property.
+     * @param  {Number} idx Index of the element to remove
+     */
+    Heap.prototype._removeAt = function (idx) {
+        if (idx === 0) {
+            this.pop();
+        }
+        else if (idx === this.heapArray.length - 1) {
+            this.heapArray.pop();
+        }
+        else {
+            this.heapArray[idx] = this.heapArray.pop();
+            this._sortNodeUp(idx);
+            this._sortNodeDown(idx);
+        }
+    };
+    /**
+     * Limit heap size if needed, keeping the best N elements.
+     * Evicts the worst leaves when few are removed, otherwise pops the best N.
      */
     Heap.prototype._applyLimit = function () {
-        if (this._limit > 0 && this._limit < this.heapArray.length) {
-            var rm = this.heapArray.length - this._limit;
-            while (rm > 0) {
-                var worstIdx = this._worstIndex();
+        var n = this._limit;
+        if (n <= 0 || n >= this.heapArray.length)
+            return;
+        var len = this.heapArray.length;
+        var rm = len - n;
+        var evictCost = rm * (len >> 1);
+        var popCost = n * Math.ceil(Math.log2(len + 1));
+        if (evictCost <= popCost) {
+            for (var j = 0; j < rm; j++) {
+                var w = this._worstIndex();
                 // Swap with last and pop (standard heap removal for non-root)
-                if (worstIdx === this.heapArray.length - 1) {
+                if (w === this.heapArray.length - 1) {
                     this.heapArray.pop();
                 }
                 else {
-                    this.heapArray[worstIdx] = this.heapArray.pop();
-                    this._sortNodeUp(worstIdx);
-                    this._sortNodeDown(worstIdx);
+                    this.heapArray[w] = this.heapArray.pop();
+                    this._sortNodeUp(w);
                 }
-                --rm;
             }
+        }
+        else {
+            var kept = new Array(n);
+            for (var i = 0; i < n; i++)
+                kept[i] = this.pop();
+            this.heapArray = kept;
         }
     };
     /**
@@ -2288,7 +2374,6 @@ var Heap = /** @class */ (function () {
     Heap.prototype._bottomN_push = function (n) {
         // Use an inverted heap
         var bottomHeap = new Heap(this.compare);
-        bottomHeap.limit = n;
         bottomHeap.heapArray = this.heapArray.slice(-n);
         bottomHeap.init();
         var startAt = this.heapArray.length - 1 - n;
@@ -2373,7 +2458,6 @@ var Heap = /** @class */ (function () {
     Heap.prototype._topN_push = function (n) {
         // Use an inverted heap
         var topHeap = new Heap(this._invertedCompare);
-        topHeap.limit = n;
         var indices = [0];
         var arr = this.heapArray;
         while (indices.length) {
@@ -2389,7 +2473,14 @@ var Heap = /** @class */ (function () {
                 }
             }
         }
-        return topHeap.toArray();
+        var result = topHeap.toArray();
+        var peekVal = arr[0];
+        var idx = result.indexOf(peekVal);
+        if (idx > 0) {
+            result[idx] = result[0];
+            result[0] = peekVal;
+        }
+        return result;
     };
     /**
      * Return the top (highest value) N elements of the heap, without corner cases, unsorted
@@ -2402,7 +2493,6 @@ var Heap = /** @class */ (function () {
         // Use an inverted heap
         var heapArray = this.heapArray;
         var topHeap = new Heap(this._invertedCompare);
-        topHeap.limit = n;
         topHeap.heapArray = heapArray.slice(0, n);
         topHeap.init();
         var branch = Heap.getParentIndexOf(n - 1) + 1;
@@ -2422,7 +2512,14 @@ var Heap = /** @class */ (function () {
                 }
             }
         }
-        return topHeap.toArray();
+        var result = topHeap.toArray();
+        var peekVal = heapArray[0];
+        var idx = result.indexOf(peekVal);
+        if (idx > 0) {
+            result[idx] = result[0];
+            result[0] = peekVal;
+        }
+        return result;
     };
     /**
      * Return the top (highest value) N elements of the heap, without corner cases, unsorted
@@ -2477,12 +2574,14 @@ var Heap = /** @class */ (function () {
      * @return {number} Index of worst element, -1 if empty
      */
     Heap.prototype._worstIndex = function () {
-        if (this.heapArray.length === 0)
+        var arr = this.heapArray;
+        var len = arr.length;
+        if (len === 0)
             return -1;
-        var start = this.heapArray.length >> 1; // First leaf
+        var start = len >> 1; // First leaf
         var worstIdx = start;
-        for (var i = start + 1; i < this.heapArray.length; i++) {
-            if (this.compare(this.heapArray[i], this.heapArray[worstIdx]) > 0) {
+        for (var i = start + 1; i < len; i++) {
+            if (this.compare(arr[i], arr[worstIdx]) > 0) {
                 worstIdx = i;
             }
         }
