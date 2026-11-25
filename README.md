@@ -41,17 +41,23 @@ heap vs array: push + top(50) of 100
 
 [![Star History Chart](https://api.star-history.com/svg?repos=ignlg/heap-js&type=Date)](https://star-history.com/#ignlg/heap-js&Date)
 
+## Warnings
+
+- Iterating the heap with `for (const value of heap)` consumes it, the same as calling `pop()` in a loop. Use `clone()` or `toArray()` to keep the heap. Addressing [#660](https://github.com/ignlg/heap-js/issues/660).
+
 ## Changelog
 
 ### 3.0.0
 
-The main breaking changes are that `setLimit` and `_applyLimit` methods of the HeapAsync class are now async, and that setting the `limit` property will NOT apply the limit asynchronously; use the `setLimit` method instead.
+The main breaking changes are that `setLimit` and `_applyLimit` methods of the HeapAsync class are now async, that setting the `limit` property of HeapAsync applies the limit on the next `add`, and that `add` returns `false` when the heap is at its limit and the element is not better than the worst one.
 
 - Constructor now accepts an options object, `HeapOptions` and `HeapAsyncOptions`, with the `compare` and `isEqual` options.
 - Adds the `isEqual` property to the `Heap` and `HeapAsync` classes to support custom equality functions to override the default equality function.
-- Custom comparison callbacks trigger O(n) full scan vs O(log n) average for default equality. Addressing [#669](https://github.com/ignlg/heap-js/issues/669).
+- `indexOf`, `indexOfEvery`, `contains`, and `remove` use a linear search, faster and consistent with any `isEqual`. Addressing [#669](https://github.com/ignlg/heap-js/issues/669).
 - Setting a limit makes the heap evict the worst elements to keep the best N elements. Addressing [#656](https://github.com/ignlg/heap-js/issues/656).
-- HeapAsync limit should be set with the `setLimit` method to support async limit application. Setting only the `limit` property will not apply the limit asynchronously.
+- Setting the `limit` property of HeapAsync is applied on the next `add`; use the `setLimit` method to apply it immediately.
+- Improves the performance of the limit when initializing or adding many elements.
+- Adds `indexOf` and `indexOfEvery` to `HeapAsync`.
 
 ### 2.7.1
 
@@ -300,7 +306,7 @@ new HeapAsync({ compare: asyncComparator, isEqual: isEqual });
 
 - `for (const value of heap)` directly usable as an Iterator; notice that **it consumes the heap.**
 - `length` of the heap.
-- `limit` limit the number of elements in the heap to the N most valuable elements. Use the `setLimit` method to set the limit asynchronously.
+- `limit` limit the number of elements in the heap to the N most valuable elements. Adding at the limit costs O(N); for large N use `nsmallest` or `nlargest`. In HeapAsync, use the `setLimit` method to apply it immediately.
 - `pop()` the top element.
 - `push(...elements)` one or more elements to the heap.
 - `pushpop(element)` faster than `push` & `pop`.
