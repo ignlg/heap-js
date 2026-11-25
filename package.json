@@ -1,17 +1,31 @@
 {
   "name": "heap-js",
   "version": "3.0.0",
-  "description": "Efficient Binary heap (priority queue, binary tree) data structure for JavaScript / TypeScript. Includes JavaScript methods, Python's heapq module methods, and Java's PriorityQueue methods.",
+  "description": "Fast binary heap and priority queue for JavaScript and TypeScript: min heap, max heap, top K, and async comparators. Includes Python heapq and Java PriorityQueue methods.",
   "keywords": [
     "heap",
     "binary heap",
     "priority queue",
+    "priority-queue",
+    "min heap",
+    "max heap",
+    "min-heap",
+    "max-heap",
+    "heapq",
+    "top-k",
+    "queue",
     "tree",
     "binary tree",
     "data structure",
     "algorithm",
+    "async",
+    "javascript",
     "typescript"
   ],
+  "homepage": "https://ignlg.github.io/heap-js/",
+  "bugs": {
+    "url": "https://github.com/ignlg/heap-js/issues"
+  },
   "main": "dist/heap-js.umd.js",
   "module": "dist/heap-js.es5.js",
   "types": "dist/types/Heap.d.ts",
