@@ -59,6 +59,15 @@ The main breaking changes are that `setLimit` and `_applyLimit` methods of the H
 - Improves the performance of the limit when initializing or adding many elements.
 - Adds `indexOf` and `indexOfEvery` to `HeapAsync`.
 
+### 2.7.2
+
+- Fixes `top(N)` not returning the peek at index `0`. Addressing [#672](https://github.com/ignlg/heap-js/issues/672). Thanks to @trackoor for the contribution.
+- Fixes `indexOf`, `indexOfEvery`, `contains`, and `remove` missing elements with custom callbacks. They now use a linear search, which is also faster. Addressing [#669](https://github.com/ignlg/heap-js/issues/669).
+- Adds `indexOf` and `indexOfEvery` to `HeapAsync`.
+- Fixes `check` not detecting falsy children. Thanks to @RealBhupesh for the contribution.
+- Fixes `addAll` stack overflow with large arrays.
+- Fixes `pushpop` calling the comparator on empty heaps. Thanks to @fbirds5230 for the contribution.
+
 ### 2.7.1
 
 - Optimize loop condition in HeapAsync init method.

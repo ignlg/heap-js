@@ -531,6 +531,13 @@ describe('Heap instances', function () {
       });
 
       describe('#pushpop(element)', function () {
+        it('should return the element without comparing when the heap is empty', function () {
+          const compare = jest.spyOn(heap, 'compare');
+          const element = values[0];
+          expect(heap.pushpop(element)).toBe(element);
+          expect(heap.toArray()).toEqual([]);
+          expect(compare).not.toHaveBeenCalled();
+        });
         it('should push a below-peek and pop the peek, and keep the heap sorted', function () {
           // Get first child of peek
           heap.init(values);
@@ -640,11 +647,10 @@ describe('Heap instances', function () {
           heap.init(values.concat(values));
           expect(heap.top()).toEqual(heap.top(1));
         });
-        it('should have top(n)[0] === peek() (#672)', function () {
+        it('should return the peek at index 0 for every N', function () {
           heap.init(values.concat(values));
-          for (const n of [2, 3, 5, values.length]) {
-            const topN = heap.top(n);
-            expect(topN[0]).toEqual(heap.peek());
+          for (let n = 1; n <= heap.length + 1; ++n) {
+            expect(heap.top(n)[0]).toEqual(heap.peek());
           }
         });
       });
@@ -902,6 +908,66 @@ describe('Heap with options constructor', function () {
       });
     });
   });
+});
+
+describe('addAll with large arrays', function () {
+  it('should handle 500k elements without throwing', function () {
+    const heap = new Heap<number>(Heap.minComparatorNumber);
+    const big = new Array(500_000);
+    for (let i = 0; i < big.length; i++) big[i] = Math.random();
+    expect(() => heap.addAll(big)).not.toThrow();
+    expect(heap.length).toBe(500_000);
+    expect(heap.check()).toBeUndefined();
+  });
+});
+
+describe('Heap.check() with falsy child values', function () {
+  it.each(
+    [
+      [1, 0],
+      [1, -0],
+      [2, 0, 1],
+      [2, 3, 0],
+    ].map((values) => [values])
+  )('detects a violation in %j', function (values) {
+    const heap = new Heap<number>();
+    heap.heapArray = values;
+    expect(heap.check()).toBe(values[0]);
+    expect(heap.heapArray).toEqual(values);
+  });
+
+  it('detects an empty string child', function () {
+    const heap = new Heap<string>();
+    heap.heapArray = ['a', ''];
+    expect(heap.check()).toBe('a');
+  });
+
+  it('detects a false child', function () {
+    const heap = new Heap<boolean>();
+    heap.heapArray = [true, false];
+    expect(heap.check()).toBe(true);
+  });
+
+  it('continues checking later parents', function () {
+    const heap = new Heap<number>();
+    heap.heapArray = [-1, 1, 2, 0];
+    expect(heap.check()).toBe(1);
+  });
+
+  it('detects a falsy child with a custom comparator', function () {
+    const heap = new Heap<number>((a, b) => Math.abs(a) - Math.abs(b));
+    heap.heapArray = [-1, 0];
+    expect(heap.check()).toBe(-1);
+  });
+
+  it.each([[], [0], [0, 1], [-1, 0, 0]].map((values) => [values]))(
+    'accepts the valid heap %j',
+    function (values) {
+      const heap = new Heap<number>();
+      heap.heapArray = values;
+      expect(heap.check()).toBeUndefined();
+    }
+  );
 });
 
 describe('Linear search fixes (#669)', function () {

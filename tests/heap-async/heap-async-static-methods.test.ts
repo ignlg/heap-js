@@ -85,6 +85,14 @@ describe('HeapAsync class', function () {
     });
   });
   describe('#heappushpop', function () {
+    it('should return the element without comparing when the heap array is empty', async function () {
+      const element = { priority: 1 };
+      const heapArr: Array<typeof element> = [];
+      const compare = jest.fn(async (a: typeof element, b: typeof element) => a.priority - b.priority);
+      expect(await HeapAsync.heappushpop(heapArr, element, compare)).toBe(element);
+      expect(heapArr).toEqual([]);
+      expect(compare).not.toHaveBeenCalled();
+    });
     it('should push and pop as a heap', async function () {
       const heapArr = [...someValues];
       await HeapAsync.heapify(heapArr);
@@ -160,6 +168,11 @@ describe('HeapAsync class', function () {
       it('should return 1 element by default', async function () {
         expect(await HeapAsync.heaptop(heapArr)).toEqual(await HeapAsync.heaptop(heapArr, 1));
       });
+      it('should return the peek at index 0', async function () {
+        for (let n = 1; n <= arr.length; ++n) {
+          expect((await HeapAsync.heaptop(heapArr, n))[0]).toEqual(1);
+        }
+      });
     });
   });
   describe('#heapbottom', function () {
@@ -201,6 +214,12 @@ describe('HeapAsync class', function () {
       it('should return all the elements', async function () {
         const full = await HeapAsync.nlargest(arr.length, arr);
         equalUnsortedArrays(full, [51, 41, 16, 12, 7, 3, 1]);
+      });
+      it('should return the most valuable element at index 0', async function () {
+        for (let n = 1; n <= arr.length; ++n) {
+          expect((await HeapAsync.nlargest(n, arr))[0]).toEqual(1);
+          expect((await HeapAsync.nlargest(n, arr, HeapAsync.maxComparatorNumber))[0]).toEqual(51);
+        }
       });
     });
   });

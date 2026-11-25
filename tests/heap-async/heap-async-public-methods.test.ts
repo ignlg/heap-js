@@ -353,6 +353,13 @@ describe('HeapAsync instances', function () {
       });
 
       describe('#pushpop(element)', function () {
+        it('should return the element without comparing when the heap is empty', async function () {
+          const compare = jest.spyOn(heap, 'compare');
+          const element = values[0];
+          expect(await heap.pushpop(element)).toBe(element);
+          expect(heap.toArray()).toEqual([]);
+          expect(compare).not.toHaveBeenCalled();
+        });
         it('should push a below-peek and pop the peek, and keep the heap sorted', async function () {
           // Get first child of peek
           await heap.init(values);
@@ -469,11 +476,10 @@ describe('HeapAsync instances', function () {
           await heap.init(values.concat(values));
           expect(await heap.top()).toEqual(await heap.top(1));
         });
-        it('should have top(n)[0] === peek() (#672)', async function () {
+        it('should return the peek at index 0 for every N', async function () {
           await heap.init(values.concat(values));
-          for (const n of [2, 3, 5, values.length]) {
-            const topN = await heap.top(n);
-            expect(topN[0]).toEqual(heap.peek());
+          for (let n = 1; n <= heap.length + 1; ++n) {
+            expect((await heap.top(n))[0]).toEqual(heap.peek());
           }
         });
       });
@@ -517,6 +523,66 @@ describe('HeapAsync instances', function () {
             result.push(await value);
           }
           expect(result).toEqual(topArr);
+        });
+      });
+
+      describe('#indexOf(element)', function () {
+        it('should return the index of the element', async function () {
+          await heap.init(values);
+          for (let idx = 0; idx < heap.length; idx++) {
+            const foundIdx = await heap.indexOf(heap.heapArray[idx]);
+            expect(heap.heapArray[foundIdx]).toEqual(heap.heapArray[idx]);
+          }
+        });
+        it('should return -1 if not found', async function () {
+          await heap.init(values);
+          expect(await heap.indexOf(99999)).toBe(-1);
+        });
+        it('should return -1 for empty heap', async function () {
+          expect(await heap.indexOf(1)).toBe(-1);
+        });
+      });
+
+      describe('#indexOf(element, fn)', function () {
+        it('should find element with custom callback', async function () {
+          await heap.init(values);
+          const idx = await heap.indexOf(heap.heapArray[0], async (a, b) => a === b);
+          expect(idx).toBe(0);
+        });
+        it('should return -1 with custom callback if not found', async function () {
+          await heap.init(values);
+          expect(await heap.indexOf(99999, async (a, b) => a === b)).toBe(-1);
+        });
+      });
+
+      describe('#indexOfEvery(element)', function () {
+        it('should return all indexes of a duplicated element', async function () {
+          await heap.init(values.concat(values));
+          const target = heap.heapArray[0];
+          const indexes = await heap.indexOfEvery(target);
+          expect(indexes.length).toBeGreaterThanOrEqual(2);
+          for (const idx of indexes) {
+            expect(heap.heapArray[idx]).toEqual(target);
+          }
+        });
+        it('should return empty array if not found', async function () {
+          await heap.init(values);
+          expect(await heap.indexOfEvery(99999)).toEqual([]);
+        });
+        it('should return empty array for empty heap', async function () {
+          expect(await heap.indexOfEvery(1)).toEqual([]);
+        });
+      });
+
+      describe('#indexOfEvery(element, fn)', function () {
+        it('should find indexes with custom callback', async function () {
+          await heap.init(values.concat(values));
+          const target = heap.heapArray[0];
+          const indexes = await heap.indexOfEvery(target, async (a, b) => a === b);
+          expect(indexes.length).toBeGreaterThanOrEqual(2);
+          for (const idx of indexes) {
+            expect(heap.heapArray[idx]).toEqual(target);
+          }
         });
       });
     });
