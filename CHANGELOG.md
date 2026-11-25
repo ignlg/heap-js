@@ -12,6 +12,10 @@ The main breaking changes are that `setLimit` and `_applyLimit` methods of the H
 - Improves the performance of the limit when initializing or adding many elements.
 - Adds `indexOf` and `indexOfEvery` to `HeapAsync`.
 
+### 2.7.3
+
+- Fixes `bottom`, `heapbottom`, and `nsmallest` being slow on large heaps.
+
 ### 2.7.2
 
 - Fixes `top(N)` not returning the peek at index `0`. Addressing [#672](https://github.com/ignlg/heap-js/issues/672). Thanks to @trackoor for the contribution.
