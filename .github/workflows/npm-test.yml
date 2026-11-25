@@ -14,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [lts/*, current]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [lts/-1, lts/*]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
@@ -33,12 +33,12 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [lts/*, current]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [lts/-1, lts/*]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
@@ -55,12 +55,12 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [lts/*, current]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [lts/-1, lts/*]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
