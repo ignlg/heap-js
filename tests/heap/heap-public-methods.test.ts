@@ -1018,4 +1018,58 @@ describe('Linear search fixes (#669)', function () {
     expect(heap.contains({ id: 4 })).toBe(true);
     expect(heap.contains({ id: 99 })).toBe(false);
   });
+
+  it('addAll handles 500k elements without throwing', function () {
+    const heap = new Heap<number>(Heap.minComparatorNumber);
+    const big = new Array(500_000);
+    for (let i = 0; i < big.length; i++) big[i] = Math.random();
+    expect(() => heap.addAll(big)).not.toThrow();
+    expect(heap.length).toBe(500_000);
+    expect(heap.check()).toBeUndefined();
+  });
+});
+
+describe('Hybrid _applyLimit', function () {
+  it('eviction path: replaces worst leaf (not last) and re-sorts', function () {
+    const heap = new Heap<number>(Heap.minComparatorNumber);
+    heap.heapArray = [1, 3, 2, 7, 5, 4, 6];
+    heap.limit = 6;
+    expect(heap.length).toBe(6);
+    expect(heap.check()).toBeUndefined();
+    expect(heap.toArray()).not.toContain(7);
+  });
+
+  it('pop-trim path: rebuilds heap when rm is large relative to limit', function () {
+    const heap = new Heap<number>(Heap.minComparatorNumber);
+    for (let i = 0; i < 1000; i++) heap.push(i);
+    heap.limit = 3;
+    expect(heap.length).toBe(3);
+    expect(heap.check()).toBeUndefined();
+    expect(heap.toArray().sort((a, b) => a - b)).toEqual([0, 1, 2]);
+  });
+
+  it('seeded best-N fuzz: limit always keeps the N best', function () {
+    let seed = 42;
+    function lcg() {
+      seed = (seed * 1664525 + 1013904223) & 0x7fffffff;
+      return seed;
+    }
+    for (let trial = 0; trial < 20; trial++) {
+      const n = 5 + (lcg() % 20);
+      const limit = 2 + (lcg() % (n - 1));
+      const heap = new Heap<number>(Heap.minComparatorNumber);
+      heap.limit = limit;
+      const all: number[] = [];
+      for (let i = 0; i < n; i++) {
+        const v = lcg() % 10000;
+        all.push(v);
+        heap.add(v);
+      }
+      all.sort((a, b) => a - b);
+      const expected = all.slice(0, limit);
+      const got = heap.toArray().sort((a, b) => a - b);
+      expect(got).toEqual(expected);
+      expect(heap.check()).toBeUndefined();
+    }
+  });
 });
