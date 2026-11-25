@@ -43,6 +43,10 @@ heap vs array: push + top(50) of 100
 
 ## Changelog
 
+### 2.7.3
+
+- Fixes `bottom`, `heapbottom`, and `nsmallest` being slow on large heaps.
+
 ### 2.7.2
 
 - Fixes `top(N)` not returning the peek at index `0`. Addressing [#672](https://github.com/ignlg/heap-js/issues/672). Thanks to @trackoor for the contribution.
