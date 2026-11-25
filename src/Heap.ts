@@ -603,7 +603,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}  Extracted top node
    */
   pushpop(element: T): T {
-    if (this.compare(this.heapArray[0], element) < 0) {
+    if (this.heapArray.length > 0 && this.compare(this.heapArray[0], element) < 0) {
       [element, this.heapArray[0]] = [this.heapArray[0], element];
       this._sortNodeDown(0);
     }

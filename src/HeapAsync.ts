@@ -572,7 +572,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @return {any}  Extracted top node
    */
   async pushpop(element: T): Promise<T> {
-    if ((await this.compare(this.heapArray[0], element)) < 0) {
+    if (this.heapArray.length > 0 && (await this.compare(this.heapArray[0], element)) < 0) {
       [element, this.heapArray[0]] = [this.heapArray[0], element];
       await this._sortNodeDown(0);
     }

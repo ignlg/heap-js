@@ -296,6 +296,13 @@ describe('HeapAsync instances', function () {
       });
 
       describe('#pushpop(element)', function () {
+        it('should return the element without comparing when the heap is empty', async function () {
+          const compare = jest.spyOn(heap, 'compare');
+          const element = values[0];
+          expect(await heap.pushpop(element)).toBe(element);
+          expect(heap.toArray()).toEqual([]);
+          expect(compare).not.toHaveBeenCalled();
+        });
         it('should push a below-peek and pop the peek, and keep the heap sorted', async function () {
           // Get first child of peek
           await heap.init(values);

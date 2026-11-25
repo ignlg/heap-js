@@ -85,6 +85,14 @@ describe('HeapAsync class', function () {
     });
   });
   describe('#heappushpop', function () {
+    it('should return the element without comparing when the heap array is empty', async function () {
+      const element = { priority: 1 };
+      const heapArr: Array<typeof element> = [];
+      const compare = jest.fn(async (a: typeof element, b: typeof element) => a.priority - b.priority);
+      expect(await HeapAsync.heappushpop(heapArr, element, compare)).toBe(element);
+      expect(heapArr).toEqual([]);
+      expect(compare).not.toHaveBeenCalled();
+    });
     it('should push and pop as a heap', async function () {
       const heapArr = [...someValues];
       await HeapAsync.heapify(heapArr);
