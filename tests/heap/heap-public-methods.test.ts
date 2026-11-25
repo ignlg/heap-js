@@ -583,6 +583,12 @@ describe('Heap instances', function () {
           heap.init(values.concat(values));
           expect(heap.top()).toEqual(heap.top(1));
         });
+        it('should return the peek at index 0 for every N', function () {
+          heap.init(values.concat(values));
+          for (let n = 1; n <= heap.length + 1; ++n) {
+            expect(heap.top(n)[0]).toEqual(heap.peek());
+          }
+        });
       });
 
       describe('#toArray()', function () {

@@ -767,7 +767,6 @@ export class Heap<T> implements Iterable<T> {
   _bottomN_push(n: number): Array<T> {
     // Use an inverted heap
     const bottomHeap = new Heap(this.compare);
-    bottomHeap.limit = n;
     bottomHeap.heapArray = this.heapArray.slice(-n);
     bottomHeap.init();
     const startAt = this.heapArray.length - 1 - n;
@@ -861,7 +860,6 @@ export class Heap<T> implements Iterable<T> {
   _topN_push(n: number): Array<T> {
     // Use an inverted heap
     const topHeap = new Heap(this._invertedCompare);
-    topHeap.limit = n;
     const indices = [0];
     const arr = this.heapArray;
     while (indices.length) {
@@ -876,7 +874,14 @@ export class Heap<T> implements Iterable<T> {
         }
       }
     }
-    return topHeap.toArray();
+    const result = topHeap.toArray();
+    const peekVal = arr[0];
+    const idx = result.indexOf(peekVal);
+    if (idx > 0) {
+      result[idx] = result[0];
+      result[0] = peekVal;
+    }
+    return result;
   }
 
   /**
@@ -890,7 +895,6 @@ export class Heap<T> implements Iterable<T> {
     // Use an inverted heap
     const { heapArray } = this;
     const topHeap = new Heap(this._invertedCompare);
-    topHeap.limit = n;
     topHeap.heapArray = heapArray.slice(0, n);
     topHeap.init();
     const branch = Heap.getParentIndexOf(n - 1) + 1;
@@ -910,7 +914,14 @@ export class Heap<T> implements Iterable<T> {
         }
       }
     }
-    return topHeap.toArray();
+    const result = topHeap.toArray();
+    const peekVal = heapArray[0];
+    const idx = result.indexOf(peekVal);
+    if (idx > 0) {
+      result[idx] = result[0];
+      result[0] = peekVal;
+    }
+    return result;
   }
 
   /**
