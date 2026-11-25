@@ -1073,3 +1073,40 @@ describe('Hybrid _applyLimit', function () {
     }
   });
 });
+
+describe('top(n) dispatch', function () {
+  const SIZE = 200;
+  const permuted = Array.from({ length: SIZE }, (_, i) => (i * 7919) % SIZE);
+  const sorted = permuted.slice().sort((a, b) => a - b);
+
+  function makeHeap() {
+    const heap = new Heap<number>(Heap.minComparatorNumber);
+    heap.init(permuted.slice());
+    return heap;
+  }
+
+  it.each([1, 5, 10, 25, 50, 100, 199])(
+    'top(%i) returns correct elements with top(n)[0] === peek()',
+    function (n) {
+      const heap = makeHeap();
+      const result = heap.top(n);
+      expect(result.length).toBe(n);
+      expect(result[0]).toBe(heap.peek());
+      expect(result.slice().sort((a, b) => a - b)).toEqual(sorted.slice(0, n));
+    }
+  );
+});
+
+describe('bottom(n)', function () {
+  it('bottom(n) returns correct elements', function () {
+    const SIZE = 200;
+    const permuted = Array.from({ length: SIZE }, (_, i) => (i * 7919) % SIZE);
+    const heap = new Heap<number>(Heap.minComparatorNumber);
+    heap.init(permuted.slice());
+    const result = heap.bottom(10);
+    expect(result.length).toBe(10);
+    expect(result.slice().sort((a, b) => a - b)).toEqual(
+      permuted.slice().sort((a, b) => a - b).slice(-10)
+    );
+  });
+});

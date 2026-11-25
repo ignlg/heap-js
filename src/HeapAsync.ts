@@ -700,7 +700,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
       return [...this.heapArray];
     } else {
       // Some elements
-      return this._topN_push(~~n);
+      return this._topN_fill(~~n);
     }
   }
 
@@ -824,13 +824,13 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     await bottomHeap.init();
     const startAt = this.heapArray.length - 1 - n;
     const parentStartAt = HeapAsync.getParentIndexOf(startAt);
-    const indices = [];
+    const indices: number[] = [];
     for (let i = startAt; i > parentStartAt; --i) {
       indices.push(i);
     }
     const arr = this.heapArray;
-    while (indices.length) {
-      const i = indices.shift() as number;
+    for (let q = 0; q < indices.length; q++) {
+      const i = indices[q];
       if ((await this.compare(arr[i], bottomHeap.peek() as T)) > 0) {
         await bottomHeap.replace(arr[i]);
         if (i % 2) {
@@ -915,10 +915,10 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
   async _topN_push(n: number): Promise<Array<T>> {
     // Use an inverted heap
     const topHeap = new HeapAsync(this._invertedCompare);
-    const indices = [0];
+    const indices: number[] = [0];
     const arr = this.heapArray;
-    while (indices.length) {
-      const i = indices.shift() as number;
+    for (let q = 0; q < indices.length; q++) {
+      const i = indices[q];
       if (i < arr.length) {
         if (topHeap.length < n) {
           await topHeap.push(arr[i]);
@@ -953,15 +953,15 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     topHeap.heapArray = heapArray.slice(0, n);
     await topHeap.init();
     const branch = HeapAsync.getParentIndexOf(n - 1) + 1;
-    const indices = [];
+    const indices: number[] = [];
     for (let i = branch; i < n; ++i) {
       indices.push(...HeapAsync.getChildrenIndexOf(i).filter((l) => l < heapArray.length));
     }
     if ((n - 1) % 2) {
       indices.push(n);
     }
-    while (indices.length) {
-      const i = indices.shift() as number;
+    for (let q = 0; q < indices.length; q++) {
+      const i = indices[q];
       if (i < heapArray.length) {
         if ((await this.compare(heapArray[i], topHeap.peek() as T)) < 0) {
           await topHeap.replace(heapArray[i]);
