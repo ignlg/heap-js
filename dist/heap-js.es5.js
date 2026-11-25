@@ -1047,7 +1047,7 @@ var HeapAsync = /** @class */ (function () {
      */
     HeapAsync.prototype._bottomN_push = function (n) {
         return __awaiter(this, void 0, void 0, function () {
-            var bottomHeap, startAt, parentStartAt, indices, i, arr, i;
+            var bottomHeap, startAt, parentStartAt, indices, i, arr, q, i;
             return __generator$1(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1063,10 +1063,11 @@ var HeapAsync = /** @class */ (function () {
                             indices.push(i);
                         }
                         arr = this.heapArray;
+                        q = 0;
                         _a.label = 2;
                     case 2:
-                        if (!indices.length) return [3 /*break*/, 6];
-                        i = indices.shift();
+                        if (!(q < indices.length)) return [3 /*break*/, 6];
+                        i = indices[q];
                         return [4 /*yield*/, this.compare(arr[i], bottomHeap.peek())];
                     case 3:
                         if (!((_a.sent()) > 0)) return [3 /*break*/, 5];
@@ -1077,7 +1078,9 @@ var HeapAsync = /** @class */ (function () {
                             indices.push(HeapAsync.getParentIndexOf(i));
                         }
                         _a.label = 5;
-                    case 5: return [3 /*break*/, 2];
+                    case 5:
+                        q++;
+                        return [3 /*break*/, 2];
                     case 6: return [2 /*return*/, bottomHeap.toArray()];
                 }
             });
@@ -2197,8 +2200,8 @@ var Heap = /** @class */ (function () {
             indices.push(i);
         }
         var arr = this.heapArray;
-        while (indices.length) {
-            var i = indices.shift();
+        for (var q = 0; q < indices.length; q++) {
+            var i = indices[q];
             if (this.compare(arr[i], bottomHeap.peek()) > 0) {
                 bottomHeap.replace(arr[i]);
                 if (i % 2) {
