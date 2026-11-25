@@ -777,13 +777,13 @@ export class Heap<T> implements Iterable<T> {
     bottomHeap.init();
     const startAt = this.heapArray.length - 1 - n;
     const parentStartAt = Heap.getParentIndexOf(startAt);
-    const indices = [];
+    const indices: number[] = [];
     for (let i = startAt; i > parentStartAt; --i) {
       indices.push(i);
     }
     const arr = this.heapArray;
-    while (indices.length) {
-      const i = indices.shift() as number;
+    for (let q = 0; q < indices.length; q++) {
+      const i = indices[q];
       if (this.compare(arr[i], bottomHeap.peek() as T) > 0) {
         bottomHeap.replace(arr[i]);
         if (i % 2) {

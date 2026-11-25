@@ -746,13 +746,13 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     await bottomHeap.init();
     const startAt = this.heapArray.length - 1 - n;
     const parentStartAt = HeapAsync.getParentIndexOf(startAt);
-    const indices = [];
+    const indices: number[] = [];
     for (let i = startAt; i > parentStartAt; --i) {
       indices.push(i);
     }
     const arr = this.heapArray;
-    while (indices.length) {
-      const i = indices.shift() as number;
+    for (let q = 0; q < indices.length; q++) {
+      const i = indices[q];
       if ((await this.compare(arr[i], bottomHeap.peek() as T)) > 0) {
         await bottomHeap.replace(arr[i]);
         if (i % 2) {
