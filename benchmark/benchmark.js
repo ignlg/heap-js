@@ -259,3 +259,134 @@ for (const size of [10000, 100000]) {
     },
   ]);
 }
+
+/*
+            Limit and search benchmarks
+*/
+
+const BIG = 200000;
+const bigData = randomData(BIG);
+
+for (const n of [100, 10000, 100000]) {
+  runBenchmark(`limit: init ${BIG} keep ${n}`, [
+    {
+      name: 'heap limit',
+      func: function () {
+        const h = new Heap(Heap.minComparatorNumber);
+        h.limit = n;
+        h.init(bigData);
+      },
+    },
+    {
+      name: 'nlargest ',
+      func: function () {
+        Heap.nlargest(n, bigData, Heap.minComparatorNumber);
+      },
+    },
+    {
+      name: 'array    ',
+      func: function () {
+        bigData.slice().sort(compareNumbers).slice(0, n);
+      },
+    },
+  ]);
+}
+
+for (const n of [100, 10000, 100000]) {
+  runBenchmark(`limit: addAll ${BIG} keep ${n}`, [
+    {
+      name: 'heap limit',
+      func: function () {
+        const h = new Heap(Heap.minComparatorNumber);
+        h.limit = n;
+        h.addAll(bigData);
+      },
+    },
+  ]);
+}
+
+for (const n of [100, 10000]) {
+  const full = new Heap(Heap.minComparatorNumber);
+  full.limit = n;
+  full.init(bigData.slice(0, n));
+  const noLimit = new Heap(Heap.minComparatorNumber);
+  noLimit.init(bigData.slice(0, n));
+  runBenchmark(`limit: push(a, b) at capacity ${n}`, [
+    {
+      name: 'heap limit   ',
+      func: function () {
+        const h = full.clone();
+        for (let i = 0; i < 2000; i += 2) {
+          h.push(bigData[i], bigData[i + 1]);
+        }
+      },
+    },
+    {
+      name: 'heap no limit',
+      func: function () {
+        const h = noLimit.clone();
+        for (let i = 0; i < 2000; i += 2) {
+          h.push(bigData[i], bigData[i + 1]);
+        }
+      },
+    },
+  ]);
+}
+
+for (const n of [100, 10000]) {
+  const full = new Heap(Heap.minComparatorNumber);
+  full.limit = n;
+  full.init(bigData.slice(0, n));
+  runBenchmark(`limit: add() at capacity ${n}`, [
+    {
+      name: 'heap limit',
+      func: function () {
+        const h = full.clone();
+        for (let i = 0; i < 2000; i++) {
+          h.add(bigData[i]);
+        }
+      },
+    },
+  ]);
+}
+
+for (const size of [1000, 20000]) {
+  const searchHeap = new Heap(Heap.minComparatorNumber);
+  searchHeap.init(bigData.slice(0, size));
+  const needles = Array.from({ length: 1000 }, (_, i) => searchHeap.heapArray[(i * 7919) % size]);
+  runBenchmark(`search: ${size}`, [
+    {
+      name: 'indexOf       ',
+      func: function () {
+        for (let i = 0; i < needles.length; i++) {
+          searchHeap.indexOf(needles[i]);
+        }
+      },
+    },
+    {
+      name: 'indexOf custom',
+      func: function () {
+        for (let i = 0; i < needles.length; i++) {
+          searchHeap.indexOf(needles[i], (a, b) => a === b);
+        }
+      },
+    },
+    {
+      name: 'contains      ',
+      func: function () {
+        for (let i = 0; i < needles.length; i++) {
+          searchHeap.contains(needles[i]);
+        }
+      },
+    },
+    {
+      name: 'remove + push ',
+      func: function () {
+        for (let i = 0; i < needles.length; i++) {
+          searchHeap.remove(needles[i]);
+          searchHeap.push(needles[i]);
+        }
+      },
+    },
+  ]);
+}
