@@ -648,6 +648,17 @@ describe('Heap instances', function () {
   });
 });
 
+describe('addAll with large arrays', function () {
+  it('should handle 500k elements without throwing', function () {
+    const heap = new Heap<number>(Heap.minComparatorNumber);
+    const big = new Array(500_000);
+    for (let i = 0; i < big.length; i++) big[i] = Math.random();
+    expect(() => heap.addAll(big)).not.toThrow();
+    expect(heap.length).toBe(500_000);
+    expect(heap.check()).toBeUndefined();
+  });
+});
+
 describe('Heap.check() with falsy child values', function () {
   it.each(
     [
