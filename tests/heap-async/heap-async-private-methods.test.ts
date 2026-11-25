@@ -109,6 +109,16 @@ describe('HeapAsync private', function () {
           }
         );
       });
+      describe('#_topN(N) peek', function () {
+        it.each([2, 3, 6, 12, someValues.length - 1])(
+          'should keep the peek at index 0 (N == %i)',
+          async function (slice) {
+            await heap.init(someValues);
+            expect((await heap._topN_push(slice))[0]).toEqual(heap.peek());
+            expect((await heap._topN_fill(slice))[0]).toEqual(heap.peek());
+          }
+        );
+      });
       describe('#_topHeapN(N)', function () {
         it.each([1, 6, 12, someValues.length])(
           `should return the top N (<= length) elements of the heap`,

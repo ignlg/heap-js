@@ -415,8 +415,8 @@ export class Heap<T> implements Iterable<T> {
    * @return {Undefined | Element}  Returns an element if something wrong is found, otherwise it's undefined
    */
   check(): T | undefined {
-    return this.heapArray.find(
-      (el: T, j: number) => !!this.getChildrenOf(j).find((ch) => this.compare(el, ch) > 0)
+    return this.heapArray.find((el: T, j: number) =>
+      this.getChildrenOf(j).some((ch) => this.compare(el, ch) > 0)
     );
   }
 
@@ -644,7 +644,7 @@ export class Heap<T> implements Iterable<T> {
    * @return {any}  Extracted top node
    */
   pushpop(element: T): T {
-    if (this.compare(this.heapArray[0], element) < 0) {
+    if (this.heapArray.length > 0 && this.compare(this.heapArray[0], element) < 0) {
       [element, this.heapArray[0]] = [this.heapArray[0], element];
       this._sortNodeDown(0);
     }
@@ -821,7 +821,6 @@ export class Heap<T> implements Iterable<T> {
   _bottomN_push(n: number): Array<T> {
     // Use an inverted heap
     const bottomHeap = new Heap(this.compare);
-    bottomHeap.limit = n;
     bottomHeap.heapArray = this.heapArray.slice(-n);
     bottomHeap.init();
     const startAt = this.heapArray.length - 1 - n;
@@ -915,7 +914,6 @@ export class Heap<T> implements Iterable<T> {
   _topN_push(n: number): Array<T> {
     // Use an inverted heap
     const topHeap = new Heap(this._invertedCompare);
-    topHeap.limit = n;
     const indices = [0];
     const arr = this.heapArray;
     while (indices.length) {
@@ -951,7 +949,6 @@ export class Heap<T> implements Iterable<T> {
     // Use an inverted heap
     const { heapArray } = this;
     const topHeap = new Heap(this._invertedCompare);
-    topHeap.limit = n;
     topHeap.heapArray = heapArray.slice(0, n);
     topHeap.init();
     const branch = Heap.getParentIndexOf(n - 1) + 1;

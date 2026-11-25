@@ -624,7 +624,7 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @return {any}  Extracted top node
    */
   async pushpop(element: T): Promise<T> {
-    if ((await this.compare(this.heapArray[0], element)) < 0) {
+    if (this.heapArray.length > 0 && (await this.compare(this.heapArray[0], element)) < 0) {
       [element, this.heapArray[0]] = [this.heapArray[0], element];
       await this._sortNodeDown(0);
     }
@@ -801,7 +801,6 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
   async _bottomN_push(n: number): Promise<Array<T>> {
     // Use an inverted heap
     const bottomHeap = new HeapAsync(this.compare);
-    bottomHeap.limit = n;
     bottomHeap.heapArray = this.heapArray.slice(-n);
     await bottomHeap.init();
     const startAt = this.heapArray.length - 1 - n;
@@ -897,7 +896,6 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
   async _topN_push(n: number): Promise<Array<T>> {
     // Use an inverted heap
     const topHeap = new HeapAsync(this._invertedCompare);
-    topHeap.limit = n;
     const indices = [0];
     const arr = this.heapArray;
     while (indices.length) {
@@ -933,7 +931,6 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     // Use an inverted heap
     const { heapArray } = this;
     const topHeap = new HeapAsync(this._invertedCompare);
-    topHeap.limit = n;
     topHeap.heapArray = heapArray.slice(0, n);
     await topHeap.init();
     const branch = HeapAsync.getParentIndexOf(n - 1) + 1;
