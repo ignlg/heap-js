@@ -221,14 +221,14 @@ export declare class Heap<T> implements Iterable<T> {
      */
     isEmpty(): boolean;
     /**
-     * Get the index of the first occurrence of the element in the heap (using the comparator).
+     * Get the index of the first occurrence of the element in the heap.
      * @param  {any}      element    Element to be found
      * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
      * @return {Number}              Index or -1 if not found
      */
     indexOf(element: T, callbackFn?: IsEqual<T>): number;
     /**
-     * Get the indexes of the every occurrence of the element in the heap (using the comparator).
+     * Get the indexes of every occurrence of the element in the heap.
      * @param  {any}      element    Element to be found
      * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
      * @return {Array}               Array of indexes or empty array if not found
@@ -356,6 +356,11 @@ export declare class Heap<T> implements Iterable<T> {
      * Returns an iterator. To comply with Java interface.
      */
     iterator(): Iterable<T>;
+    /**
+     * Remove the element at the given index, re-establishing the heap property.
+     * @param  {Number} idx Index of the element to remove
+     */
+    _removeAt(idx: number): void;
     /**
      * Limit heap size if needed
      */
