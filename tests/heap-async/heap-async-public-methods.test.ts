@@ -860,3 +860,26 @@ describe('HeapAsync hybrid _applyLimit', function () {
     expect(await heap.check()).toBeUndefined();
   });
 });
+
+describe('HeapAsync top(n) dispatch', function () {
+  const SIZE = 200;
+  const permuted = Array.from({ length: SIZE }, (_, i) => (i * 7919) % SIZE);
+  const sorted = permuted.slice().sort((a, b) => a - b);
+
+  async function makeHeap() {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    await heap.init(permuted.slice());
+    return heap;
+  }
+
+  it.each([1, 5, 10, 25, 50, 100, 199])(
+    'top(%i) returns correct elements with top(n)[0] === peek()',
+    async function (n) {
+      const heap = await makeHeap();
+      const result = await heap.top(n);
+      expect(result.length).toBe(n);
+      expect(result[0]).toBe(heap.peek());
+      expect(result.slice().sort((a, b) => a - b)).toEqual(sorted.slice(0, n));
+    }
+  );
+});
