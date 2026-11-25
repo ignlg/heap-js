@@ -416,13 +416,60 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Function} fn  Optional comparison function, receives (element, needle)
    * @return {Boolean}
    */
-  async contains(o: T, fn: AsyncIsEqual<T> = HeapAsync.defaultIsEqual): Promise<boolean> {
-    for (const el of this.heapArray) {
-      if (await fn(el, o)) {
-        return true;
+  async contains(o: T, fn?: AsyncIsEqual<T>): Promise<boolean> {
+    return (await this.indexOf(o, fn)) !== -1;
+  }
+
+  /**
+   * Get the index of the first occurrence of the element in the heap.
+   * @param  {any}      element    Element to be found
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+   * @return {Number}              Index or -1 if not found
+   */
+  async indexOf(element: T, callbackFn?: AsyncIsEqual<T>): Promise<number> {
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) {
+      return -1;
+    }
+    if (!callbackFn || callbackFn === HeapAsync.defaultIsEqual) {
+      return arr.indexOf(element);
+    }
+    for (let i = 0; i < len; i++) {
+      if (await callbackFn(arr[i], element)) {
+        return i;
       }
     }
-    return false;
+    return -1;
+  }
+
+  /**
+   * Get the indexes of every occurrence of the element in the heap.
+   * @param  {any}      element    Element to be found
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+   * @return {Array}               Array of indexes or empty array if not found
+   */
+  async indexOfEvery(element: T, callbackFn?: AsyncIsEqual<T>): Promise<number[]> {
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) {
+      return [];
+    }
+    const result: number[] = [];
+    if (!callbackFn || callbackFn === HeapAsync.defaultIsEqual) {
+      for (let i = 0; i < len; i++) {
+        if (arr[i] === element) {
+          result.push(i);
+        }
+      }
+    } else {
+      for (let i = 0; i < len; i++) {
+        if (await callbackFn(arr[i], element)) {
+          result.push(i);
+        }
+      }
+    }
+    return result;
   }
 
   /**
@@ -538,32 +585,18 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    * @param  {Function} fn  Optional function to compare
    * @return {Boolean}      True if the heap was modified
    */
-  async remove(o?: T, fn: AsyncIsEqual<T> = HeapAsync.defaultIsEqual): Promise<boolean> {
+  async remove(o?: T, fn?: AsyncIsEqual<T>): Promise<boolean> {
     if (!this.heapArray.length) return false;
     if (o === undefined) {
       await this.pop();
       return true;
     }
-    const queue = [0];
-    while (queue.length) {
-      const idx = queue.shift() as number;
-      if (await fn(this.heapArray[idx], o)) {
-        if (idx === 0) {
-          await this.pop();
-        } else if (idx === this.heapArray.length - 1) {
-          this.heapArray.pop();
-        } else {
-          this.heapArray.splice(idx, 1, this.heapArray.pop() as T);
-          await this._sortNodeUp(idx);
-          await this._sortNodeDown(idx);
-        }
-        return true;
-      } else {
-        const children = HeapAsync.getChildrenIndexOf(idx).filter((c) => c < this.heapArray.length);
-        queue.push(...children);
-      }
+    const idx = await this.indexOf(o, fn);
+    if (idx === -1) {
+      return false;
     }
-    return false;
+    await this._removeAt(idx);
+    return true;
   }
 
   /**
@@ -668,6 +701,22 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
    */
   iterator(): Iterable<Promise<T>> {
     return this;
+  }
+
+  /**
+   * Remove the element at the given index, re-establishing the heap property.
+   * @param  {Number} idx Index of the element to remove
+   */
+  async _removeAt(idx: number): Promise<void> {
+    if (idx === 0) {
+      await this.pop();
+    } else if (idx === this.heapArray.length - 1) {
+      this.heapArray.pop();
+    } else {
+      this.heapArray[idx] = this.heapArray.pop() as T;
+      await this._sortNodeUp(idx);
+      await this._sortNodeDown(idx);
+    }
   }
 
   /**
