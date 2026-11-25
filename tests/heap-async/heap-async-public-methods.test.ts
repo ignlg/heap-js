@@ -883,3 +883,20 @@ describe('HeapAsync top(n) dispatch', function () {
     }
   );
 });
+
+describe('HeapAsync bottom(n)', function () {
+  it.each([200, 20000])('returns the least valuable elements of a heap of %i', async function (size) {
+    const permuted = Array.from({ length: size }, (_, i) => (i * 7919) % size);
+    const heap = new HeapAsync<number>(HeapAsync.minComparatorNumber);
+    await heap.init(permuted);
+    for (const n of [1, 10, size / 10, size - 1]) {
+      const result = await heap.bottom(n);
+      expect(result.slice().sort((a, b) => a - b)).toEqual(
+        permuted
+          .slice()
+          .sort((a, b) => a - b)
+          .slice(-n)
+      );
+    }
+  });
+});

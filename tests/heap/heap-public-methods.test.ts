@@ -1098,15 +1098,18 @@ describe('top(n) dispatch', function () {
 });
 
 describe('bottom(n)', function () {
-  it('bottom(n) returns correct elements', function () {
-    const SIZE = 200;
-    const permuted = Array.from({ length: SIZE }, (_, i) => (i * 7919) % SIZE);
+  it.each([200, 20000])('returns the least valuable elements of a heap of %i', function (size) {
+    const permuted = Array.from({ length: size }, (_, i) => (i * 7919) % size);
     const heap = new Heap<number>(Heap.minComparatorNumber);
-    heap.init(permuted.slice());
-    const result = heap.bottom(10);
-    expect(result.length).toBe(10);
-    expect(result.slice().sort((a, b) => a - b)).toEqual(
-      permuted.slice().sort((a, b) => a - b).slice(-10)
-    );
+    heap.init(permuted);
+    for (const n of [1, 10, size / 10, size - 1]) {
+      const result = heap.bottom(n);
+      expect(result.slice().sort((a, b) => a - b)).toEqual(
+        permuted
+          .slice()
+          .sort((a, b) => a - b)
+          .slice(-n)
+      );
+    }
   });
 });
