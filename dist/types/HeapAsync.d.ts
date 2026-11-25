@@ -201,6 +201,20 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      */
     contains(o: T, fn?: AsyncIsEqual<T>): Promise<boolean>;
     /**
+     * Get the index of the first occurrence of the element in the heap.
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Number}              Index or -1 if not found
+     */
+    indexOf(element: T, callbackFn?: AsyncIsEqual<T>): Promise<number>;
+    /**
+     * Get the indexes of every occurrence of the element in the heap.
+     * @param  {any}      element    Element to be found
+     * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+     * @return {Array}               Array of indexes or empty array if not found
+     */
+    indexOfEvery(element: T, callbackFn?: AsyncIsEqual<T>): Promise<number[]>;
+    /**
      * Initialise a heap, sorting nodes
      * @param  {Array} array Optional initial state array
      */
@@ -313,6 +327,11 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      * Returns an iterator. To comply with Java interface.
      */
     iterator(): Iterable<Promise<T>>;
+    /**
+     * Remove the element at the given index, re-establishing the heap property.
+     * @param  {Number} idx Index of the element to remove
+     */
+    _removeAt(idx: number): Promise<void>;
     /**
      * Limit heap size if needed
      */
