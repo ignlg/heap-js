@@ -412,11 +412,10 @@ describe('HeapAsync instances', function () {
           await heap.init(values.concat(values));
           expect(await heap.top()).toEqual(await heap.top(1));
         });
-        it('should have top(n)[0] === peek() (#672)', async function () {
+        it('should return the peek at index 0 for every N', async function () {
           await heap.init(values.concat(values));
-          for (const n of [2, 3, 5, values.length]) {
-            const topN = await heap.top(n);
-            expect(topN[0]).toEqual(heap.peek());
+          for (let n = 1; n <= heap.length + 1; ++n) {
+            expect((await heap.top(n))[0]).toEqual(heap.peek());
           }
         });
       });

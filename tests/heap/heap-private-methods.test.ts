@@ -99,6 +99,15 @@ describe('Heap private', function () {
           });
         }
       });
+      describe('#_topN(N) peek', function () {
+        for (const slice of [2, 3, 6, 12, someValues.length - 1]) {
+          it(`should keep the peek at index 0 (N == ${slice})`, function () {
+            heap.init(someValues);
+            expect(heap._topN_push(slice)[0]).toEqual(heap.peek());
+            expect(heap._topN_fill(slice)[0]).toEqual(heap.peek());
+          });
+        }
+      });
       describe('#_topHeapN(N)', function () {
         for (const slice of [1, 6, 12, someValues.length]) {
           it(`should return the top N (<= length) elements of the heap (N == ${slice})`, function () {

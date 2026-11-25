@@ -583,11 +583,10 @@ describe('Heap instances', function () {
           heap.init(values.concat(values));
           expect(heap.top()).toEqual(heap.top(1));
         });
-        it('should have top(n)[0] === peek() (#672)', function () {
+        it('should return the peek at index 0 for every N', function () {
           heap.init(values.concat(values));
-          for (const n of [2, 3, 5, values.length]) {
-            const topN = heap.top(n);
-            expect(topN[0]).toEqual(heap.peek());
+          for (let n = 1; n <= heap.length + 1; ++n) {
+            expect(heap.top(n)[0]).toEqual(heap.peek());
           }
         });
       });

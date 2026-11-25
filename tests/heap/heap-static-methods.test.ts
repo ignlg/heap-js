@@ -156,6 +156,23 @@ describe('Heap class', function () {
       }
       expect(Heap.heaptop(arr)).toEqual(Heap.heaptop(arr, 1));
     });
+    it('should return the peek at index 0', function () {
+      const arr = [1, 12, 3, 41, 51, 16, 7];
+      Heap.heapify(arr);
+      for (let n = 1; n <= arr.length; ++n) {
+        expect(Heap.heaptop(arr, n)[0]).toEqual(1);
+      }
+    });
+    it('should return the peek at index 0 after pushes', function () {
+      const heap = new Heap<number>();
+      heap.push(4, 1, 3, 2);
+      expect(heap.top(2)[0]).toEqual(1);
+      expect(heap.top(3)[0]).toEqual(1);
+      const maxHeap = new Heap<number>(Heap.maxComparatorNumber);
+      maxHeap.push(1, 4, 2, 3);
+      expect(maxHeap.top(2)[0]).toEqual(4);
+      expect(maxHeap.top(3)[0]).toEqual(4);
+    });
   });
   describe('#heapbottom', function () {
     it('should return the least valuable elements', function () {
@@ -191,6 +208,13 @@ describe('Heap class', function () {
       const full = Heap.nlargest(arr.length, arr);
       full.sort(Heap.minComparatorNumber);
       expect(full).toEqual(sortedArr);
+    });
+    it('should return the most valuable element at index 0', function () {
+      const arr = [1, 12, 3, 41, 51, 16, 7];
+      for (let n = 1; n <= arr.length; ++n) {
+        expect(Heap.nlargest(n, arr)[0]).toEqual(1);
+        expect(Heap.nlargest(n, arr, Heap.maxComparatorNumber)[0]).toEqual(51);
+      }
     });
   });
   describe('#nsmallest', function () {

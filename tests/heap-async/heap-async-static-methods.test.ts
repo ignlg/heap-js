@@ -160,6 +160,11 @@ describe('HeapAsync class', function () {
       it('should return 1 element by default', async function () {
         expect(await HeapAsync.heaptop(heapArr)).toEqual(await HeapAsync.heaptop(heapArr, 1));
       });
+      it('should return the peek at index 0', async function () {
+        for (let n = 1; n <= arr.length; ++n) {
+          expect((await HeapAsync.heaptop(heapArr, n))[0]).toEqual(1);
+        }
+      });
     });
   });
   describe('#heapbottom', function () {
@@ -201,6 +206,12 @@ describe('HeapAsync class', function () {
       it('should return all the elements', async function () {
         const full = await HeapAsync.nlargest(arr.length, arr);
         equalUnsortedArrays(full, [51, 41, 16, 12, 7, 3, 1]);
+      });
+      it('should return the most valuable element at index 0', async function () {
+        for (let n = 1; n <= arr.length; ++n) {
+          expect((await HeapAsync.nlargest(n, arr))[0]).toEqual(1);
+          expect((await HeapAsync.nlargest(n, arr, HeapAsync.maxComparatorNumber))[0]).toEqual(51);
+        }
       });
     });
   });
