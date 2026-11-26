@@ -61,12 +61,20 @@ init + pop 100 of 100000 elements
  heap  x 210 ops/sec ±4.67% (70 runs sampled)
  sort  x 24.71 ops/sec ±5.40% (45 runs sampled)
 
+iteration in order: first 10 of 100000
+ for...of           x 1,696,737 ops/sec ±1.65% (92 runs sampled)
+ toArray() + sort() x 34.39 ops/sec ±12.40% (48 runs sampled)
+
+iteration in order: first 100000 of 100000
+ for...of           x 53.63 ops/sec ±0.61% (71 runs sampled)
+ toArray() + sort() x 32.90 ops/sec ±10.72% (46 runs sampled)
+
 heap vs array: push + peek 99
  heap  x 228,187 ops/sec ±6.65% (71 runs sampled)
  array x 127,672 ops/sec ±5.70% (67 runs sampled)
 ```
 
-The sorted array uses binary search to insert, the fastest array alternative. Measured on Node.js 26 and an Apple M3. Run them with `npm run benchmark`.
+The sorted array uses binary search to insert, the fastest array alternative. Iterating with `for...of` keeps the heap intact, and reading the first elements does not sort the whole heap. Measured on Node.js 26 and an Apple M3. Run them with `npm run benchmark`.
 
 ## Warnings
 
