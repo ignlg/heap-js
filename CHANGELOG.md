@@ -11,6 +11,8 @@ The main breaking changes are that `setLimit` and `_applyLimit` methods of the H
 - Setting the `limit` property of HeapAsync is applied on the next `add`; use the `setLimit` method to apply it immediately.
 - Improves the performance of the limit when initializing or adding many elements.
 - Adds `indexOf` and `indexOfEvery` to `HeapAsync`.
+- Improves the performance of `top`, `heaptop`, and `nlargest`.
+- Fixes the benchmarks and adds new ones for the limit, the search methods, and common heap use cases.
 
 ### 2.7.3
 

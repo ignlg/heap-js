@@ -997,7 +997,7 @@
                     }
                     else {
                         // Some elements
-                        return [2 /*return*/, this._topN_push(~~n)];
+                        return [2 /*return*/, this._topN_fill(~~n)];
                     }
                 });
             });
@@ -1167,7 +1167,7 @@
          */
         HeapAsync.prototype._bottomN_push = function (n) {
             return __awaiter(this, void 0, void 0, function () {
-                var bottomHeap, startAt, parentStartAt, indices, i, arr, i;
+                var bottomHeap, startAt, parentStartAt, indices, i, arr, q, i;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -1183,10 +1183,11 @@
                                 indices.push(i);
                             }
                             arr = this.heapArray;
+                            q = 0;
                             _a.label = 2;
                         case 2:
-                            if (!indices.length) return [3 /*break*/, 6];
-                            i = indices.shift();
+                            if (!(q < indices.length)) return [3 /*break*/, 6];
+                            i = indices[q];
                             return [4 /*yield*/, this.compare(arr[i], bottomHeap.peek())];
                         case 3:
                             if (!((_a.sent()) > 0)) return [3 /*break*/, 5];
@@ -1197,7 +1198,9 @@
                                 indices.push(HeapAsync.getParentIndexOf(i));
                             }
                             _a.label = 5;
-                        case 5: return [3 /*break*/, 2];
+                        case 5:
+                            q++;
+                            return [3 /*break*/, 2];
                         case 6: return [2 /*return*/, bottomHeap.toArray()];
                     }
                 });
@@ -1302,17 +1305,18 @@
          */
         HeapAsync.prototype._topN_push = function (n) {
             return __awaiter(this, void 0, void 0, function () {
-                var topHeap, indices, arr, i, result, peekVal, idx;
+                var topHeap, indices, arr, q, i, result, peekVal, idx;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
                         case 0:
                             topHeap = new HeapAsync(this._invertedCompare);
                             indices = [0];
                             arr = this.heapArray;
+                            q = 0;
                             _a.label = 1;
                         case 1:
-                            if (!indices.length) return [3 /*break*/, 7];
-                            i = indices.shift();
+                            if (!(q < indices.length)) return [3 /*break*/, 7];
+                            i = indices[q];
                             if (!(i < arr.length)) return [3 /*break*/, 6];
                             if (!(topHeap.length < n)) return [3 /*break*/, 3];
                             return [4 /*yield*/, topHeap.push(arr[i])];
@@ -1328,7 +1332,9 @@
                             _a.sent();
                             indices.push.apply(indices, __spreadArray$1([], __read$1(HeapAsync.getChildrenIndexOf(i)), false));
                             _a.label = 6;
-                        case 6: return [3 /*break*/, 1];
+                        case 6:
+                            q++;
+                            return [3 /*break*/, 1];
                         case 7:
                             result = topHeap.toArray();
                             peekVal = arr[0];
@@ -1351,7 +1357,7 @@
          */
         HeapAsync.prototype._topN_fill = function (n) {
             return __awaiter(this, void 0, void 0, function () {
-                var heapArray, topHeap, branch, indices, i, i, result, peekVal, idx;
+                var heapArray, topHeap, branch, indices, i, q, i, result, peekVal, idx;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -1369,10 +1375,11 @@
                             if ((n - 1) % 2) {
                                 indices.push(n);
                             }
+                            q = 0;
                             _a.label = 2;
                         case 2:
-                            if (!indices.length) return [3 /*break*/, 6];
-                            i = indices.shift();
+                            if (!(q < indices.length)) return [3 /*break*/, 6];
+                            i = indices[q];
                             if (!(i < heapArray.length)) return [3 /*break*/, 5];
                             return [4 /*yield*/, this.compare(heapArray[i], topHeap.peek())];
                         case 3:
@@ -1382,7 +1389,9 @@
                             _a.sent();
                             indices.push.apply(indices, __spreadArray$1([], __read$1(HeapAsync.getChildrenIndexOf(i)), false));
                             _a.label = 5;
-                        case 5: return [3 /*break*/, 2];
+                        case 5:
+                            q++;
+                            return [3 /*break*/, 2];
                         case 6:
                             result = topHeap.toArray();
                             peekVal = heapArray[0];
@@ -2255,7 +2264,7 @@
             }
             else {
                 // Some elements
-                return this._topN_push(~~n);
+                return this._topN_fill(~~n);
             }
         };
         /**
@@ -2389,8 +2398,8 @@
                 indices.push(i);
             }
             var arr = this.heapArray;
-            while (indices.length) {
-                var i = indices.shift();
+            for (var q = 0; q < indices.length; q++) {
+                var i = indices[q];
                 if (this.compare(arr[i], bottomHeap.peek()) > 0) {
                     bottomHeap.replace(arr[i]);
                     if (i % 2) {
@@ -2466,8 +2475,8 @@
             var topHeap = new Heap(this._invertedCompare);
             var indices = [0];
             var arr = this.heapArray;
-            while (indices.length) {
-                var i = indices.shift();
+            for (var q = 0; q < indices.length; q++) {
+                var i = indices[q];
                 if (i < arr.length) {
                     if (topHeap.length < n) {
                         topHeap.push(arr[i]);
@@ -2509,8 +2518,8 @@
             if ((n - 1) % 2) {
                 indices.push(n);
             }
-            while (indices.length) {
-                var i = indices.shift();
+            for (var q = 0; q < indices.length; q++) {
+                var i = indices[q];
                 if (i < heapArray.length) {
                     if (this.compare(heapArray[i], topHeap.peek()) < 0) {
                         topHeap.replace(heapArray[i]);
