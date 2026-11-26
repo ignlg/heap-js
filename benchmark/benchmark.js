@@ -390,3 +390,43 @@ for (const size of [1000, 20000]) {
     },
   ]);
 }
+
+/*
+            Sorted iteration benchmarks
+*/
+
+// The heap is built once; every variant leaves it intact except the consuming one, which works on a clone
+for (const size of [10000, 100000]) {
+  const sortedHeap = Heap.heapify(randomData(size), Heap.minComparatorNumber);
+  for (const k of [10, 1000, size]) {
+    runBenchmark(`sorted iteration: first ${k} of ${size}`, [
+      {
+        name: 'sortedIterator()  ',
+        func: function () {
+          let i = 0;
+          for (const value of sortedHeap.sortedIterator()) {
+            if (++i === k) break;
+          }
+        },
+      },
+      {
+        name: 'clone() + for...of',
+        func: function () {
+          let i = 0;
+          for (const value of sortedHeap.clone()) {
+            if (++i === k) break;
+          }
+        },
+      },
+      {
+        name: 'toArray() + sort()',
+        func: function () {
+          const sorted = sortedHeap.toArray().sort(compareNumbers);
+          for (let i = 0; i < k; i++) {
+            sorted[i];
+          }
+        },
+      },
+    ]);
+  }
+}
