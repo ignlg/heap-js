@@ -676,20 +676,56 @@ describe('Heap instances', function () {
       });
 
       describe('is Iterable', function () {
-        it('should be iterable via for...of, consuming the heap', function () {
+        it('should be iterable via for...of in order, without consuming the heap', function () {
           heap.init(values.concat(values));
-          const top = heap.toArray().slice(0);
-          top.sort(heap.comparator());
+          const before = heap.toArray();
+          const top = before.slice(0).sort(heap.comparator());
           const resultFirstRound: unknown[] = [];
           for (const value of heap) {
             resultFirstRound.push(value);
           }
-          const resultSecondRound: unknown[] = [];
-          for (const value of heap) {
-            resultSecondRound.push(value);
-          }
           expect(resultFirstRound).toEqual(top);
-          expect(resultSecondRound).toEqual([]);
+          expect([...heap]).toEqual(top);
+          expect(heap.toArray()).toEqual(before);
+        });
+        it('should throw if the heap is modified while iterating', function () {
+          heap.init(values);
+          expect(() => {
+            for (const value of heap) {
+              heap.push(value);
+            }
+          }).toThrow('Heap modified during iteration');
+          heap.init(values);
+          expect(() => {
+            for (const _ of heap) {
+              heap.pop();
+            }
+          }).toThrow('Heap modified during iteration');
+        });
+      });
+      describe('#drain()', function () {
+        it('should iterate in order consuming the heap', function () {
+          heap.init(values.concat(values));
+          const top = heap.toArray().sort(heap.comparator());
+          expect([...heap.drain()]).toEqual(top);
+          expect(heap.length).toBe(0);
+          expect([...heap.drain()]).toEqual([]);
+        });
+        it('should yield elements pushed while draining, in order', function () {
+          heap.init(values);
+          const extra = values.slice(0, 3);
+          const expected = values.concat(extra).sort(heap.comparator());
+          const result: unknown[] = [];
+          let pushed = false;
+          for (const value of heap.drain()) {
+            result.push(value);
+            if (!pushed) {
+              heap.push(...extra);
+              pushed = true;
+            }
+          }
+          expect(result).toEqual(expected);
+          expect(heap.length).toBe(0);
         });
       });
       describe('#iterator()', function () {

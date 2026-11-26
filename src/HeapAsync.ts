@@ -21,7 +21,7 @@ export interface HeapAsyncOptions<T> {
  * Heap
  * @type {Class}
  */
-export class HeapAsync<T> implements Iterable<Promise<T>> {
+export class HeapAsync<T> implements AsyncIterable<T> {
   heapArray: Array<T> = [];
   _limit = 0;
   isEqual: AsyncIsEqual<T> = HeapAsync.defaultIsEqual;
@@ -751,25 +751,34 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
   }
 
   /**
-   * Iterator interface
+   * Async iterator interface. Iterates in order of priority without consuming the heap.
+   * Same as {@link sortedIterator}. Use {@link drain} to consume it.
    */
-  *[Symbol.iterator](): Iterator<Promise<T>> {
+  [Symbol.asyncIterator](): AsyncIterator<T> {
+    return this.sortedIterator();
+  }
+
+  /**
+   * Iterates over the heap in order of priority consuming it, the same as calling `pop()` in a loop.
+   * Elements pushed while draining are also yielded in order.
+   */
+  async *drain(): AsyncGenerator<T, void, undefined> {
     while (this.length) {
-      yield this.pop() as Promise<T>;
+      yield (await this.pop()) as T;
     }
   }
 
   /**
    * Returns an iterator. To comply with Java interface.
    */
-  iterator(): Iterable<Promise<T>> {
-    return this;
+  iterator(): Iterable<T> {
+    return this.toArray();
   }
 
   /**
    * Iterates over the heap in order of priority without consuming or modifying it.
    * Lazy: the first k elements cost O(k log k), regardless of the heap size.
-   * Modifying the heap while iterating leads to undefined results.
+   * Throws if the heap length changes while iterating; use {@link drain} to push while consuming.
    */
   async *sortedIterator(): AsyncGenerator<T, void, undefined> {
     const arr = this.heapArray;
@@ -781,6 +790,9 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     while (frontier.length) {
       const idx = frontier[0];
       yield arr[idx];
+      if (this.heapArray !== arr || arr.length !== length) {
+        throw new Error('Heap modified during iteration, use drain() to consume it');
+      }
       const left = 2 * idx + 1;
       // Replace the root with its left child (or the last frontier node) and sift it down
       if (left < length) {
