@@ -40,6 +40,19 @@
             if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
         }
     };
+    var __await = (undefined && undefined.__await) || function (v) { return this instanceof __await ? (this.v = v, this) : new __await(v); };
+    var __asyncGenerator = (undefined && undefined.__asyncGenerator) || function (thisArg, _arguments, generator) {
+        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        var g = generator.apply(thisArg, _arguments || []), i, q = [];
+        return i = Object.create((typeof AsyncIterator === "function" ? AsyncIterator : Object).prototype), verb("next"), verb("throw"), verb("return", awaitReturn), i[Symbol.asyncIterator] = function () { return this; }, i;
+        function awaitReturn(f) { return function (v) { return Promise.resolve(v).then(f, reject); }; }
+        function verb(n, f) { if (g[n]) { i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; if (f) i[n] = f(i[n]); } }
+        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+        function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+        function fulfill(value) { resume("next", value); }
+        function reject(value) { resume("throw", value); }
+        function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+    };
     var __read$1 = (undefined && undefined.__read) || function (o, n) {
         var m = typeof Symbol === "function" && o[Symbol.iterator];
         if (!m) return o;
@@ -1045,26 +1058,130 @@
             return this.heapArray[pi];
         };
         /**
-         * Iterator interface
+         * Async iterator interface. Iterates in order of priority without consuming the heap.
+         * Same as {@link sortedIterator}. Use {@link drain} to consume it.
          */
-        HeapAsync.prototype[Symbol.iterator] = function () {
-            return __generator$1(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!this.length) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.pop()];
-                    case 1:
-                        _a.sent();
-                        return [3 /*break*/, 0];
-                    case 2: return [2 /*return*/];
-                }
+        HeapAsync.prototype[Symbol.asyncIterator] = function () {
+            return this.sortedIterator();
+        };
+        /**
+         * Iterates over the heap in order of priority consuming it, the same as calling `pop()` in a loop.
+         * Elements pushed while draining are also yielded in order.
+         */
+        HeapAsync.prototype.drain = function () {
+            return __asyncGenerator(this, arguments, function drain_1() {
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (!this.length) return [3 /*break*/, 4];
+                            return [4 /*yield*/, __await(this.pop())];
+                        case 1: return [4 /*yield*/, __await.apply(void 0, [(_a.sent())])];
+                        case 2: return [4 /*yield*/, _a.sent()];
+                        case 3:
+                            _a.sent();
+                            return [3 /*break*/, 0];
+                        case 4: return [2 /*return*/];
+                    }
+                });
             });
         };
         /**
          * Returns an iterator. To comply with Java interface.
          */
         HeapAsync.prototype.iterator = function () {
-            return this;
+            return this.toArray();
+        };
+        /**
+         * Iterates over the heap in order of priority without consuming or modifying it.
+         * Lazy: the first k elements cost O(k log k), regardless of the heap size.
+         * Throws if the heap length changes while iterating; use {@link drain} to push while consuming.
+         */
+        HeapAsync.prototype.sortedIterator = function () {
+            return __asyncGenerator(this, arguments, function sortedIterator_1() {
+                var arr, length, compare, frontier, idx, left, last, size, i, node, value, c, _a, right, j, rightValue, p;
+                return __generator$1(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            arr = this.heapArray;
+                            length = arr.length;
+                            if (!(length === 0)) return [3 /*break*/, 2];
+                            return [4 /*yield*/, __await(void 0)];
+                        case 1: return [2 /*return*/, _b.sent()];
+                        case 2:
+                            compare = this.compare;
+                            frontier = [0];
+                            _b.label = 3;
+                        case 3:
+                            if (!frontier.length) return [3 /*break*/, 15];
+                            idx = frontier[0];
+                            return [4 /*yield*/, __await(arr[idx])];
+                        case 4: return [4 /*yield*/, _b.sent()];
+                        case 5:
+                            _b.sent();
+                            if (this.heapArray !== arr || arr.length !== length) {
+                                throw new Error('Heap modified during iteration, use drain() to consume it');
+                            }
+                            left = 2 * idx + 1;
+                            // Replace the root with its left child (or the last frontier node) and sift it down
+                            if (left < length) {
+                                frontier[0] = left;
+                            }
+                            else {
+                                last = frontier.pop();
+                                if (!frontier.length)
+                                    return [3 /*break*/, 15];
+                                frontier[0] = last;
+                            }
+                            size = frontier.length;
+                            i = 0;
+                            node = frontier[0];
+                            value = arr[node];
+                            c = 1;
+                            _b.label = 6;
+                        case 6:
+                            if (!(c < size)) return [3 /*break*/, 10];
+                            _a = c + 1 < size;
+                            if (!_a) return [3 /*break*/, 8];
+                            return [4 /*yield*/, __await(compare(arr[frontier[c + 1]], arr[frontier[c]]))];
+                        case 7:
+                            _a = (_b.sent()) < 0;
+                            _b.label = 8;
+                        case 8:
+                            if (_a)
+                                c++;
+                            return [4 /*yield*/, __await(compare(arr[frontier[c]], value))];
+                        case 9:
+                            if ((_b.sent()) >= 0)
+                                return [3 /*break*/, 10];
+                            frontier[i] = frontier[c];
+                            i = c;
+                            c = 2 * i + 1;
+                            return [3 /*break*/, 6];
+                        case 10:
+                            frontier[i] = node;
+                            right = left + 1;
+                            if (!(right < length)) return [3 /*break*/, 14];
+                            j = frontier.length;
+                            rightValue = arr[right];
+                            _b.label = 11;
+                        case 11:
+                            if (!(j > 0)) return [3 /*break*/, 13];
+                            p = (j - 1) >> 1;
+                            return [4 /*yield*/, __await(compare(rightValue, arr[frontier[p]]))];
+                        case 12:
+                            if ((_b.sent()) >= 0)
+                                return [3 /*break*/, 13];
+                            frontier[j] = frontier[p];
+                            j = p;
+                            return [3 /*break*/, 11];
+                        case 13:
+                            frontier[j] = right;
+                            _b.label = 14;
+                        case 14: return [3 /*break*/, 3];
+                        case 15: return [2 /*return*/];
+                    }
+                });
+            });
         };
         /**
          * Remove the element at the given index, re-establishing the heap property.
@@ -2310,9 +2427,17 @@
             return this.heapArray[pi];
         };
         /**
-         * Iterator interface
+         * Iterator interface. Iterates in order of priority without consuming the heap.
+         * Same as {@link sortedIterator}. Use {@link drain} to consume it.
          */
         Heap.prototype[Symbol.iterator] = function () {
+            return this.sortedIterator();
+        };
+        /**
+         * Iterates over the heap in order of priority consuming it, the same as calling `pop()` in a loop.
+         * Elements pushed while draining are also yielded in order.
+         */
+        Heap.prototype.drain = function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2330,6 +2455,76 @@
          */
         Heap.prototype.iterator = function () {
             return this.toArray();
+        };
+        /**
+         * Iterates over the heap in order of priority without consuming or modifying it.
+         * Lazy: the first k elements cost O(k log k), regardless of the heap size.
+         * Throws if the heap length changes while iterating; use {@link drain} to push while consuming.
+         */
+        Heap.prototype.sortedIterator = function () {
+            var arr, length, compare, frontier, idx, left, last, size, i, node, value, c, right, j, rightValue, p;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        arr = this.heapArray;
+                        length = arr.length;
+                        if (length === 0)
+                            return [2 /*return*/];
+                        compare = this.compare;
+                        frontier = [0];
+                        _a.label = 1;
+                    case 1:
+                        if (!frontier.length) return [3 /*break*/, 3];
+                        idx = frontier[0];
+                        return [4 /*yield*/, arr[idx]];
+                    case 2:
+                        _a.sent();
+                        if (this.heapArray !== arr || arr.length !== length) {
+                            throw new Error('Heap modified during iteration, use drain() to consume it');
+                        }
+                        left = 2 * idx + 1;
+                        // Replace the root with its left child (or the last frontier node) and sift it down
+                        if (left < length) {
+                            frontier[0] = left;
+                        }
+                        else {
+                            last = frontier.pop();
+                            if (!frontier.length)
+                                return [3 /*break*/, 3];
+                            frontier[0] = last;
+                        }
+                        size = frontier.length;
+                        i = 0;
+                        node = frontier[0];
+                        value = arr[node];
+                        c = 1;
+                        while (c < size) {
+                            if (c + 1 < size && compare(arr[frontier[c + 1]], arr[frontier[c]]) < 0)
+                                c++;
+                            if (compare(arr[frontier[c]], value) >= 0)
+                                break;
+                            frontier[i] = frontier[c];
+                            i = c;
+                            c = 2 * i + 1;
+                        }
+                        frontier[i] = node;
+                        right = left + 1;
+                        if (right < length) {
+                            j = frontier.length;
+                            rightValue = arr[right];
+                            while (j > 0) {
+                                p = (j - 1) >> 1;
+                                if (compare(rightValue, arr[frontier[p]]) >= 0)
+                                    break;
+                                frontier[j] = frontier[p];
+                                j = p;
+                            }
+                            frontier[j] = right;
+                        }
+                        return [3 /*break*/, 1];
+                    case 3: return [2 /*return*/];
+                }
+            });
         };
         /**
          * Remove the element at the given index, re-establishing the heap property.
