@@ -1,122 +1,63 @@
-# ![Heap.js](assets/heap-js.png) Heap.js
+# ![Heap.js logo](assets/heap-js.png) Heap.js
 
 [![npm version](https://img.shields.io/npm/v/heap-js.svg?style=flat)](https://www.npmjs.com/package/heap-js)
-[![Coverage Status](https://img.shields.io/coveralls/ignlg/heap-js/master.svg?style=flat)](https://coveralls.io/github/ignlg/heap-js?branch=master)
+[![Test suite](https://github.com/ignlg/heap-js/actions/workflows/npm-test.yml/badge.svg)](https://github.com/ignlg/heap-js/actions/workflows/npm-test.yml)
 
-**Efficient Binary heap (priority queue, binary tree) data structure for JavaScript / TypeScript.**
+**Efficient binary heap and priority queue for JavaScript and TypeScript.**
 
-**Now with support for async comparators with the new `HeapAsync` class!**
+Min heap, max heap, custom comparators, top K elements, and async comparators with `HeapAsync`. Includes JavaScript methods, Python's _heapq module_ methods, and Java's _PriorityQueue_ methods.
 
-Includes JavaScript methods, Python's _heapq module_ methods, and Java's _PriorityQueue_ methods.
+Easy to use, known interfaces, tested, and well-documented. Instances are min heaps by default.
 
-Easy to use, known interfaces, tested, and well-documented JavaScript binary heap library.
+## Installation
 
-Instances are `integer min heap` by default.
+```bash
+npm install heap-js
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ignlg/heap-js)
+yarn add heap-js
+
+pnpm add heap-js
+```
+
+## Migrating from v2 to v3
+
+- The constructor also accepts an options object: `new Heap({ compare, isEqual })`. Passing a comparator function still works.
+- `limit` keeps the N best elements. In v2 it removed elements from the end of the internal array, regardless of their priority.
+- `add`, `offer`, and `push` with one element return `false` when the heap is at its `limit` and the element is not better than the worst one. In v2 they always returned `true`.
+- `HeapAsync.setLimit` is async: use `await heap.setLimit(n)`. Assigning `heap.limit = n` on a `HeapAsync` applies the limit on the next `add`.
+- `indexOf`, `indexOfEvery`, `contains`, and `remove` check every element, so custom callbacks always find their matches (also in 2.7.2). Use the `isEqual` option to set the default equality function.
 
 ## Is it faster than sorting an array?
 
-It depends on your usage, but for some scenarios, it is much faster:
+It depends on your usage. For a handful of elements, sorting an array is as fast or faster. For larger inputs, and for queues that change while they are consumed, a heap is much faster:
 
 ```
-heap vs array: push + pop/unshift 50
- heap  x 72,130 ops/sec ±0.50% (93 runs sampled)
- array x 121 ops/sec ±78.09% (5 runs sampled)
+priority queue: push 2 + pop 1, 50000 elements
+ heap         x 71.98 ops/sec ±8.73% (65 runs sampled)
+ sorted array x 8.40 ops/sec ±7.15% (25 runs sampled)
 
-heap vs array: push + peek 20
- heap  x 622,332 ops/sec ±27.93% (63 runs sampled)
- array x 207 ops/sec ±78.18% (5 runs sampled)
+running median: 50000 elements
+ two heaps    x 63.66 ops/sec ±7.08% (67 runs sampled)
+ sorted array x 9.24 ops/sec ±4.69% (27 runs sampled)
 
-heap vs array: push + top(1) of 100
- heap  x 124,835 ops/sec ±40.37% (61 runs sampled)
- array x 123 ops/sec ±78.49% (5 runs sampled)
+top 100 of 100000 elements
+ nlargest x 224 ops/sec ±6.74% (76 runs sampled)
+ sort     x 26.29 ops/sec ±5.12% (47 runs sampled)
 
-heap vs array: push + top(50) of 100
- heap  x 59,210 ops/sec ±17.66% (82 runs sampled)
- array x 125 ops/sec ±78.79% (5 runs sampled)
+init + pop 100 of 100000 elements
+ heap  x 210 ops/sec ±4.67% (70 runs sampled)
+ sort  x 24.71 ops/sec ±5.40% (45 runs sampled)
+
+heap vs array: push + peek 99
+ heap  x 228,187 ops/sec ±6.65% (71 runs sampled)
+ array x 127,672 ops/sec ±5.70% (67 runs sampled)
 ```
 
-## Star History
+The sorted array uses binary search to insert, the fastest array alternative. Measured on Node.js 26 and an Apple M3. Run them with `npm run benchmark`.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=ignlg/heap-js&type=Date)](https://star-history.com/#ignlg/heap-js&Date)
+## Warnings
 
-## Changelog
-
-### 2.7.3
-
-- Fixes `bottom`, `heapbottom`, and `nsmallest` being slow on large heaps.
-
-### 2.7.2
-
-- Fixes `top(N)` not returning the peek at index `0`. Addressing [#672](https://github.com/ignlg/heap-js/issues/672). Thanks to @trackoor for the contribution.
-- Fixes `indexOf`, `indexOfEvery`, `contains`, and `remove` missing elements with custom callbacks. They now use a linear search, which is also faster. Addressing [#669](https://github.com/ignlg/heap-js/issues/669).
-- Adds `indexOf` and `indexOfEvery` to `HeapAsync`.
-- Fixes `check` not detecting falsy children. Thanks to @RealBhupesh for the contribution.
-- Fixes `addAll` stack overflow with large arrays.
-- Fixes `pushpop` calling the comparator on empty heaps. Thanks to @fbirds5230 for the contribution.
-
-### 2.7.1
-
-- Optimize loop condition in HeapAsync init method.
-
-### 2.7
-
-- Improves performance of sorting methods. Thanks to @BeatsuDev for the contribution.
-- Improves tests and documentation.
-
-### 2.6
-
-- Improves performance of remove and sorting methods.
-- Improves tests and documentation.
-
-### 2.5
-
-- Improves the `limit` property to support negative, Infinity, and NaN values. They will be set as `0` and the heap will not be limited.
-- Adds the `setLimit` method to set the limit of the heap. It returns `NaN` if the limit is negative, or NaN. This method is useful to check if the limit was set as expected.
-- Improves tests and documentation.
-
-### 2.4
-
-- Adds the `indexOf` method to find the first index of an element in the heap.
-- Adds the `indexOfEvery` method to find all indexes of an element in the heap.
-- Changes the `remove` method to use the `indexOf` method.
-- Changes the `contains` method to use the `indexOf` method.
-- Improves documentation.
-
-### 2.3
-
-- Adds the `HeapAsync` class, with async methods and supporting async comparators. It is a drop-in replacement for the `Heap` class with Promises.
-
-### 2.2
-
-- Fixes `.iterator()` method to follow [Java's PriorityQueue implementation:
-](https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html)
-  > The Iterator provided in method [iterator()](<https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html#iterator()>) is not guaranteed to traverse the elements of the priority queue in any particular order.
-
-Notice that _using the heap directly as an iterator will consume the heap,_ as Python's `heapq` implementation does.
-
-### 2.1
-
-- Adds `Heap.nlargest` as in `heapq`.
-- Adds `Heap.nsmallest` as in `heapq`.
-- Sanitizes `top` / `bottom` input to force an integer.
-- Linted with Eslint.
-
-### 2.0
-
-The main breaking change is that now _`top(N)` does NOT sort the output_, because sorting should not be part of the spec for a priority queue. The output is the top N elements, and they will be _partially ordered_ with the peek at index `0` by definition.
-
-- `top(N)` is unordered, only the first element is guaranteed to be the top priority element.
-- Fixes custom heap issue [#31](https://github.com/ignlg/heap-js/issues/31).
-- Performance improvements.
-- More tests, including those for custom heaps.
-- Auxiliary experimental `top(N)` algorithms.
-- (WIP) Benchmarks.
-
-### 1.5
-
-- Adds the `Iterator` interface and `iterator()` method.
+- Iterating the heap with `for (const value of heap)` consumes it, the same as calling `pop()` in a loop. Use `clone()` or `toArray()` to keep the heap. Addressing [#660](https://github.com/ignlg/heap-js/issues/660).
 
 ## Examples
 
@@ -150,7 +91,7 @@ A heap where the largest element is always at the top.
 import { Heap } from 'heap-js';
 
 // Max Heap
-const maxHeap = new Heap(Heap.maxComparator);
+const maxHeap = new Heap({ compare: Heap.maxComparator });
 
 // Initialize the heap with an array
 maxHeap.init([3, 4, 1, 12, 8]);
@@ -171,7 +112,7 @@ import { Heap } from 'heap-js';
 
 const customPriorityComparator = (a, b) => a.priority - b.priority;
 // Custom Heap
-const customHeap = new Heap(customPriorityComparator);
+const customHeap = new Heap({ compare: customPriorityComparator });
 
 // Initialize the heap with an array
 customHeap.init([{ priority: 5 }, { priority: 18 }, { priority: 1 }]);
@@ -192,7 +133,7 @@ import { HeapAsync } from 'heap-js';
 
 const customPriorityComparator = (a, b) => Promise.resolve(a.priority - b.priority);
 // Custom HeapAsync
-const customHeap = new HeapAsync(customPriorityComparator);
+const customHeap = new HeapAsync({ compare: customPriorityComparator });
 
 // Initialize the heap with an array
 await customHeap.init([{ priority: 5 }, { priority: 18 }, { priority: 1 }]);
@@ -201,7 +142,7 @@ await customHeap.push({ priority: 2 });
 
 console.log(customHeap.peek()); //> { priority: 1 }
 console.log(await customHeap.pop()); //> { priority: 1 }
-console.log(await customHeap.peek()); //> { priority: 2 }
+console.log(customHeap.peek()); //> { priority: 2 }
 ```
 
 ### Priority Queue usage
@@ -219,7 +160,7 @@ const tasks = db.collection.find().toArray();
 const customPriorityComparator = (a, b) => a.priority - b.priority;
 
 // Create the priority queue
-const priorityQueue = new Heap(customPriorityComparator);
+const priorityQueue = new Heap({ compare: customPriorityComparator });
 // Initialize the priority queue with the tasks
 priorityQueue.init(tasks);
 
@@ -241,7 +182,7 @@ const tasks = db.collection.find().toArray();
 // The most important task has the lowest priority value
 const customPriorityComparator = (a, b) => a.priority - b.priority;
 
-const priorityQueue = new Heap(customPriorityComparator);
+const priorityQueue = new Heap({ compare: customPriorityComparator });
 // Initialize the priority queue with the tasks
 priorityQueue.init(tasks);
 
@@ -249,6 +190,39 @@ priorityQueue.init(tasks);
 for (const task of priorityQueue.iterator()) {
   console.log(task);
 }
+```
+
+### TypeScript
+
+```ts
+import { Heap } from 'heap-js';
+
+interface Task {
+  name: string;
+  priority: number;
+}
+
+const tasks = new Heap<Task>({ compare: (a, b) => a.priority - b.priority });
+tasks.push({ name: 'write', priority: 2 }, { name: 'test', priority: 1 });
+
+console.log(tasks.pop()?.name); //> test
+```
+
+### Top K elements
+
+```js
+import { Heap } from 'heap-js';
+
+const numbers = [5, 18, 1, 9, 3, 12];
+
+// The 3 most valuable elements of any iterable, as Python's heapq
+console.log(Heap.nlargest(3, numbers, Heap.maxComparatorNumber)); //> [ 18, 9, 12 ] (partially ordered)
+
+// Keep only the best 3 elements while pushing
+const best = new Heap(Heap.maxComparatorNumber);
+best.limit = 3;
+best.push(...numbers);
+console.log(best.toArray()); //> [ 18, 9, 12 ] (partially ordered)
 ```
 
 ### Python-like static methods
@@ -266,27 +240,28 @@ Heap.heappush(numbers, 1);
 console.log(numbers); //> [ 1, 2, 5, 7, 3 ]
 ```
 
-## Installation
-
-```bash
-yarn add heap-js # if you use yarn
-
-npm install --save heap-js # if you use npm
-```
-
 ## Constructor
 
 ### Heap
 
 ```js
-new Heap([comparator]);
+new Heap();
+new Heap(comparator);
+new Heap({ compare: comparator, isEqual: isEqual });
 ```
 
 ### HeapAsync
 
 ```js
-new HeapAsync([asyncComparator]);
+new HeapAsync();
+new HeapAsync(asyncComparator);
+new HeapAsync({ compare: asyncComparator, isEqual: isEqual });
 ```
+
+### Options
+
+- `compare` the comparison function. Defaults to `Heap.minComparator`.
+- `isEqual` the default equality function for `indexOf`, `indexOfEvery`, `contains`, and `remove`. Defaults to `===`.
 
 ## Comparators already included
 
@@ -295,18 +270,21 @@ new HeapAsync([asyncComparator]);
 - `Heap.minComparatorNumber`: Uses subtraction `a - b` to compare elements.
 - `Heap.maxComparatorNumber`: Uses subtraction `b - a` to compare elements.
 
+`HeapAsync` includes the same comparators, returning a `Promise`.
+
 ## Implements JavaScript-style methods
 
-- `for (const value of heap)` directly usable as an Iterator, **consumes the heap.**
+- `for (const value of heap)` directly usable as an Iterator; notice that **it consumes the heap.**
 - `length` of the heap.
-- `limit` the number of elements in the heap.
-- `pop()` the top element.
-- `push(...elements)` one or more elements to the heap.
+- `limit` limit the number of elements in the heap to the N most valuable elements. Adding at the limit costs O(N); for large N use `nsmallest` or `nlargest`. In HeapAsync, use the `setLimit` method to apply it immediately.
+- `pop()` the top element, in O(log n).
+- `push(...elements)` one or more elements to the heap, in O(log n) each.
 - `pushpop(element)` faster than `push` & `pop`.
 - `replace(element)` faster than `pop` & `push`.
+- `setLimit(limit)` set the `limit` of the heap to the N most valuable elements.
 - `top(number?)` most valuable elements from the heap.
 - `bottom(number?)` least valuable elements from the heap.
-- `indexOf(element, fn?)` returns the internal index of the first occurrence of the element in the heap.
+- `indexOf(element, fn?)` returns the internal index of the first occurrence of the element in the heap, in O(n).
 - `indexOfEvery(element, fn?)` returns an array with the internal indexes of all occurrences of the element in the heap.
 
 ## Implements Java's `PriorityQueue` interface
@@ -321,7 +299,7 @@ new HeapAsync([asyncComparator]);
 - `isEmpty()`
 - `iterator()` returns the same as `toArray()` because it is iterable and follows Java's implementation. Barely useful. Use `for (const value of heap)` instead.
 - _`offer(element)` alias of `add(element)`_
-- `peek()`
+- `peek()` in O(1)
 - _`poll()` alias of `pop()`_
 - `remove(element?)`
 - _`removeAll()` alias of `clear()`_
@@ -347,8 +325,8 @@ To do:
 
 Extras:
 
-- `Heap.heaptop(n, heapArray, comparator?)` that returns the `n` most valuable elements of the array-heap
-- `Heap.heapbottom(n, heapArray, comparator?)` that returns the `n` least valuable elements of the array-heap
+- `Heap.heaptop(heapArray, n, comparator?)` that returns the `n` most valuable elements of the array-heap
+- `Heap.heapbottom(heapArray, n, comparator?)` that returns the `n` least valuable elements of the array-heap
 
 To do:
 
@@ -358,9 +336,13 @@ To do:
 
 <https://ignlg.github.io/heap-js/>
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md). Latest: **3.0.0**, see [Migrating from v2 to v3](#migrating-from-v2-to-v3).
+
 ## Sponsor
 
-We are looking for sponsors to help us maintain and improve **Heap.js**. If you're interested in supporting this project, please get in touch with us.
+We are looking for sponsors to help us maintain and improve **Heap.js**. You can support the project through [GitHub Sponsors](https://github.com/sponsors/ignlg).
 
 ## Collaborate
 
@@ -381,9 +363,13 @@ npm run test
 ### Benchmarks
 
 ```bash
-npm run benchmarks
+npm run benchmark
 ```
 
-### License
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=ignlg/heap-js&type=Date)](https://star-history.com/#ignlg/heap-js&Date)
+
+## License
 
 Heap.js is [BSD 3-Clause Licensed](LICENSE).

@@ -218,16 +218,73 @@ describe('HeapAsync instances', function () {
       });
 
       describe('#limit', function () {
-        it('should limit the heap length', async function () {
+        it('should limit the heap length using setLimit', async function () {
           await heap.init(values);
           expect(heap.length).toEqual(values.length);
-          heap.limit = 5;
+          await heap.setLimit(5);
           expect(heap.limit).toEqual(5);
           expect(heap.length).toEqual(5);
           const otherValues = values.slice(0, Math.floor(values.length / 2));
           await heap.push(...otherValues);
           expect(heap.length).toEqual(5);
           expect(await heap.check()).not.toBeDefined();
+        });
+      });
+
+      describe('#limit keeps top N best values', function () {
+        it('should keep the N smallest values for min-heap', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.setLimit(3);
+          await minHeap.push(5, 1, 8, 2, 9, 3, 7);
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should keep the N largest values for max-heap', async function () {
+          const maxHeap = new HeapAsync(HeapAsync.maxComparatorNumber);
+          await maxHeap.setLimit(3);
+          await maxHeap.push(5, 1, 8, 2, 9, 3, 7);
+          expect(maxHeap.length).toEqual(3);
+          expect(maxHeap.toArray().sort((a, b) => b - a)).toEqual([9, 8, 7]);
+        });
+
+        it('should keep the N best values when limit is set after init', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.init([5, 1, 8, 2, 9, 3, 7]);
+          await minHeap.setLimit(3);
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should reject elements worse than the worst kept when at capacity', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.setLimit(3);
+          await minHeap.push(1, 2, 3);
+          expect(await minHeap.add(4)).toBe(false); // 4 is worse than 3
+          expect(await minHeap.add(5)).toBe(false); // 5 is worse than 3
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should accept elements better than the worst kept when at capacity', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.setLimit(3);
+          await minHeap.push(3, 4, 5);
+          expect(await minHeap.add(2)).toBe(true); // 2 is better than 5
+          expect(await minHeap.add(1)).toBe(true); // 1 is better than 4
+          expect(minHeap.length).toEqual(3);
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3]);
+        });
+
+        it('should maintain heap property after limit enforcement', async function () {
+          const minHeap = new HeapAsync(HeapAsync.minComparatorNumber);
+          await minHeap.setLimit(5);
+          for (let i = 100; i > 0; i--) {
+            await minHeap.push(i);
+          }
+          expect(minHeap.length).toEqual(5);
+          expect(await minHeap.check()).toBeUndefined();
+          expect(minHeap.toArray().sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5]);
         });
       });
 
@@ -532,37 +589,299 @@ describe('HeapAsync instances', function () {
   });
 });
 
+describe('HeapAsync with options constructor', function () {
+  describe('constructor', function () {
+    it('should accept a comparator function (backward compatibility)', async function () {
+      const heap = new HeapAsync<number>(async (a, b) => b - a);
+      await heap.push(1, 2, 3);
+      expect(heap.peek()).toBe(3);
+    });
+
+    it('should accept an options object with compare only', async function () {
+      const heap = new HeapAsync<number>({ compare: async (a, b) => b - a });
+      await heap.push(1, 2, 3);
+      expect(heap.peek()).toBe(3);
+    });
+
+    it('should accept an options object with compare and isEqual', async function () {
+      const isEqual = async (a: { id: number }, b: { id: number }) => a.id === b.id;
+      const heap = new HeapAsync<{ id: number; name: string }>({
+        compare: async (a, b) => a.id - b.id,
+        isEqual,
+      });
+      await heap.push({ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' });
+      expect(heap.isEqual).toBe(isEqual);
+    });
+
+    it('should use default comparator when no options provided', async function () {
+      const heap = new HeapAsync<number>();
+      await heap.push(3, 1, 2);
+      expect(heap.peek()).toBe(1);
+    });
+
+    it('should use default isEqual when not provided in options', function () {
+      const heap = new HeapAsync<number>({ compare: async (a, b) => a - b });
+      expect(heap.isEqual).toBe(HeapAsync.defaultIsEqual);
+    });
+
+    it('should use defaults when empty options object provided', async function () {
+      const heap = new HeapAsync<number>({});
+      await heap.push(3, 1, 2);
+      expect(heap.peek()).toBe(1);
+      expect(heap.isEqual).toBe(HeapAsync.defaultIsEqual);
+    });
+  });
+
+  describe('with configured isEqual', function () {
+    type Item = { id: number; name: string };
+    let heap: HeapAsync<Item>;
+    const isEqual = async (a: Item, b: Item) => a.id === b.id;
+
+    beforeEach(async function () {
+      heap = new HeapAsync<Item>({
+        compare: async (a, b) => a.id - b.id,
+        isEqual,
+      });
+      await heap.push({ id: 1, name: 'one' }, { id: 2, name: 'two' }, { id: 3, name: 'three' });
+    });
+
+    describe('#contains', function () {
+      it('should use configured isEqual by default', async function () {
+        expect(await heap.contains({ id: 2, name: 'different' })).toBe(true);
+        expect(await heap.contains({ id: 99, name: 'not found' })).toBe(false);
+      });
+
+      it('should allow override with method callback', async function () {
+        expect(await heap.contains({ id: 2, name: 'two' }, async (a, b) => a.name === b.name)).toBe(true);
+        expect(await heap.contains({ id: 2, name: 'wrong' }, async (a, b) => a.name === b.name)).toBe(false);
+      });
+    });
+
+    describe('#remove', function () {
+      it('should use configured isEqual by default', async function () {
+        expect(await heap.remove({ id: 2, name: 'different' })).toBe(true);
+        expect(heap.length).toBe(2);
+        expect(await heap.contains({ id: 2, name: 'any' })).toBe(false);
+        expect(await heap.check()).not.toBeDefined();
+      });
+
+      it('should return false when not found', async function () {
+        expect(await heap.remove({ id: 99, name: 'not found' })).toBe(false);
+        expect(heap.length).toBe(3);
+      });
+    });
+
+    describe('#clone', function () {
+      it('should preserve isEqual configuration', async function () {
+        const cloned = heap.clone();
+        expect(cloned.isEqual).toBe(isEqual);
+        expect(await cloned.contains({ id: 2, name: 'different' })).toBe(true);
+      });
+    });
+
+    describe('#indexOf', function () {
+      it('should use configured isEqual by default', async function () {
+        const idx = await heap.indexOf({ id: 2, name: 'different' });
+        expect(idx).not.toBe(-1);
+        expect(heap.heapArray[idx].id).toBe(2);
+      });
+
+      it('should return -1 when not found', async function () {
+        expect(await heap.indexOf({ id: 99, name: 'not found' })).toBe(-1);
+      });
+    });
+
+    describe('#indexOfEvery', function () {
+      it('should use configured isEqual by default', async function () {
+        await heap.push({ id: 2, name: 'two-duplicate' });
+        const indexes = await heap.indexOfEvery({ id: 2, name: 'any' });
+        expect(indexes.length).toBe(2);
+        for (const idx of indexes) {
+          expect(heap.heapArray[idx].id).toBe(2);
+        }
+      });
+    });
+  });
+});
+
 describe('HeapAsync linear search fixes (#669)', function () {
-  it('contains with custom callback finds elements the pruned search missed', async function () {
-    const heap = new HeapAsync<{ id: number }>(async (a, b) => a.id - b.id);
-    await heap.push({ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 });
-    expect(await heap.contains({ id: 4 }, async (a, b) => a.id === b.id)).toBe(true);
-    expect(await heap.contains({ id: 99 }, async (a, b) => a.id === b.id)).toBe(false);
+  it('remove with needle-ignoring callback finds the element (#669 repro)', async function () {
+    const heap = new HeapAsync<{ value: number }>(async (a, b) => b.value - a.value);
+    await heap.add({ value: 1 });
+    await heap.add({ value: 2 });
+    await heap.add({ value: 3 });
+    expect(await heap.remove(0 as any, async (a) => a.value === 2)).toBe(true);
+    expect(heap.length).toBe(2);
+    expect(await heap.check()).toBeUndefined();
   });
 
-  it('indexOf with custom callback finds deep elements', async function () {
-    const heap = new HeapAsync<{ id: number }>(async (a, b) => a.id - b.id);
-    await heap.push({ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 });
-    const idx = await heap.indexOf({ id: 4 }, async (a, b) => a.id === b.id);
+  it('remove(null) on object heap does not throw (#669 repro)', async function () {
+    const heap = new HeapAsync<{ value: number }>(async (a, b) => b.value - a.value);
+    await heap.add({ value: 1 });
+    await heap.add({ value: 2 });
+    await heap.add({ value: 3 });
+    expect(await heap.remove(null as any)).toBe(false);
+    expect(heap.length).toBe(3);
+  });
+
+  it('contains with needle-ignoring callback finds the element', async function () {
+    const heap = new HeapAsync<{ value: number }>(async (a, b) => b.value - a.value);
+    await heap.add({ value: 1 });
+    await heap.add({ value: 2 });
+    await heap.add({ value: 3 });
+    expect(await heap.contains(0 as any, async (a) => a.value === 2)).toBe(true);
+    expect(await heap.contains(0 as any, async (a) => a.value === 99)).toBe(false);
+  });
+
+  it('indexOf with needle-ignoring callback finds the element', async function () {
+    const heap = new HeapAsync<{ value: number }>(async (a, b) => b.value - a.value);
+    await heap.add({ value: 1 });
+    await heap.add({ value: 2 });
+    await heap.add({ value: 3 });
+    const idx = await heap.indexOf(0 as any, async (a) => a.value === 2);
     expect(idx).not.toBe(-1);
-    expect(heap.heapArray[idx].id).toBe(4);
+    expect(heap.heapArray[idx].value).toBe(2);
   });
 
-  it('remove with custom callback works for any position', async function () {
-    const heap = new HeapAsync<{ id: number }>(async (a, b) => a.id - b.id);
-    await heap.push({ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 });
-    expect(await heap.remove({ id: 4 }, async (a, b) => a.id === b.id)).toBe(true);
-    expect(await heap.contains({ id: 4 }, async (a, b) => a.id === b.id)).toBe(false);
+  it('indexOf returns -1 on empty heap', async function () {
+    const heap = new HeapAsync<number>();
+    expect(await heap.indexOf(1)).toBe(-1);
+  });
+
+  it('indexOf uses default equality (===) when no callback given', async function () {
+    const heap = new HeapAsync<number>();
+    await heap.push(10, 20, 30);
+    expect(await heap.indexOf(20)).not.toBe(-1);
+    expect(await heap.indexOf(99)).toBe(-1);
+  });
+
+  it('indexOfEvery returns [] on empty heap', async function () {
+    const heap = new HeapAsync<number>();
+    expect(await heap.indexOfEvery(1)).toEqual([]);
+  });
+
+  it('indexOfEvery uses default equality (===) when no callback given', async function () {
+    const heap = new HeapAsync<number>();
+    await heap.push(10, 20, 10, 30);
+    const idxs = await heap.indexOfEvery(10);
+    expect(idxs.length).toBe(2);
+    for (const idx of idxs) {
+      expect(heap.heapArray[idx]).toBe(10);
+    }
+  });
+
+  it('indexOfEvery with custom callback finds all matches', async function () {
+    const heap = new HeapAsync<{ value: number }>(async (a, b) => a.value - b.value);
+    await heap.add({ value: 1 });
+    await heap.add({ value: 2 });
+    await heap.add({ value: 2 });
+    await heap.add({ value: 3 });
+    const idxs = await heap.indexOfEvery(0 as any, async (a) => a.value === 2);
+    expect(idxs.length).toBe(2);
+    for (const idx of idxs) {
+      expect(heap.heapArray[idx].value).toBe(2);
+    }
+  });
+
+  describe('HeapAsync.defaultIsEqual coverage', function () {
+    it('should return true for equal values', async function () {
+      expect(await HeapAsync.defaultIsEqual(1, 1)).toBe(true);
+    });
+    it('should return false for different values', async function () {
+      expect(await HeapAsync.defaultIsEqual(1, 2)).toBe(false);
+    });
+  });
+});
+
+describe('HeapAsync hybrid _applyLimit', function () {
+  it('eviction path: replaces worst leaf (not last) and re-sorts', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    heap.heapArray = [1, 3, 2, 7, 5, 4, 6];
+    await heap.setLimit(6);
+    expect(heap.length).toBe(6);
+    expect(await heap.check()).toBeUndefined();
+    expect(heap.toArray()).not.toContain(7);
+  });
+
+  it('pop-trim path: rebuilds heap when rm is large relative to limit', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    for (let i = 0; i < 1000; i++) await heap.push(i);
+    await heap.setLimit(3);
+    expect(heap.length).toBe(3);
+    expect(await heap.check()).toBeUndefined();
+    expect(heap.toArray().sort((a, b) => a - b)).toEqual([0, 1, 2]);
+  });
+
+  it('lazy setter defers trim; setLimit trims eagerly', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    await heap.push(1, 2, 3, 4, 5);
+    heap.limit = 3;
+    expect(heap.length).toBe(5);
+    await heap.setLimit(3);
+    expect(heap.length).toBe(3);
+  });
+
+  it('lazy setter: add() pre-trims when heap exceeds limit', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    await heap.push(1, 2, 3, 4, 5);
+    heap.limit = 2;
+    expect(heap.length).toBe(5);
+    await heap.add(0);
+    expect(heap.length).toBeLessThanOrEqual(2);
     expect(await heap.check()).toBeUndefined();
   });
 
-  it('remove(null) does not throw', async function () {
-    const heap = new HeapAsync<number | null>();
-    await heap.push(1, 2, null, 3);
-    expect(await heap.remove(null)).toBe(true);
-    expect(await heap.contains(null)).toBe(false);
+  it('setLimit with NaN returns NaN and sets limit to 0', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    expect(await heap.setLimit(NaN)).toBe(NaN);
+    expect(heap.limit).toBe(0);
+  });
+
+  it('setLimit with negative returns NaN and sets limit to 0', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    expect(await heap.setLimit(-5)).toBe(NaN);
+    expect(heap.limit).toBe(0);
+  });
+
+  it('add returns false at capacity when element is worse', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    heap.limit = 3;
+    await heap.push(1, 2, 3);
+    expect(await heap.add(4)).toBe(false);
+    expect(heap.length).toBe(3);
+  });
+
+  it('add returns true at capacity when element is better', async function () {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    heap.limit = 3;
+    await heap.push(3, 4, 5);
+    expect(await heap.add(2)).toBe(true);
+    expect(heap.length).toBe(3);
     expect(await heap.check()).toBeUndefined();
   });
+});
+
+describe('HeapAsync top(n) dispatch', function () {
+  const SIZE = 200;
+  const permuted = Array.from({ length: SIZE }, (_, i) => (i * 7919) % SIZE);
+  const sorted = permuted.slice().sort((a, b) => a - b);
+
+  async function makeHeap() {
+    const heap = new HeapAsync<number>(async (a, b) => a - b);
+    await heap.init(permuted.slice());
+    return heap;
+  }
+
+  it.each([1, 5, 10, 25, 50, 100, 199])(
+    'top(%i) returns correct elements with top(n)[0] === peek()',
+    async function (n) {
+      const heap = await makeHeap();
+      const result = await heap.top(n);
+      expect(result.length).toBe(n);
+      expect(result[0]).toBe(heap.peek());
+      expect(result.slice().sort((a, b) => a - b)).toEqual(sorted.slice(0, n));
+    }
+  );
 });
 
 describe('HeapAsync bottom(n)', function () {

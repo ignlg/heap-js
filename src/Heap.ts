@@ -3,6 +3,23 @@ export * from './HeapAsync';
 export type Comparator<T> = (a: T, b: T) => number;
 export type IsEqual<T> = (e: T, o: T) => boolean;
 
+/**
+ * Heap configuration options.
+ */
+export interface HeapOptions<T> {
+  /**
+   * Comparison function for heap ordering.
+   * @default Heap.minComparator
+   */
+  compare?: Comparator<T>;
+  /**
+   * Default equality function for indexOf, contains, and remove.
+   * When provided, these methods use heap-optimized search.
+   * @default Heap.defaultIsEqual
+   */
+  isEqual?: IsEqual<T>;
+}
+
 export const toInt = (n: number): number => ~~n;
 
 /**
@@ -12,6 +29,8 @@ export const toInt = (n: number): number => ~~n;
 export class Heap<T> implements Iterable<T> {
   heapArray: Array<T> = [];
   _limit = 0;
+  isEqual: IsEqual<T> = Heap.defaultIsEqual;
+  compare: Comparator<T>;
 
   /**
    * Alias of {@link add}
@@ -39,9 +58,18 @@ export class Heap<T> implements Iterable<T> {
 
   /**
    * Heap instance constructor.
-   * @param  {Function} compare Optional comparison function, defaults to Heap.minComparator<number>
+   * @param  {Function | HeapOptions} compareOrOptions Optional comparison function or options object
    */
-  constructor(public compare: Comparator<T> = Heap.minComparator) {}
+  constructor(compareOrOptions?: Comparator<T> | HeapOptions<T>) {
+    if (typeof compareOrOptions === 'function') {
+      this.compare = compareOrOptions;
+    } else if (compareOrOptions) {
+      this.compare = compareOrOptions.compare ?? Heap.minComparator;
+      this.isEqual = compareOrOptions.isEqual ?? Heap.defaultIsEqual;
+    } else {
+      this.compare = Heap.minComparator;
+    }
+  }
 
   /*
             Static methods
@@ -324,11 +352,20 @@ export class Heap<T> implements Iterable<T> {
    * Adds an element to the heap. Aliases: {@link offer}.
    * Same as: {@link push}(element).
    * @param {any} element Element to be added
-   * @return {Boolean} true
+   * @return {Boolean} true if added, false if limit exceeded and element not good enough
    */
   add(element: T): boolean {
+    if (this._limit > 0 && this.heapArray.length >= this._limit) {
+      const worstIdx = this._worstIndex();
+      if (this.compare(element, this.heapArray[worstIdx]) >= 0) {
+        return false; // New element is not better than worst keeper
+      }
+      // Replace worst with new element
+      this.heapArray[worstIdx] = element;
+      this._sortNodeUp(worstIdx);
+      return true;
+    }
     this._sortNodeUp(this.heapArray.push(element) - 1);
-    this._applyLimit();
     return true;
   }
 
@@ -397,6 +434,7 @@ export class Heap<T> implements Iterable<T> {
     const cloned = new Heap<T>(this.comparator());
     cloned.heapArray = this.toArray();
     cloned._limit = this._limit;
+    cloned.isEqual = this.isEqual;
     return cloned;
   }
 
@@ -414,7 +452,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} callbackFn  Optional comparison function, receives (element, needle)
    * @return {Boolean}
    */
-  contains(o: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): boolean {
+  contains(o: T, callbackFn?: IsEqual<T>): boolean {
     return this.indexOf(o, callbackFn) !== -1;
   }
 
@@ -443,20 +481,21 @@ export class Heap<T> implements Iterable<T> {
   /**
    * Get the index of the first occurrence of the element in the heap.
    * @param  {any}      element    Element to be found
-   * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
+   * @param  {Function} callbackFn Optional comparison function, receives (element, needle). Note: Custom callbacks trigger O(n) full scan vs O(log n) average for default equality.
    * @return {Number}              Index or -1 if not found
    */
-  indexOf(element: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): number {
+  indexOf(element: T, callbackFn?: IsEqual<T>): number {
     const arr = this.heapArray;
     const len = arr.length;
     if (len === 0) {
       return -1;
     }
-    if (callbackFn === Heap.defaultIsEqual) {
+    const isEqual = callbackFn ?? this.isEqual;
+    if (isEqual === Heap.defaultIsEqual) {
       return arr.indexOf(element);
     }
     for (let i = 0; i < len; i++) {
-      if (callbackFn(arr[i], element)) {
+      if (isEqual(arr[i], element)) {
         return i;
       }
     }
@@ -469,14 +508,15 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} callbackFn Optional comparison function, receives (element, needle)
    * @return {Array}               Array of indexes or empty array if not found
    */
-  indexOfEvery(element: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): number[] {
+  indexOfEvery(element: T, callbackFn?: IsEqual<T>): number[] {
     const arr = this.heapArray;
     const len = arr.length;
     if (len === 0) {
       return [];
     }
+    const isEqual = callbackFn ?? this.isEqual;
     const result: number[] = [];
-    if (callbackFn === Heap.defaultIsEqual) {
+    if (isEqual === Heap.defaultIsEqual) {
       for (let i = 0; i < len; i++) {
         if (arr[i] === element) {
           result.push(i);
@@ -484,7 +524,7 @@ export class Heap<T> implements Iterable<T> {
       }
     } else {
       for (let i = 0; i < len; i++) {
-        if (callbackFn(arr[i], element)) {
+        if (isEqual(arr[i], element)) {
           result.push(i);
         }
       }
@@ -616,7 +656,7 @@ export class Heap<T> implements Iterable<T> {
    * @param  {Function} callbackFn  Optional equality function, receives (element, needle)
    * @return {Boolean}      True if the heap was modified
    */
-  remove(o?: T, callbackFn: IsEqual<T> = Heap.defaultIsEqual): boolean {
+  remove(o?: T, callbackFn?: IsEqual<T>): boolean {
     if (!this.heapArray.length) return false;
     if (o === undefined) {
       this.pop();
@@ -668,7 +708,7 @@ export class Heap<T> implements Iterable<T> {
       return [...this.heapArray];
     } else {
       // Some elements
-      return this._topN_push(~~n);
+      return this._topN_fill(~~n);
     }
   }
 
@@ -751,16 +791,31 @@ export class Heap<T> implements Iterable<T> {
   }
 
   /**
-   * Limit heap size if needed
+   * Limit heap size if needed, keeping the best N elements.
+   * Evicts the worst leaves when few are removed, otherwise pops the best N.
    */
   _applyLimit(): void {
-    if (this._limit > 0 && this._limit < this.heapArray.length) {
-      let rm = this.heapArray.length - this._limit;
-      // It's much faster than splice
-      while (rm) {
-        this.heapArray.pop();
-        --rm;
+    const n = this._limit;
+    if (n <= 0 || n >= this.heapArray.length) return;
+    const len = this.heapArray.length;
+    const rm = len - n;
+    const evictCost = rm * (len >> 1);
+    const popCost = n * Math.ceil(Math.log2(len + 1));
+    if (evictCost <= popCost) {
+      for (let j = 0; j < rm; j++) {
+        const w = this._worstIndex();
+        // Swap with last and pop (standard heap removal for non-root)
+        if (w === this.heapArray.length - 1) {
+          this.heapArray.pop();
+        } else {
+          this.heapArray[w] = this.heapArray.pop() as T;
+          this._sortNodeUp(w);
+        }
       }
+    } else {
+      const kept = new Array<T>(n);
+      for (let i = 0; i < n; i++) kept[i] = this.pop() as T;
+      this.heapArray = kept;
     }
   }
 
@@ -866,10 +921,10 @@ export class Heap<T> implements Iterable<T> {
   _topN_push(n: number): Array<T> {
     // Use an inverted heap
     const topHeap = new Heap(this._invertedCompare);
-    const indices = [0];
+    const indices: number[] = [0];
     const arr = this.heapArray;
-    while (indices.length) {
-      const i = indices.shift() as number;
+    for (let q = 0; q < indices.length; q++) {
+      const i = indices[q];
       if (i < arr.length) {
         if (topHeap.length < n) {
           topHeap.push(arr[i]);
@@ -904,15 +959,15 @@ export class Heap<T> implements Iterable<T> {
     topHeap.heapArray = heapArray.slice(0, n);
     topHeap.init();
     const branch = Heap.getParentIndexOf(n - 1) + 1;
-    const indices = [];
+    const indices: number[] = [];
     for (let i = branch; i < n; ++i) {
       indices.push(...Heap.getChildrenIndexOf(i).filter((l) => l < heapArray.length));
     }
     if ((n - 1) % 2) {
       indices.push(n);
     }
-    while (indices.length) {
-      const i = indices.shift() as number;
+    for (let q = 0; q < indices.length; q++) {
+      const i = indices[q];
       if (i < heapArray.length) {
         if (this.compare(heapArray[i], topHeap.peek() as T) < 0) {
           topHeap.replace(heapArray[i]);
@@ -974,6 +1029,25 @@ export class Heap<T> implements Iterable<T> {
     const heap = new Heap(this.compare);
     heap.init(list);
     return heap.peek();
+  }
+
+  /**
+   * Find index of the worst element (for eviction when at limit).
+   * Worst is always among leaves (second half of array).
+   * @return {number} Index of worst element, -1 if empty
+   */
+  _worstIndex(): number {
+    const arr = this.heapArray;
+    const len = arr.length;
+    if (len === 0) return -1;
+    const start = len >> 1; // First leaf
+    let worstIdx = start;
+    for (let i = start + 1; i < len; i++) {
+      if (this.compare(arr[i], arr[worstIdx]) > 0) {
+        worstIdx = i;
+      }
+    }
+    return worstIdx;
   }
 }
 
