@@ -787,7 +787,7 @@ export class HeapAsync<T> implements AsyncIterable<T> {
     const compare = this.compare;
     // Min-heap of indices into arr, holding the frontier of unvisited nodes
     const frontier: number[] = [0];
-    while (frontier.length) {
+    for (;;) {
       const idx = frontier[0];
       yield arr[idx];
       if (this.heapArray !== arr || arr.length !== length) {

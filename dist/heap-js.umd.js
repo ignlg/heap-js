@@ -1112,7 +1112,6 @@
                             frontier = [0];
                             _b.label = 3;
                         case 3:
-                            if (!frontier.length) return [3 /*break*/, 15];
                             idx = frontier[0];
                             return [4 /*yield*/, __await(arr[idx])];
                         case 4: return [4 /*yield*/, _b.sent()];
@@ -2474,7 +2473,6 @@
                         frontier = [0];
                         _a.label = 1;
                     case 1:
-                        if (!frontier.length) return [3 /*break*/, 3];
                         idx = frontier[0];
                         return [4 /*yield*/, arr[idx]];
                     case 2:
@@ -2490,7 +2488,7 @@
                         else {
                             last = frontier.pop();
                             if (!frontier.length)
-                                return [3 /*break*/, 3];
+                                return [3 /*break*/, 4];
                             frontier[0] = last;
                         }
                         size = frontier.length;
@@ -2521,8 +2519,9 @@
                             }
                             frontier[j] = right;
                         }
-                        return [3 /*break*/, 1];
-                    case 3: return [2 /*return*/];
+                        _a.label = 3;
+                    case 3: return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/];
                 }
             });
         };
