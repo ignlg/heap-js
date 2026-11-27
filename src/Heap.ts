@@ -1042,9 +1042,13 @@ export class Heap<T> implements Iterable<T> {
     if (len === 0) return -1;
     const start = len >> 1; // First leaf
     let worstIdx = start;
+    if (start === len - 1) return worstIdx; // Single leaf
+    let worst = arr[start];
     for (let i = start + 1; i < len; i++) {
-      if (this.compare(arr[i], arr[worstIdx]) > 0) {
+      const el = arr[i];
+      if (this.compare(el, worst) > 0) {
         worstIdx = i;
+        worst = el;
       }
     }
     return worstIdx;

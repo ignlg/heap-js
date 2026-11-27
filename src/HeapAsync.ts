@@ -1036,9 +1036,13 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
     if (len === 0) return -1;
     const start = len >> 1; // First leaf
     let worstIdx = start;
+    if (start === len - 1) return worstIdx; // Single leaf
+    let worst = arr[start];
     for (let i = start + 1; i < len; i++) {
-      if ((await this.compare(arr[i], arr[worstIdx])) > 0) {
+      const el = arr[i];
+      if ((await this.compare(el, worst)) > 0) {
         worstIdx = i;
+        worst = el;
       }
     }
     return worstIdx;
