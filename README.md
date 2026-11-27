@@ -19,6 +19,12 @@ yarn add heap-js
 pnpm add heap-js
 ```
 
+Prereleases of the next version are published with the `next` tag:
+
+```bash
+npm install heap-js@next
+```
+
 ## Migrating from v3 to v4
 
 Iterating a heap no longer consumes it. Addressing [#660](https://github.com/ignlg/heap-js/issues/660).
