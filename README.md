@@ -19,7 +19,11 @@ yarn add heap-js
 pnpm add heap-js
 ```
 
-This README documents v4, still a prerelease. Install it with the `next` tag, `npm install heap-js@next`; the commands above install v3.
+Prereleases of the next version are published with the `next` tag:
+
+```bash
+npm install heap-js@next
+```
 
 ## Migrating from v3 to v4
 
