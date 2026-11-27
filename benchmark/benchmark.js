@@ -390,3 +390,43 @@ for (const size of [1000, 20000]) {
     },
   ]);
 }
+
+/*
+            Iteration benchmarks
+*/
+
+// The heap is built once; for...of leaves it intact, drain() works on a clone
+for (const size of [10000, 100000]) {
+  const iterHeap = Heap.heapify(randomData(size), Heap.minComparatorNumber);
+  for (const k of [10, 1000, size]) {
+    runBenchmark(`iteration in order: first ${k} of ${size}`, [
+      {
+        name: 'for...of           ',
+        func: function () {
+          let i = 0;
+          for (const value of iterHeap) {
+            if (++i === k) break;
+          }
+        },
+      },
+      {
+        name: 'clone() + drain()  ',
+        func: function () {
+          let i = 0;
+          for (const value of iterHeap.clone().drain()) {
+            if (++i === k) break;
+          }
+        },
+      },
+      {
+        name: 'toArray() + sort() ',
+        func: function () {
+          const sorted = iterHeap.toArray().sort(compareNumbers);
+          for (let i = 0; i < k; i++) {
+            sorted[i];
+          }
+        },
+      },
+    ]);
+  }
+}

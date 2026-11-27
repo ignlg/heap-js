@@ -1,5 +1,16 @@
 # Changelog
 
+### 4.0.0
+
+The main breaking change is that iterating a heap no longer consumes it. Addressing [#660](https://github.com/ignlg/heap-js/issues/660). See [Migrating from v3 to v4](README.md#migrating-from-v3-to-v4).
+
+- `for...of`, spread, and `Array.from` iterate in order of priority without consuming the heap. Iterating is lazy and faster than consuming it.
+- Adds the `drain()` method to iterate consuming the heap, the v3 behavior. It yields the elements pushed while draining.
+- Adds the `sortedIterator()` method, the same as `for...of`. It throws if the heap is modified while iterating.
+- `HeapAsync` is async iterable: use `for await (const value of heap)`. It is no longer an iterable of promises.
+- `HeapAsync.iterator()` returns the same as `toArray()`, the same as `Heap.iterator()`, and does not consume the heap.
+- Adds iteration benchmarks.
+
 ### 3.0.0
 
 The main breaking changes are that `setLimit` and `_applyLimit` methods of the HeapAsync class are now async, that setting the `limit` property of HeapAsync applies the limit on the next `add`, and that `add` returns `false` when the heap is at its limit and the element is not better than the worst one.

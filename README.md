@@ -19,6 +19,25 @@ yarn add heap-js
 pnpm add heap-js
 ```
 
+Prereleases of the next version are published with the `next` tag:
+
+```bash
+npm install heap-js@next
+```
+
+## Migrating from v3 to v4
+
+Iterating a heap no longer consumes it. Addressing [#660](https://github.com/ignlg/heap-js/issues/660).
+
+- `for (const value of heap)`, `[...heap]`, `Array.from(heap)`, and destructuring iterate in order of priority and leave the heap intact. In v3 they emptied it, the same as calling `pop()` in a loop.
+- Use `heap.drain()` to keep the v3 behavior: `for (const value of heap.drain())`. It also yields the elements pushed while draining, like a priority queue loop.
+- Iterating throws `Heap modified during iteration` if you `push`, `pop`, `add`, `remove`, `clear`, or `init` the heap inside the loop. Use `drain()` for those loops. `replace` and `pushpop` keep the length and are not detected, so avoid them while iterating.
+- Code that expected the heap to be empty after a `for...of` will not fail, it will just keep the elements. Search for `of heap`, `...heap`, and `Array.from(heap)` and switch to `drain()` where consuming is intended.
+- `Heap.nlargest`, `Heap.nsmallest`, and the other methods that accept an iterable no longer empty a heap passed as the iterable.
+- `HeapAsync` is async iterable instead of an iterable of promises. Replace `for (const promise of heap) { await promise }` with `for await (const value of heap)` to keep the heap, or `for await (const value of heap.drain())` to consume it. The old loop throws a `TypeError`, the heap is not iterable.
+- `HeapAsync.iterator()` returns the same as `toArray()`, values instead of promises, and does not consume the heap. Awaiting its values still works.
+- `HeapAsync` iteration needs `Symbol.asyncIterator`, available since Node.js 10 and in current browsers.
+
 ## Migrating from v2 to v3
 
 - The constructor also accepts an options object: `new Heap({ compare, isEqual })`. Passing a comparator function still works.
@@ -48,16 +67,25 @@ init + pop 100 of 100000 elements
  heap  x 210 ops/sec ±4.67% (70 runs sampled)
  sort  x 24.71 ops/sec ±5.40% (45 runs sampled)
 
+iteration in order: first 10 of 100000
+ for...of           x 1,696,737 ops/sec ±1.65% (92 runs sampled)
+ toArray() + sort() x 34.39 ops/sec ±12.40% (48 runs sampled)
+
+iteration in order: first 100000 of 100000
+ for...of           x 53.63 ops/sec ±0.61% (71 runs sampled)
+ toArray() + sort() x 32.90 ops/sec ±10.72% (46 runs sampled)
+
 heap vs array: push + peek 99
  heap  x 228,187 ops/sec ±6.65% (71 runs sampled)
  array x 127,672 ops/sec ±5.70% (67 runs sampled)
 ```
 
-The sorted array uses binary search to insert, the fastest array alternative. Measured on Node.js 26 and an Apple M3. Run them with `npm run benchmark`.
+The sorted array uses binary search to insert, the fastest array alternative. Iterating with `for...of` keeps the heap intact, and reading the first elements does not sort the whole heap. Measured on Node.js 26 and an Apple M3. Run them with `npm run benchmark`.
 
 ## Warnings
 
-- Iterating the heap with `for (const value of heap)` consumes it, the same as calling `pop()` in a loop. Use `clone()` or `toArray()` to keep the heap. Addressing [#660](https://github.com/ignlg/heap-js/issues/660).
+- Since v4, iterating the heap with `for (const value of heap)` does not consume it. Use `drain()` to consume it, see [Migrating from v3 to v4](#migrating-from-v3-to-v4).
+- Do not modify the heap while iterating it with `for...of`: it throws. Use `drain()` to push while consuming.
 
 ## Examples
 
@@ -147,9 +175,9 @@ console.log(customHeap.peek()); //> { priority: 2 }
 
 ### Priority Queue usage
 
-#### JavaScript / Python-style iterator (recommended)
+#### JavaScript-style iterator (recommended)
 
-Iterates over the heap consuming it, and guarantees to traverse the elements of the heap in the order of priority. Useful.
+Iterates over the heap in the order of priority without consuming it. Lazy: reading the first k elements does not sort the whole heap.
 
 ```js
 const { Heap } = require('heap-js');
@@ -164,15 +192,30 @@ const priorityQueue = new Heap({ compare: customPriorityComparator });
 // Initialize the priority queue with the tasks
 priorityQueue.init(tasks);
 
-// Iterator that will consume the heap while traversing it in the order of priority
+// Iterator that traverses the heap in the order of priority, keeping it intact
 for (const task of priorityQueue) {
   console.log(task);
 }
 ```
 
+#### Draining iterator
+
+Iterates over the heap in the order of priority consuming it, the same as calling `pop()` in a loop. Elements pushed while draining are also yielded in order.
+
+```js
+// Iterator that consumes the heap, and accepts new tasks while running
+for (const task of priorityQueue.drain()) {
+  for (const subtask of run(task)) {
+    priorityQueue.push(subtask);
+  }
+}
+```
+
+With `HeapAsync`, use `for await (const task of priorityQueue)` and `for await (const task of priorityQueue.drain())`.
+
 #### Java-style iterator (not recommended)
 
-Iterates over the heap without consuming it, but does not guarantee to traverse the elements of the heap in any particular order. Barely useful.
+Iterates over the heap without consuming it, but does not guarantee to traverse the elements of the heap in any particular order. Barely useful, it is the fastest way to read every element when order does not matter.
 
 ```js
 const { Heap } = require('heap-js');
@@ -274,7 +317,9 @@ new HeapAsync({ compare: asyncComparator, isEqual: isEqual });
 
 ## Implements JavaScript-style methods
 
-- `for (const value of heap)` directly usable as an Iterator; notice that **it consumes the heap.**
+- `for (const value of heap)` directly usable as an Iterator, in order of priority, without consuming the heap. `HeapAsync` is usable with `for await (const value of heap)`.
+- `drain()` iterates in order of priority consuming the heap, accepting new elements while iterating.
+- `sortedIterator()` same as `for...of`, lazy: the first k elements cost O(k log k).
 - `length` of the heap.
 - `limit` limit the number of elements in the heap to the N most valuable elements. Adding at the limit costs O(N); for large N use `nsmallest` or `nlargest`. In HeapAsync, use the `setLimit` method to apply it immediately.
 - `pop()` the top element, in O(log n).
@@ -297,7 +342,7 @@ new HeapAsync({ compare: asyncComparator, isEqual: isEqual });
 - `contains(element, fn?)`
 - _`element()` alias of `peek()`_
 - `isEmpty()`
-- `iterator()` returns the same as `toArray()` because it is iterable and follows Java's implementation. Barely useful. Use `for (const value of heap)` instead.
+- `iterator()` returns the same as `toArray()` because it is iterable and follows Java's implementation, unordered. Use `for (const value of heap)` to iterate in order.
 - _`offer(element)` alias of `add(element)`_
 - `peek()` in O(1)
 - _`poll()` alias of `pop()`_
@@ -338,7 +383,7 @@ To do:
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md). Latest: **3.0.0**, see [Migrating from v2 to v3](#migrating-from-v2-to-v3).
+See [CHANGELOG.md](CHANGELOG.md). Latest: **4.0.0**, see [Migrating from v3 to v4](#migrating-from-v3-to-v4).
 
 ## Sponsor
 

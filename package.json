@@ -1,6 +1,6 @@
 {
   "name": "heap-js",
-  "version": "3.0.0",
+  "version": "4.0.0-alpha.0",
   "description": "Fast binary heap and priority queue for JavaScript and TypeScript: min heap, max heap, top K, and async comparators. Includes Python heapq and Java PriorityQueue methods.",
   "keywords": [
     "heap",

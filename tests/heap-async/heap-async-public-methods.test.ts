@@ -1,6 +1,14 @@
 import HeapAsync from '../../src/HeapAsync';
 import { customBottom, customTop, customValues, equalUnsortedArrays, someValues } from '../test-helpers';
 
+async function collect<T>(iterable: AsyncIterable<T>): Promise<T[]> {
+  const result: T[] = [];
+  for await (const value of iterable) {
+    result.push(value);
+  }
+  return result;
+}
+
 describe('HeapAsync instances', function () {
   const heaps = [
     {
@@ -502,27 +510,81 @@ describe('HeapAsync instances', function () {
         });
       });
 
-      describe('is Iterable', function () {
-        it('should be iterable via for...of', async function () {
+      describe('is AsyncIterable', function () {
+        it('should be iterable via for await...of in order, without consuming the heap', async function () {
           await heap.init(values.concat(values));
-          const top = heap.toArray().slice(0);
+          const before = heap.toArray();
+          const topArr = before.slice(0).sort((a, b) => (top(a, b) === a ? -1 : 1));
+          expect(await collect(heap)).toEqual(topArr);
+          expect(await collect(heap)).toEqual(topArr);
+          expect(heap.toArray()).toEqual(before);
+        });
+        it('should throw if the heap is modified while iterating', async function () {
+          await heap.init(values);
+          await expect(async () => {
+            for await (const value of heap) {
+              await heap.push(value);
+            }
+          }).rejects.toThrow('Heap modified during iteration');
+        });
+      });
+      describe('#drain()', function () {
+        it('should iterate in order consuming the heap', async function () {
+          await heap.init(values.concat(values));
+          const topArr = heap.toArray().sort((a, b) => (top(a, b) === a ? -1 : 1));
+          expect(await collect(heap.drain())).toEqual(topArr);
+          expect(heap.length).toBe(0);
+          expect(await collect(heap.drain())).toEqual([]);
+        });
+        it('should yield elements pushed while draining, in order', async function () {
+          await heap.init(values);
+          const extra = values.slice(0, 3);
+          const expected = values.concat(extra).sort((a, b) => (top(a, b) === a ? -1 : 1));
           const result: unknown[] = [];
-          for (const value of heap) {
-            result.push(await value);
+          let pushed = false;
+          for await (const value of heap.drain()) {
+            result.push(value);
+            if (!pushed) {
+              await heap.push(...extra);
+              pushed = true;
+            }
           }
-          equalUnsortedArrays(result, top);
+          expect(result).toEqual(expected);
+          expect(heap.length).toBe(0);
         });
       });
       describe('#iterator()', function () {
-        it('returns an iterable', async function () {
+        it('returns an iterable that does not consume the heap', async function () {
           await heap.init(values.concat(values));
-          const topArr = heap.toArray().slice(0);
-          topArr.sort((a, b) => (top(a, b) === a ? -1 : 1));
-          const result: unknown[] = [];
-          for (const value of heap.iterator()) {
-            result.push(await value);
+          const arr = heap.toArray();
+          expect([...heap.iterator()]).toEqual(arr);
+          expect([...heap.iterator()]).toEqual(arr);
+          expect(heap.length).toBe(arr.length);
+        });
+      });
+      describe('#sortedIterator()', function () {
+        it('should yield nothing for an empty heap', async function () {
+          expect(await collect(heap.sortedIterator())).toEqual([]);
+        });
+        it('should iterate in order of priority without modifying the heap', async function () {
+          await heap.init(values.concat(values));
+          const before = heap.toArray();
+          const sorted = before.slice(0).sort((a, b) => (top(a, b) === a ? -1 : 1));
+          expect(await collect(heap.sortedIterator())).toEqual(sorted);
+          expect(await collect(heap.sortedIterator())).toEqual(sorted);
+          expect(heap.toArray()).toEqual(before);
+        });
+        it('should yield the first N in order when stopped early', async function () {
+          await heap.init(values.concat(values));
+          const sorted = heap.toArray().sort((a, b) => (top(a, b) === a ? -1 : 1));
+          for (const n of [1, 3, values.length]) {
+            const result: unknown[] = [];
+            for await (const value of heap.sortedIterator()) {
+              result.push(value);
+              if (result.length === n) break;
+            }
+            expect(result).toEqual(sorted.slice(0, n));
           }
-          expect(result).toEqual(topArr);
         });
       });
 
@@ -897,6 +959,18 @@ describe('HeapAsync bottom(n)', function () {
           .sort((a, b) => a - b)
           .slice(-n)
       );
+    }
+  });
+});
+
+describe('HeapAsync#sortedIterator() with random data', function () {
+  it('should match a sorted copy for many sizes', async function () {
+    for (let size = 0; size <= 200; size++) {
+      const data = Array.from({ length: size }, () => Math.floor(Math.random() * 50));
+      const heap = await HeapAsync.heapify(data.slice(0), HeapAsync.minComparatorNumber);
+      const before = heap.toArray();
+      expect(await collect(heap.sortedIterator())).toEqual(data.sort((a, b) => a - b));
+      expect(heap.toArray()).toEqual(before);
     }
   });
 });

@@ -19,7 +19,7 @@ export interface HeapAsyncOptions<T> {
  * Heap
  * @type {Class}
  */
-export declare class HeapAsync<T> implements Iterable<Promise<T>> {
+export declare class HeapAsync<T> implements AsyncIterable<T> {
     heapArray: Array<T>;
     _limit: number;
     isEqual: AsyncIsEqual<T>;
@@ -344,13 +344,25 @@ export declare class HeapAsync<T> implements Iterable<Promise<T>> {
      */
     getParentOf(idx: number): T | undefined;
     /**
-     * Iterator interface
+     * Async iterator interface. Iterates in order of priority without consuming the heap.
+     * Same as {@link sortedIterator}. Use {@link drain} to consume it.
      */
-    [Symbol.iterator](): Iterator<Promise<T>>;
+    [Symbol.asyncIterator](): AsyncIterator<T>;
+    /**
+     * Iterates over the heap in order of priority consuming it, the same as calling `pop()` in a loop.
+     * Elements pushed while draining are also yielded in order.
+     */
+    drain(): AsyncGenerator<T, void, undefined>;
     /**
      * Returns an iterator. To comply with Java interface.
      */
-    iterator(): Iterable<Promise<T>>;
+    iterator(): Iterable<T>;
+    /**
+     * Iterates over the heap in order of priority without consuming or modifying it.
+     * Lazy: the first k elements cost O(k log k), regardless of the heap size.
+     * Throws if the heap length changes while iterating; use {@link drain} to push while consuming.
+     */
+    sortedIterator(): AsyncGenerator<T, void, undefined>;
     /**
      * Remove the element at the given index, re-establishing the heap property.
      * @param  {Number} idx Index of the element to remove

@@ -21,7 +21,7 @@ export interface HeapAsyncOptions<T> {
  * Heap
  * @type {Class}
  */
-export class HeapAsync<T> implements Iterable<Promise<T>> {
+export class HeapAsync<T> implements AsyncIterable<T> {
   heapArray: Array<T> = [];
   _limit = 0;
   isEqual: AsyncIsEqual<T> = HeapAsync.defaultIsEqual;
@@ -751,19 +751,84 @@ export class HeapAsync<T> implements Iterable<Promise<T>> {
   }
 
   /**
-   * Iterator interface
+   * Async iterator interface. Iterates in order of priority without consuming the heap.
+   * Same as {@link sortedIterator}. Use {@link drain} to consume it.
    */
-  *[Symbol.iterator](): Iterator<Promise<T>> {
+  [Symbol.asyncIterator](): AsyncIterator<T> {
+    return this.sortedIterator();
+  }
+
+  /**
+   * Iterates over the heap in order of priority consuming it, the same as calling `pop()` in a loop.
+   * Elements pushed while draining are also yielded in order.
+   */
+  async *drain(): AsyncGenerator<T, void, undefined> {
     while (this.length) {
-      yield this.pop() as Promise<T>;
+      yield (await this.pop()) as T;
     }
   }
 
   /**
    * Returns an iterator. To comply with Java interface.
    */
-  iterator(): Iterable<Promise<T>> {
-    return this;
+  iterator(): Iterable<T> {
+    return this.toArray();
+  }
+
+  /**
+   * Iterates over the heap in order of priority without consuming or modifying it.
+   * Lazy: the first k elements cost O(k log k), regardless of the heap size.
+   * Throws if the heap length changes while iterating; use {@link drain} to push while consuming.
+   */
+  async *sortedIterator(): AsyncGenerator<T, void, undefined> {
+    const arr = this.heapArray;
+    const { length } = arr;
+    if (length === 0) return;
+    const compare = this.compare;
+    // Min-heap of indices into arr, holding the frontier of unvisited nodes
+    const frontier: number[] = [0];
+    for (;;) {
+      const idx = frontier[0];
+      yield arr[idx];
+      if (this.heapArray !== arr || arr.length !== length) {
+        throw new Error('Heap modified during iteration, use drain() to consume it');
+      }
+      const left = 2 * idx + 1;
+      // Replace the root with its left child (or the last frontier node) and sift it down
+      if (left < length) {
+        frontier[0] = left;
+      } else {
+        const last = frontier.pop() as number;
+        if (!frontier.length) break;
+        frontier[0] = last;
+      }
+      const size = frontier.length;
+      let i = 0;
+      const node = frontier[0];
+      const value = arr[node];
+      let c = 1;
+      while (c < size) {
+        if (c + 1 < size && (await compare(arr[frontier[c + 1]], arr[frontier[c]])) < 0) c++;
+        if ((await compare(arr[frontier[c]], value)) >= 0) break;
+        frontier[i] = frontier[c];
+        i = c;
+        c = 2 * i + 1;
+      }
+      frontier[i] = node;
+      // Push the right child and sift it up
+      const right = left + 1;
+      if (right < length) {
+        let j = frontier.length;
+        const rightValue = arr[right];
+        while (j > 0) {
+          const p = (j - 1) >> 1;
+          if ((await compare(rightValue, arr[frontier[p]])) >= 0) break;
+          frontier[j] = frontier[p];
+          j = p;
+        }
+        frontier[j] = right;
+      }
+    }
   }
 
   /**
