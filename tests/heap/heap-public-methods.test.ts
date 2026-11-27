@@ -676,20 +676,56 @@ describe('Heap instances', function () {
       });
 
       describe('is Iterable', function () {
-        it('should be iterable via for...of, consuming the heap', function () {
+        it('should be iterable via for...of in order, without consuming the heap', function () {
           heap.init(values.concat(values));
-          const top = heap.toArray().slice(0);
-          top.sort(heap.comparator());
+          const before = heap.toArray();
+          const top = before.slice(0).sort(heap.comparator());
           const resultFirstRound: unknown[] = [];
           for (const value of heap) {
             resultFirstRound.push(value);
           }
-          const resultSecondRound: unknown[] = [];
-          for (const value of heap) {
-            resultSecondRound.push(value);
-          }
           expect(resultFirstRound).toEqual(top);
-          expect(resultSecondRound).toEqual([]);
+          expect([...heap]).toEqual(top);
+          expect(heap.toArray()).toEqual(before);
+        });
+        it('should throw if the heap is modified while iterating', function () {
+          heap.init(values);
+          expect(() => {
+            for (const value of heap) {
+              heap.push(value);
+            }
+          }).toThrow('Heap modified during iteration');
+          heap.init(values);
+          expect(() => {
+            for (const _ of heap) {
+              heap.pop();
+            }
+          }).toThrow('Heap modified during iteration');
+        });
+      });
+      describe('#drain()', function () {
+        it('should iterate in order consuming the heap', function () {
+          heap.init(values.concat(values));
+          const top = heap.toArray().sort(heap.comparator());
+          expect([...heap.drain()]).toEqual(top);
+          expect(heap.length).toBe(0);
+          expect([...heap.drain()]).toEqual([]);
+        });
+        it('should yield elements pushed while draining, in order', function () {
+          heap.init(values);
+          const extra = values.slice(0, 3);
+          const expected = values.concat(extra).sort(heap.comparator());
+          const result: unknown[] = [];
+          let pushed = false;
+          for (const value of heap.drain()) {
+            result.push(value);
+            if (!pushed) {
+              heap.push(...extra);
+              pushed = true;
+            }
+          }
+          expect(result).toEqual(expected);
+          expect(heap.length).toBe(0);
         });
       });
       describe('#iterator()', function () {
@@ -708,7 +744,44 @@ describe('Heap instances', function () {
           expect(resultSecondRound).toEqual(top);
         });
       });
+      describe('#sortedIterator()', function () {
+        it('should yield nothing for an empty heap', function () {
+          expect([...heap.sortedIterator()]).toEqual([]);
+        });
+        it('should iterate in order of priority without modifying the heap', function () {
+          heap.init(values.concat(values));
+          const before = heap.toArray();
+          const sorted = before.slice(0).sort(heap.comparator());
+          expect([...heap.sortedIterator()]).toEqual(sorted);
+          expect([...heap.sortedIterator()]).toEqual(sorted);
+          expect(heap.toArray()).toEqual(before);
+        });
+        it('should yield the first N in order when stopped early', function () {
+          heap.init(values.concat(values));
+          const sorted = heap.toArray().sort(heap.comparator());
+          for (const n of [1, 3, values.length]) {
+            const result: unknown[] = [];
+            for (const value of heap.sortedIterator()) {
+              result.push(value);
+              if (result.length === n) break;
+            }
+            expect(result).toEqual(sorted.slice(0, n));
+          }
+        });
+      });
     });
+  });
+});
+
+describe('Heap#sortedIterator() with random data', function () {
+  it('should match a sorted copy for many sizes', function () {
+    for (let size = 0; size <= 200; size++) {
+      const data = Array.from({ length: size }, () => Math.floor(Math.random() * 50));
+      const heap = Heap.heapify(data.slice(0), Heap.minComparatorNumber);
+      const before = heap.toArray();
+      expect([...heap.sortedIterator()]).toEqual(data.sort((a, b) => a - b));
+      expect(heap.toArray()).toEqual(before);
+    }
   });
 });
 

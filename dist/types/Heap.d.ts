@@ -366,13 +366,25 @@ export declare class Heap<T> implements Iterable<T> {
      */
     getParentOf(idx: number): T | undefined;
     /**
-     * Iterator interface
+     * Iterator interface. Iterates in order of priority without consuming the heap.
+     * Same as {@link sortedIterator}. Use {@link drain} to consume it.
      */
     [Symbol.iterator](): Iterator<T>;
+    /**
+     * Iterates over the heap in order of priority consuming it, the same as calling `pop()` in a loop.
+     * Elements pushed while draining are also yielded in order.
+     */
+    drain(): Generator<T, void, undefined>;
     /**
      * Returns an iterator. To comply with Java interface.
      */
     iterator(): Iterable<T>;
+    /**
+     * Iterates over the heap in order of priority without consuming or modifying it.
+     * Lazy: the first k elements cost O(k log k), regardless of the heap size.
+     * Throws if the heap length changes while iterating; use {@link drain} to push while consuming.
+     */
+    sortedIterator(): Generator<T, void, undefined>;
     /**
      * Remove the element at the given index, re-establishing the heap property.
      * @param  {Number} idx Index of the element to remove
